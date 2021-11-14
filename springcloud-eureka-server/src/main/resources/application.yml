@@ -1,0 +1,18 @@
+server:
+  port: 8700 # 端口自己决定
+
+# 指定当前eureka客户端的注册地址，也就是eureka服务的提供方，当前配置的服务的注册服务方
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8699/eureka,http://localhost:8698/eureka
+    register-with-eureka: false #自身 不在向eureka注册
+    fetch-registry: false  #启动时禁用client的注册
+
+
+#指定应用名称
+spring:
+  application:
+    name: eureka-server
+
+eureka.server..enable-self-preservation: false
