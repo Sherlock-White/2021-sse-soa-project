@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@id/home"
+        android:title="首页"
+        android:icon="@drawable/ic_baseline_home_24"/>
+    <item android:id="@+id/car_hailing"
+        android:title="打车"
+        android:icon="@drawable/ic_baseline_directions_car_24"/>
+    <item android:id="@+id/profile"
+        android:title="个人中心"
+        android:icon="@drawable/ic_baseline_person_24"/>
+
+</menu>
