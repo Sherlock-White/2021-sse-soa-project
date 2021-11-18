@@ -3,6 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/drawable/button_bg.xml" value="0.265625" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/drawable/card_bg.xml" value="0.265625" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.265625" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/drawable/ic_baseline_order_24.xml" value="0.265625" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/fragment_car_hailing.xml" value="0.264" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/fragment_home.xml" value="0.24947916666666667" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/menu/menu.xml" value="0.24947916666666667" />
         <entry key="..\:/OnlineCarHailing/app/src/main/res/drawable/button_bg.xml" value="0.265625" />
         <entry key="..\:/OnlineCarHailing/app/src/main/res/drawable/edit_text_bg.xml" value="0.265625" />
         <entry key="..\:/OnlineCarHailing/app/src/main/res/drawable/round_corner.xml" value="0.265625" />

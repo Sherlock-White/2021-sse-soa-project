@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         //创建默认fragment
         if(savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new HomeFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new OrderFragment()).commit();
         }
 
         //设置fragment的切换监听
@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
                 //根据选择不同显示不同界面
                 switch(item.getItemId()){
-                    case R.id.home:
-                        fragment=new HomeFragment();
+                    case R.id.order:
+                        fragment=new OrderFragment();
                         break;
                     case R.id.car_hailing:
                         fragment=new CarHailingFragment();
