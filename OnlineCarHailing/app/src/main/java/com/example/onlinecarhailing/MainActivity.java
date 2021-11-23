@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         //创建默认fragment
         if(savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new OrderFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new CarHailingFragment()).commit();
         }
 
         //设置fragment的切换监听

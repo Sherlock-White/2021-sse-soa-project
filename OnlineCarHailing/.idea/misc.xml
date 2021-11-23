@@ -3,13 +3,26 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.25104166666666666" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/drawable/begin_button_bg.xml" value="0.25104166666666666" />
         <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/drawable/button_bg.xml" value="0.265625" />
         <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/drawable/card_bg.xml" value="0.265625" />
         <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.265625" />
         <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/drawable/ic_baseline_order_24.xml" value="0.265625" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/activity_adm_login.xml" value="0.23489583333333333" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/activity_adm_main.xml" value="0.23489583333333333" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/activity_login.xml" value="0.23489583333333333" />
         <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/activity_welcome.xml" value="0.234375" />
         <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/fragment_car_hailing.xml" value="0.264" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/fragment_certification.xml" value="0.23489583333333333" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/fragment_complaint.xml" value="0.23489583333333333" />
         <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/fragment_home.xml" value="0.24947916666666667" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/fragment_login_tab.xml" value="0.23489583333333333" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/fragment_order.xml" value="0.23489583333333333" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/fragment_profile.xml" value="0.23489583333333333" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/layout/fragment_signup_tab.xml" value="0.23489583333333333" />
+        <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/menu/adm_menu.xml" value="0.23489583333333333" />
         <entry key="..\:/GitHub/2021-sse-soa-project/OnlineCarHailing/app/src/main/res/menu/menu.xml" value="0.24947916666666667" />
         <entry key="..\:/OnlineCarHailing/app/src/main/res/drawable/button_bg.xml" value="0.265625" />
         <entry key="..\:/OnlineCarHailing/app/src/main/res/drawable/edit_text_bg.xml" value="0.265625" />

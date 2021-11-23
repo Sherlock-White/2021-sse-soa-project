@@ -7,18 +7,6 @@
     tools:context=".AdmLoginActivity">
 
 
-    <ImageView
-        android:id="@+id/bg"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/welcome"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.27"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0" />
 
     <ImageView
         android:id="@+id/img"
@@ -37,6 +25,7 @@
         android:id="@+id/note"
         android:layout_width="221dp"
         android:layout_height="53dp"
+        android:layout_marginBottom="356dp"
         android:text="欢迎使用嗒嗒出行\n请填写管理员登录信息"
         android:textColor="@color/purple_500"
         android:textSize="18sp"
@@ -90,6 +79,7 @@
         android:background="@drawable/button_bg"
         android:text="登录"
         android:textSize="18sp"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

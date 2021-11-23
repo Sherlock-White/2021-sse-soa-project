@@ -20,7 +20,7 @@ import org.w3c.dom.Text;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    ImageView logo,splash;
+    ImageView logo;
     Button begin;
     LottieAnimationView lottieAnimationView;
     TextView name;
@@ -32,7 +32,6 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         logo=findViewById(R.id.logo);
-        splash=findViewById(R.id.img_welcome);
         name=findViewById(R.id.name);
         begin =findViewById(R.id.begin);
 
@@ -43,12 +42,7 @@ public class WelcomeActivity extends AppCompatActivity {
         begin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                splash.animate().translationY(-2500).setDuration(2000).setStartDelay(4000);
-                logo.animate().translationY(1600).setDuration(2000).setStartDelay(4000);
-                name.animate().translationY(1600).setDuration(2000).setStartDelay(4000);
-                lottieAnimationView.animate().translationY(-2200).setDuration(1000).setStartDelay(4000);
                 startActivity(intent);
             }
         });
