@@ -21,16 +21,19 @@
 订单API：
 
    1.获取某笔订单("/getOrderByID/{order_id}")
+     
      需要参数：订单id(String)
      
      返回：订单信息(订单id，顾客id，司机id，出发地，目的地，金额，到达时间)
    
    2.按照时间顺序获取顾客的所有订单("/getOrdersForPassenger/{passenger_id}")
+     
      需要参数：顾客id(String)
      
      返回：该顾客的所有订单(List<>)
    
    3.按照时间顺序获取司机的所有订单("/getOrdersForDriver/{driver_id}")
+     
      需要参数：司机id(String)
      
      返回：该顾客的所有订单(List<>)
