@@ -1,8 +1,8 @@
 package com.example.userservice.util;
-//import okhttp3.FormBody;
-//import okhttp3.OkHttpClient;
-//import okhttp3.Request;
-//import okhttp3.Response;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.CommonResponse;
 import com.aliyuncs.DefaultAcsClient;
@@ -173,31 +173,32 @@ public class SendSms {
         }
     }
 
-//    public static void messagePost4(String truename,String identitynum) {   //3代表重置手机号
-//        String url = "https://eid.shumaidata.com/eid/check";
-//        String appCode = "你的AppCode";
-//
-//        Map<String, String> params = new HashMap<>();
-//        params.put("idcard", "42112******82416");
-//        params.put("name", "张*");
-//        String result = postForm(appCode, url, params);
-//        System.out.println(result);
-//    }
-//    public static String postForm(String appCode, String url, Map<String, String> params) throws IOException {
-//        OkHttpClient client = new OkHttpClient.Builder().build();
-//        FormBody.Builder formbuilder = new FormBody.Builder();
-//        Iterator<String> it = params.keySet().iterator();
-//        while (it.hasNext()) {
-//            String key = it.next();
-//            formbuilder.add(key, params.get(key));
-//        }
-//        FormBody body = formbuilder.build();
-//        Request request = new Request.Builder().url(url).addHeader("Authorization", "APPCODE " + appCode).post(body).build();
-//        Response response = client.newCall(request).execute();
-//        System.out.println("返回状态码" + response.code() + ",message:" + response.message());
-//        String result = response.body().string();
-//        return result;
-//    }
+    public static String messagePost4(String truename,String identitynum) throws IOException {
+        String url = "https://eid.shumaidata.com/eid/check";
+        String appCode = "0e8f4286f5254b2bbe3419b3b6a89d87";
+
+        Map<String, String> params = new HashMap<>();
+        params.put("idcard", identitynum);
+        params.put("name", truename);
+        String result = postForm(appCode, url, params);
+        System.out.println(result);
+        return result;
+    }
+    public static String postForm(String appCode, String url, Map<String, String> params) throws IOException {
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        FormBody.Builder formbuilder = new FormBody.Builder();
+        Iterator<String> it = params.keySet().iterator();
+        while (it.hasNext()) {
+            String key = it.next();
+            formbuilder.add(key, params.get(key));
+        }
+        FormBody body = formbuilder.build();
+        Request request = new Request.Builder().url(url).addHeader("Authorization", "APPCODE " + appCode).post(body).build();
+        Response response = client.newCall(request).execute();
+        System.out.println("返回状态码" + response.code() + ",message:" + response.message());
+        String result = response.body().string();
+        return result;
+    }
 
     public static synchronized String zcCode() {
         int max = 10000;

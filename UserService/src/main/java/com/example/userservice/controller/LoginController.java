@@ -10,12 +10,15 @@ import com.example.userservice.result.ResultFactory;
 import com.example.userservice.service.ClientService;
 import com.example.userservice.service.DirverService;
 import com.example.userservice.service.SmsService;
+import com.example.userservice.util.SendSms;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @CrossOrigin("*")
@@ -328,7 +331,9 @@ public class LoginController {
     }
 
     @PostMapping("identify")
-    public Result identify(String name,String identifynum){
-        return ResultFactory.buildResult(ResultCode.SUCCESS,"身份认证成功",1);  //1代表client
+    public Result identify(String name,String identifynum) throws IOException {
+        String result = sendMessage.mysendMessage1(name, identifynum);
+        return ResultFactory.buildResult(ResultCode.SUCCESS,"身份认证成功",result);  //1代表client
     }
+
 }

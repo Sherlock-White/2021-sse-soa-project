@@ -4,6 +4,8 @@ import com.example.userservice.util.SendSms;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+
 @Service
 public class SmsService {
 
@@ -55,6 +57,12 @@ public class SmsService {
 
             return verifyCode;
 
+        }
+
+
+        public String mysendMessage1(String truename,String identitynum) throws IOException {
+            String result=SendSms.messagePost4(truename,identitynum);
+            return result;
         }
 
         //校验
