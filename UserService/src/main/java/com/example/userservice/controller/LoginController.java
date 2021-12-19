@@ -328,7 +328,7 @@ public class LoginController {
 //        clientDAO.save(client);
         return ResultFactory.buildResult(ResultCode.SUCCESS,"修改资料成功",driver);  //1代表client
     }
-    @PostMapping("driverchage")
+        @PostMapping("driverchage")
     public Result driverchage(@RequestBody Driver driver){
 
         driverDAO.save(driver);
