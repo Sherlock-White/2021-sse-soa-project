@@ -1,7 +1,9 @@
 package com.example.userservice.controller;
 
+import com.example.userservice.dao.AdministratorDAO;
 import com.example.userservice.dao.ClientDAO;
 import com.example.userservice.dao.DriverDAO;
+import com.example.userservice.entity.Administrator;
 import com.example.userservice.entity.Client;
 import com.example.userservice.entity.Driver;
 import com.example.userservice.result.Result;
@@ -39,6 +41,9 @@ public class LoginController {
 
     @Autowired
     DriverDAO driverDAO;
+
+    @Autowired
+    AdministratorDAO administratorDAO;
 
 
     @GetMapping("/{id}")
@@ -334,6 +339,17 @@ public class LoginController {
     public Result identify(String name,String identifynum) throws IOException {
         String result = sendMessage.mysendMessage1(name, identifynum);
         return ResultFactory.buildResult(ResultCode.SUCCESS,"身份认证成功",result);  //1代表client
+    }
+
+
+
+    @PostMapping("ad")
+    public Result ad(String name,String passwd){
+        Administrator administrator=administratorDAO.findByName(name);
+        if(administrator.getPasswd().equals(passwd)){
+            return ResultFactory.buildResult(ResultCode.SUCCESS,"登录成功",0);  //1代表client
+        }
+        return ResultFactory.buildResult(ResultCode.FAIL,"登录失败",0);  //1代表client
     }
 
 }
