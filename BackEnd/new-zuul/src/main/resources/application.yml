@@ -18,8 +18,8 @@ eureka:
 zuul:
   routes:
     route1:
-      path: /test01/**
-      serviceId: eurekaservice1
+      path: /userservice/**
+      serviceId: userservice
     route2:
       path: /test02/**
       serviceId: eurekaservice2
