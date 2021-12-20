@@ -7,6 +7,7 @@ import com.example.orderservice.entity.Statement;
 import com.example.orderservice.mapper.OrderMapper;
 import com.example.orderservice.mapper.StatementMapper;
 import com.example.orderservice.request.*;
+import com.example.orderservice.feignClient.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +33,43 @@ public class OrderController {
     private OrderMapper orderMapper;
     @Autowired
     private StatementMapper statementMapper;
+    @Autowired
+    private UserClient userClient;
 
-    @GetMapping("/getOrdersForPassenger/{passenger_id}")
+    @GetMapping("/v1/passengers/{passenger_id}/orders/current")
+    public TaxiOrder getCurrentOrderForPassenger(@PathVariable String passenger_id){
+        TaxiOrder taxiOrder=new TaxiOrder();
+        QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
+        orderQueryWrapper.eq("passenger_id",passenger_id).orderByDesc("order_id");
+        Order order=orderMapper.selectList(orderQueryWrapper).get(0);
+        if(order!=null) {
+            taxiOrder.setOrder_id(order.getOrder_id());
+            taxiOrder.setPassenger_id(order.getPassenger_id());
+            taxiOrder.setDriver_id(order.getDriver_id());
+            taxiOrder.setDeparture(order.getDeparture());
+            taxiOrder.setDestination(order.getDestination());
+            taxiOrder.setPassenger_phone(userClient.findPassengerById(passenger_id).get("phone"));
+            taxiOrder.setDriver_phone(userClient.findDriverById(order.getDriver_id()).get("phone"));
+            //查询流水
+            QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
+            taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
+            for (Statement statement : statementList) {
+                if (statement.getOrder_state().equals("5") || statement.getOrder_state().equals("3")) {
+                    taxiOrder.setEnd_time(statement.getStat_time());
+                } else if (statement.getOrder_state().equals("2")) {
+                    taxiOrder.setStart_time(statement.getStat_time());
+                }
+            }
+        }
+        if(!taxiOrder.getOrder_state().equals("5")&&!taxiOrder.getOrder_state().equals("3")) {
+            return taxiOrder;
+        }
+        return null;
+    }
+
+    @GetMapping("/v1/passengers/{passenger_id}/orders")
     public List<TaxiOrder> getOrdersForPassenger(@PathVariable String passenger_id){
         List<TaxiOrder> orderList=new ArrayList<TaxiOrder>();
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
@@ -47,6 +83,8 @@ public class OrderController {
             taxiOrder.setDeparture(order.getDeparture());
             taxiOrder.setDestination(order.getDestination());
             taxiOrder.setPrice(order.getPrice());
+            taxiOrder.setPassenger_phone(userClient.findPassengerById(passenger_id).get("phone"));
+            taxiOrder.setDriver_phone(userClient.findDriverById(order.getDriver_id()).get("phone"));
             QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
             statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
             List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
@@ -72,7 +110,7 @@ public class OrderController {
         //return tmp.getOrdersForPassenger(passenger_id);
     }
 
-    @GetMapping("/getOrdersForDriver/{driver_id}")
+    @GetMapping("/v1/drivers/{driver_id}/orders")
     public List<TaxiOrder> getOrdersForDriver(@PathVariable String driver_id){
         List<TaxiOrder> orderList=new ArrayList<TaxiOrder>();
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
@@ -86,6 +124,8 @@ public class OrderController {
             taxiOrder.setDeparture(order.getDeparture());
             taxiOrder.setDestination(order.getDestination());
             taxiOrder.setPrice(order.getPrice());
+            taxiOrder.setPassenger_phone(userClient.findPassengerById(order.getPassenger_id()).get("phone"));
+            taxiOrder.setDriver_phone(userClient.findDriverById(order.getDriver_id()).get("phone"));
             QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
             statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
             List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
@@ -110,7 +150,7 @@ public class OrderController {
         return orderList;
     }
 
-    @GetMapping("/getOrderByID/{order_id}")
+    @GetMapping("/v1/orders/{order_id}")
     public TaxiOrder getOrdersByID(@PathVariable String order_id){
         TaxiOrder taxiOrder=new TaxiOrder();
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
@@ -122,6 +162,8 @@ public class OrderController {
         taxiOrder.setDeparture(order.getDeparture());
         taxiOrder.setDestination(order.getDestination());
         taxiOrder.setPrice(order.getPrice());
+        taxiOrder.setPassenger_phone(userClient.findPassengerById(order.getPassenger_id()).get("phone"));
+        taxiOrder.setDriver_phone(userClient.findDriverById(order.getDriver_id()).get("phone"));
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
         statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
@@ -196,6 +238,7 @@ public class OrderController {
     public void newOrder(@RequestParam("passenger_id") String passenger_id,
                          @RequestParam("departure") String departure,
                          @RequestParam("destination") String destination){
+        if(this.existsUnpaidOrder(passenger_id)){return;}
         Order order=new Order();
         String dateNowStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         dateNowStr=dateNowStr.replaceAll("-","");
@@ -400,5 +443,20 @@ public class OrderController {
         }
     }
 
-
+    private boolean existsUnpaidOrder(String passenger_id){
+        QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
+        orderQueryWrapper.eq("passenger_id",passenger_id).orderByDesc("order_id");
+        Order order=orderMapper.selectList(orderQueryWrapper).get(0);
+        if(order==null){
+            return false;
+        }
+        QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
+        statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
+        Statement statement=statementMapper.selectList(statementQueryWrapper).get(0);
+        if(!statement.getOrder_state().equals("3")&&!statement.getOrder_state().equals("5")){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

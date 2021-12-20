@@ -5,7 +5,9 @@ import java.time.Instant;
 public class TaxiOrder {
     private String order_id;
     private String passenger_id;
+    private String passenger_phone;
     private String driver_id;
+    private String driver_phone;
     private Instant start_time;
     private Instant end_time;
     private String order_state;
@@ -36,6 +38,22 @@ public class TaxiOrder {
 
     public void setDriver_id(String driver_id) {
         this.driver_id = driver_id;
+    }
+
+    public String getPassenger_phone() {
+        return passenger_phone;
+    }
+
+    public void setPassenger_phone(String passenger_phone) {
+        this.passenger_phone = passenger_phone;
+    }
+
+    public String getDriver_phone() {
+        return driver_phone;
+    }
+
+    public void setDriver_phone(String driver_phone) {
+        this.driver_phone = driver_phone;
     }
 
     public Instant getStart_time() {

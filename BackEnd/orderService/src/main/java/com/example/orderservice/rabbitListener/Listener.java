@@ -13,6 +13,7 @@ import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
@@ -29,6 +30,7 @@ public class Listener {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Transactional
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "spring.test.queue", durable = "true"),
             exchange = @Exchange(
@@ -95,9 +97,11 @@ public class Listener {
         message.put("passenger_id",passenger_id);
         message.put("departure",departure);
         message.put("destination",destination);
-        rabbitTemplate.convertAndSend(message);
+        String routingKey="";
+        rabbitTemplate.convertAndSend(routingKey,message);
     }
 
+    @Transactional
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "spring.test.queue", durable = "true"),
             exchange = @Exchange(
@@ -174,6 +178,7 @@ public class Listener {
         }
     }
 
+    @Transactional
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "spring.test.queue", durable = "true"),
             exchange = @Exchange(
@@ -233,11 +238,12 @@ public class Listener {
         statementMapper.insert(statement);
         //已派单状态下需要通知派单微服务释放司机
         if(sendFlag){
-            rabbitTemplate.convertAndSend(message);
+            String routingKey="";
+            rabbitTemplate.convertAndSend(routingKey,message);
         }
     }
 
-
+    @Transactional
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "spring.test.queue", durable = "true"),
             exchange = @Exchange(
@@ -296,6 +302,7 @@ public class Listener {
 
     }
 
+    @Transactional
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "spring.test.queue", durable = "true"),
             exchange = @Exchange(
