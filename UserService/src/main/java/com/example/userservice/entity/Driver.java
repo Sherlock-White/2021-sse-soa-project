@@ -24,6 +24,9 @@ public class Driver  implements Serializable {
 	@Column(name = "name",length = 255)
 	private String name;
 
+	@Column(name = "truename",length = 255)
+	private String truename;
+
 	@Column(name = "passwd")
 	private String passwd;
 

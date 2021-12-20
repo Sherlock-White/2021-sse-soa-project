@@ -25,6 +25,9 @@ public class Client  implements Serializable {
 	@Column(name = "name")
 	private String name;
 
+	@Column(name = "truename")
+	private String truename;
+
 	@Column(name = "passwd")
 	private String passwd;
 

@@ -24,7 +24,7 @@ import java.io.IOException;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/")
+@RequestMapping("api/v1/userservice")
 public class LoginController {
 
     @Autowired
@@ -51,8 +51,8 @@ public class LoginController {
         return 1;
     }
 
-    @PostMapping("register")
-    public Result register(String name, String passwd,String phone,String identifyCode,String identity){
+    @PostMapping("registration")
+    public Result register(@RequestParam(value="name")String name, @RequestParam(value="passwd")String passwd,@RequestParam(value="phone")String phone,@RequestParam(value="identifyCode")String identifyCode,@RequestParam(value="identity")String identity){
 
         Boolean success=sendMessage.checkIsCorrectCode(phone,identifyCode);
         if(success==false){
@@ -83,7 +83,7 @@ public class LoginController {
 
 
     @PostMapping("login")
-    public Result login(String name, String passwd){
+    public Result login(@RequestParam(value="name")String name, @RequestParam(value="passwd")String passwd){
         Integer user=0;
         Client client=null;
         Driver driver=null;
@@ -120,8 +120,8 @@ public class LoginController {
     }
 
 
-    @PostMapping("reset")
-    public Result reset(String name,String newpasswd,String phone,String identifyCode){
+    @PostMapping("resetpasswords")
+    public Result reset(@RequestParam(value="name")String name,@RequestParam(value="newpasswd")String newpasswd,@RequestParam(value="phone")String phone,@RequestParam(value="identifyCode")String identifyCode){
 
         Boolean success=sendMessage.checkIsCorrectCode(phone,identifyCode);
         if(success==false){
@@ -149,13 +149,13 @@ public class LoginController {
         return ResultFactory.buildFailResult("未知错误");
     }
 
-    @PostMapping("resetphone")
-    public Result resetphone(String name,String phone,String identifyCode){
+    @PostMapping("unbindphones")
+    public Result resetphone(@RequestParam(value="name")String name,@RequestParam(value="phone")String phone,@RequestParam(value="identifyCode")String identifyCode){
 
-//        Boolean success=sendMessage.checkIsCorrectCode(phone,identifyCode);
-//        if(success==false){
-//            return ResultFactory.buildFailResult("验证码不正确");
-//        }
+        Boolean success=sendMessage.checkIsCorrectCode(phone,identifyCode);
+        if(success==false){
+            return ResultFactory.buildFailResult("验证码不正确");
+        }
         Integer identify=0;
         Client client=null;
         Driver driver=null;
@@ -178,8 +178,8 @@ public class LoginController {
         return ResultFactory.buildFailResult("未知错误");
     }
 
-    @PostMapping("resetphone1")
-    public Result resetphone1(String name,String phone,String identifyCode){
+    @PostMapping("resetphones")
+    public Result resetphone1(@RequestParam(value="name")String name,@RequestParam(value="phone")String phone,@RequestParam(value="identifyCode")String identifyCode){
 
         Boolean success=sendMessage.checkIsCorrectCode(phone,identifyCode);
         if(success==false){
@@ -211,14 +211,14 @@ public class LoginController {
 
 
     @PostMapping("registercode")
-    public Result registercode(String phone){
+    public Result registercode(@RequestParam(value="phone")String phone){
         String verifyCode=sendMessage.mysendMessage(phone,1); //1代表注册
         return ResultFactory.buildSuccessResult(verifyCode);
 
     }
 
     @PostMapping("resetcode")
-    public Result resetcode(String name,String phone){
+    public Result resetcode(@RequestParam(value="name")String name,@RequestParam(value="phone")String phone){
         Integer identify=0;
         Client client=null;
         Driver driver=null;
@@ -262,7 +262,7 @@ public class LoginController {
     }
 
     @PostMapping("resetphonecode")
-    public Result resetphonecode(String name,String phone){
+    public Result resetphonecode(@RequestParam(value="name")String name,@RequestParam(value="phone")String phone){
 //        Integer identify=0;
 //        Client client=null;
 //        Driver driver=null;
@@ -311,7 +311,7 @@ public class LoginController {
 
     //下面是账户管理部分
     @PostMapping("returnclientchage")
-    public Result returnclientchage(String name){
+    public Result returnclientchage(@RequestParam(value="name")String name){
        Client client =clientService.findByClientnamecl(name);
 //        clientDAO.save(client);
         return ResultFactory.buildResult(ResultCode.SUCCESS,"修改资料成功",client);  //1代表client
@@ -323,7 +323,7 @@ public class LoginController {
         return ResultFactory.buildResult(ResultCode.SUCCESS,"修改资料成功",1);  //1代表client
     }
     @PostMapping("returndriverchage")
-    public Result returndriverchage(String name){
+    public Result returndriverchage(@RequestParam(value="name")String name){
         Driver driver=driverService.findByDrivernamecl(name);
 //        clientDAO.save(client);
         return ResultFactory.buildResult(ResultCode.SUCCESS,"修改资料成功",driver);  //1代表client
@@ -336,14 +336,26 @@ public class LoginController {
     }
 
     @PostMapping("identify")
-    public Result identify(String name,String identifynum) throws IOException {
-        String result = sendMessage.mysendMessage1(name, identifynum);
-        return ResultFactory.buildResult(ResultCode.SUCCESS,"身份认证成功",result);  //1代表client
+    public Result identify(@RequestParam(value="name")String name,@RequestParam(value="truename")String truename,@RequestParam(value="identifynum")String identifynum) throws IOException {
+        String result = sendMessage.mysendMessage1(truename, identifynum);
+//        String description=result.get("description");
+        boolean status = result.contains("一致");
+        if(status){
+            Driver driver=driverDAO.findByName(name);
+            driver.setTruename(truename);
+            driver.setIdentitynum(identifynum);
+            driverDAO.save(driver);
+            return ResultFactory.buildResult(ResultCode.SUCCESS,"身份认证成功",result);  //1代表client
+        }
+        else{
+            return ResultFactory.buildResult(ResultCode.FAIL,"身份认证失败",result);  //1代表client
+        }
+
     }
 
 
 
-    @PostMapping("ad")
+    @PostMapping("adlogin")
     public Result ad(String name,String passwd){
         Administrator administrator=administratorDAO.findByName(name);
         if(administrator.getPasswd().equals(passwd)){
