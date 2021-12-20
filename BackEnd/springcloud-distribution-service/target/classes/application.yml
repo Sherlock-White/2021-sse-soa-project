@@ -5,9 +5,11 @@ server:
 eureka:
   client:
     service-url:
+      # defaultZone: http://${eureka.instance.hostname}:8761/eureka/
       defaultZone: http://${eureka.instance.hostname}:8080/eureka/
   instance:
-    hostname: 139.224.251.185
+    # hostname: 139.224.251.185
+    hostname: localhost
 
 #当前服务名称
 spring:
