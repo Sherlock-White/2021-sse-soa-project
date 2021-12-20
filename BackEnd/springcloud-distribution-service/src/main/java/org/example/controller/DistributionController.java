@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.example.service.DistributionService;
 
 @RestController
-public class Controller {
+public class DistributionController {
 
     @RequestMapping("/distribution")
     public int[][] test(){

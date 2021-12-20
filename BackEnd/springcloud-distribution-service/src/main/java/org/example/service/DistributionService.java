@@ -16,37 +16,36 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Vector;
 
-
+/*
+ * @description: service to aggregate some information(distance)
+ * @author: zsy
+ * @date: 2021/12/19 19:22
+ */
 @Service
 public class DistributionService {
-
     //邻接矩阵
     public int[][] value=new int[30][30];
     private Vector<String>[] pair;
 
     public void distribute(String[][] passenger,String[][] driver){
-
-        for(int i=0;i<driver.length;i++)
-        {
+        for(int i=0;i<driver.length;i++) {
             for (int j=0;j<passenger.length;j++){
                 //格式：经度,纬度
                 //注意：高德最多取小数点后六位
                 String origin = driver[i][2]+","+driver[i][1];
                 String destination = passenger[j][2]+","+passenger[j][1];
-                int distance = distance(origin, destination);
+                int distance = getDistance(origin, destination);
                 this.value[i][j]=distance;
             }
         }
 
         //输出邻接矩阵
-        for(int i=0;i<driver.length;i++)
-        {
+        for(int i=0;i<driver.length;i++) {
             System.out.print("\n");
             for (int j=0;j<passenger.length;j++){
                 System.out.print(value[i][j]+" ");
             }
         }
-        return ;
     }
 
     public static String loadJson (String url) {
@@ -71,7 +70,7 @@ public class DistributionService {
     /*
      * 高德地图WebAPI : 行驶距离测量
      */
-    public static int distance(String origins,String destination) {
+    public static int getDistance(String origins,String destination) {
         int type = 1;
         String url = "http://restapi.amap.com/v3/distance?"
                 + "origins="+origins

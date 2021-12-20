@@ -1,5 +1,5 @@
 server:
-  port: 8090 # 服务提供方
+  port: 9002 # 服务提供方
 
 # 指定当前eureka客户端的注册地址,
 eureka:
