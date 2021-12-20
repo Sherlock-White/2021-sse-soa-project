@@ -16,7 +16,7 @@ spring:
     username: root
     password: 123456
   application:
-    name: userservicechao
+    name: userservice
   redis:
     host: 47.103.9.250
     port: 6379
