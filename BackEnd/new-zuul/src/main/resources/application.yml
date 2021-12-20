@@ -1,0 +1,39 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: zuul
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/ #当前zuul网关想要注册到哪个注册中心这里注册到之前搭的9000上。
+
+#路由规则定义。这里定义两种路由规则route1和route2
+#，代表访问网关/test01/**或/test02/**时。
+#路由到服务名为 eurekaservice1或 eureka
+#service2中的服务集群去。
+
+zuul:
+  routes:
+    route1:
+      path: /test01/**
+      serviceId: eurekaservice1
+    route2:
+      path: /test02/**
+      serviceId: eurekaservice2
+        #需要忽略的头部信息，不在传播到其他服务
+  #需要忽略的头部信息，不在传播到其他服务
+  sensitive-headers: Access-Control-Allow-Origin
+  ignored-headers: Access-Control-Allow-Origin,H-APP-Id,Token,APPToken
+  max:
+    host:
+      connections: 5000 #最大请求时间
+  host:  #等待
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+
+
+#  sensitive-headers: Access-Control-Allow-Origin
+#  ignored-headers: Access-Control-Allow-Credentials,Access-Control-Allow-Origin,Vary,X-Frame-Options,token
