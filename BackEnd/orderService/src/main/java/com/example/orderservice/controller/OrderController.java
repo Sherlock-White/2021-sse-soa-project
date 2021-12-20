@@ -12,10 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.Month;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -47,9 +49,23 @@ public class OrderController {
             taxiOrder.setPrice(order.getPrice());
             QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
             statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
-            Statement stat=statementMapper.selectList(statementQueryWrapper).get(0);
-            taxiOrder.setOrder_state(stat.getOrder_state());
-            taxiOrder.setTime(stat.getStat_time());
+            List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
+            taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
+            //获取订单开始时间
+            Statement stat;
+            statementQueryWrapper.clear();
+            statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","4");
+            stat=statementMapper.selectOne(statementQueryWrapper);
+            if(stat!=null){taxiOrder.setStart_time(stat.getStat_time());}
+            //获取订单结束时间
+            statementQueryWrapper.clear();
+            statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","5");
+            stat=statementMapper.selectOne(statementQueryWrapper);
+            if(stat!=null){taxiOrder.setEnd_time(stat.getStat_time());}
+            statementQueryWrapper.clear();
+            statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","3");
+            stat=statementMapper.selectOne(statementQueryWrapper);
+            if(stat!=null){taxiOrder.setEnd_time(stat.getStat_time());}
             orderList.add(taxiOrder);
         }
         return orderList;
@@ -72,9 +88,23 @@ public class OrderController {
             taxiOrder.setPrice(order.getPrice());
             QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
             statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
-            Statement stat=statementMapper.selectList(statementQueryWrapper).get(0);
-            taxiOrder.setOrder_state(stat.getOrder_state());
-            taxiOrder.setTime(stat.getStat_time());
+            List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
+            taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
+            //获取订单开始时间
+            Statement stat;
+            statementQueryWrapper.clear();
+            statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","4");
+            stat=statementMapper.selectOne(statementQueryWrapper);
+            if(stat!=null){taxiOrder.setStart_time(stat.getStat_time());}
+            //获取订单结束时间
+            statementQueryWrapper.clear();
+            statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","5");
+            stat=statementMapper.selectOne(statementQueryWrapper);
+            if(stat!=null){taxiOrder.setEnd_time(stat.getStat_time());}
+            statementQueryWrapper.clear();
+            statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","3");
+            stat=statementMapper.selectOne(statementQueryWrapper);
+            if(stat!=null){taxiOrder.setEnd_time(stat.getStat_time());}
             orderList.add(taxiOrder);
         }
         return orderList;
@@ -94,12 +124,26 @@ public class OrderController {
         taxiOrder.setPrice(order.getPrice());
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
         statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
-        Statement stat=statementMapper.selectList(statementQueryWrapper).get(0);
-        taxiOrder.setOrder_state(stat.getOrder_state());
-        taxiOrder.setTime(stat.getStat_time());
+        List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
+        taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
+        //获取订单开始时间
+        Statement stat;
+        statementQueryWrapper.clear();
+        statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","4");
+        stat=statementMapper.selectOne(statementQueryWrapper);
+        if(stat!=null){taxiOrder.setStart_time(stat.getStat_time());}
+        //获取订单结束时间
+        statementQueryWrapper.clear();
+        statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","5");
+        stat=statementMapper.selectOne(statementQueryWrapper);
+        if(stat!=null){taxiOrder.setEnd_time(stat.getStat_time());}
+        statementQueryWrapper.clear();
+        statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","3");
+        stat=statementMapper.selectOne(statementQueryWrapper);
+        if(stat!=null){taxiOrder.setEnd_time(stat.getStat_time());}
         return taxiOrder;
     }
-/*
+
     @PostMapping("/cancelOrder")
     public boolean cancelOrder(@RequestParam String order_id){
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
@@ -112,22 +156,22 @@ public class OrderController {
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
         boolean sendFlag=false;
         for(Statement statement:statementList){
-            if(!statement.getOrder_state().equals("已创建")&&!statement.getOrder_state().equals("已派单")){
+            if(!statement.getOrder_state().equals("1")&&!statement.getOrder_state().equals("2")){
                 //sendFlag=false;
                 return false;
-            }else if(statement.getOrder_state().equals("已派单")){
+            }else if(statement.getOrder_state().equals("2")){
                 sendFlag=true;
             }
         }
         Statement statement=new Statement();
         statement.setOrder_id(order_id);
-        statement.setOrder_state("已取消");
+        statement.setOrder_state("3");
         //插入流水
         StringBuilder stat_id= new StringBuilder();
         while(true) {
             stat_id=new StringBuilder();
             Random rd = new SecureRandom();
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < 20; i++) {
                 int bit = rd.nextInt(10);
                 stat_id.append(String.valueOf(bit));
             }
@@ -153,16 +197,15 @@ public class OrderController {
                          @RequestParam("departure") String departure,
                          @RequestParam("destination") String destination){
         Order order=new Order();
-        StringBuilder order_id=new StringBuilder();
-        order_id.append(java.time.Year.now().toString());
-        order_id.append(java.time.MonthDay.now().toString().replaceAll("-",""));
-        if(order_id.toString().length()<"20210101".length()){
-            order_id.insert(4,"0");
-        }
+        String dateNowStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        dateNowStr=dateNowStr.replaceAll("-","");
+        dateNowStr=dateNowStr.replaceAll(":","");
+        dateNowStr=dateNowStr.replaceAll(" ","");
+        StringBuilder order_id=new StringBuilder(dateNowStr);
         while(true) {
-            order_id=new StringBuilder(order_id.substring(0,8));
+            order_id=new StringBuilder(order_id.substring(0,14));
             Random rd = new SecureRandom();
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 4; i++) {
                 int bit = rd.nextInt(10);
                 order_id.append(String.valueOf(bit));
             }
@@ -180,13 +223,13 @@ public class OrderController {
 
         Statement statement=new Statement();
         statement.setOrder_id(order_id.toString());
-        statement.setOrder_state("已创建");
+        statement.setOrder_state("1");
         statement.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
         StringBuilder stat_id= new StringBuilder();
         while(true) {
             stat_id=new StringBuilder();
             Random rd = new SecureRandom();
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < 20; i++) {
                 int bit = rd.nextInt(10);
                 stat_id.append(String.valueOf(bit));
             }
@@ -221,27 +264,27 @@ public class OrderController {
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
         boolean flag=false;
         for(Statement statement:statementList){
-            if(!statement.getOrder_state().equals("已创建")&&!statement.getOrder_state().equals("已取消")){
+            if(!statement.getOrder_state().equals("1")&&!statement.getOrder_state().equals("3")){
                 return;
             }
-            else if(statement.getOrder_state().equals("已取消")){
+            else if(statement.getOrder_state().equals("3")){
                 flag=false;
                 break;
             }
-            else if(statement.getOrder_state().equals("已创建")){
+            else if(statement.getOrder_state().equals("1")){
                 flag=true;
             }
         }
         if(flag) {
             Statement statement1 = new Statement();
             statement1.setOrder_id(order_id);
-            statement1.setOrder_state("已派单");
+            statement1.setOrder_state("2");
             statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
             StringBuilder stat_id = new StringBuilder();
             while (true) {
                 stat_id = new StringBuilder();
                 Random rd = new SecureRandom();
-                for (int i = 0; i < 16; i++) {
+                for (int i = 0; i < 20; i++) {
                     int bit = rd.nextInt(10);
                     stat_id.append(String.valueOf(bit));
                 }
@@ -274,10 +317,10 @@ public class OrderController {
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
         boolean flag=false;
         for(Statement statement:statementList){
-            if(statement.getOrder_state().equals("已开始")||statement.getOrder_state().equals("已结束")||statement.getOrder_state().equals("已取消")){
+            if(statement.getOrder_state().equals("4")||statement.getOrder_state().equals("5")||statement.getOrder_state().equals("3")){
                 return;
             }
-            else if(statement.getOrder_state().equals("已派单")){
+            else if(statement.getOrder_state().equals("2")){
                 flag=true;
             }
         }
@@ -285,13 +328,13 @@ public class OrderController {
         if(flag){
             Statement statement1 = new Statement();
             statement1.setOrder_id(order_id);
-            statement1.setOrder_state("已开始");
+            statement1.setOrder_state("4");
             statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
             StringBuilder stat_id = new StringBuilder();
             while (true) {
                 stat_id = new StringBuilder();
                 Random rd = new SecureRandom();
-                for (int i = 0; i < 16; i++) {
+                for (int i = 0; i < 20; i++) {
                     int bit = rd.nextInt(10);
                     stat_id.append(String.valueOf(bit));
                 }
@@ -321,28 +364,28 @@ public class OrderController {
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
         boolean flag=false;
         for(Statement statement:statementList){
-            if(statement.getOrder_state().equals("已结束")||statement.getOrder_state().equals("已取消")){
+            if(statement.getOrder_state().equals("5")||statement.getOrder_state().equals("3")){
                 return;
             }
-            else if(statement.getOrder_state().equals("已开始")){
+            else if(statement.getOrder_state().equals("4")){
                 flag=true;
             }
         }
         //修改订单金额字段，插入新流水
         if(flag){
             UpdateWrapper<Order> orderUpdateWrapper = new UpdateWrapper<>();
-            orderUpdateWrapper.eq("order_id", order_id).set("double", price);
+            orderUpdateWrapper.eq("order_id", order_id).set("price", price);
             orderMapper.update(order, orderUpdateWrapper);
 
             Statement statement1 = new Statement();
             statement1.setOrder_id(order_id);
-            statement1.setOrder_state("已结束");
+            statement1.setOrder_state("5");
             statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
             StringBuilder stat_id = new StringBuilder();
             while (true) {
                 stat_id = new StringBuilder();
                 Random rd = new SecureRandom();
-                for (int i = 0; i < 16; i++) {
+                for (int i = 0; i < 20; i++) {
                     int bit = rd.nextInt(10);
                     stat_id.append(String.valueOf(bit));
                 }
@@ -357,5 +400,5 @@ public class OrderController {
         }
     }
 
- */
+
 }

@@ -6,11 +6,13 @@ public class TaxiOrder {
     private String order_id;
     private String passenger_id;
     private String driver_id;
-    private Instant time;
+    private Instant start_time;
+    private Instant end_time;
     private String order_state;
     private Double price;
     private String departure;
     private String destination;
+
 
     public String getOrder_id() {
         return order_id;
@@ -36,12 +38,20 @@ public class TaxiOrder {
         this.driver_id = driver_id;
     }
 
-    public Instant getTime() {
-        return time;
+    public Instant getStart_time() {
+        return start_time;
     }
 
-    public void setTime(Instant time) {
-        this.time = time;
+    public void setStart_time(Instant start_time) {
+        this.start_time = start_time;
+    }
+
+    public Instant getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(Instant end_time) {
+        this.end_time = end_time;
     }
 
     public String getOrder_state() {

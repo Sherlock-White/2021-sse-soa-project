@@ -8,20 +8,16 @@ import com.example.orderservice.entity.Statement;
 import com.example.orderservice.mapper.OrderMapper;
 import com.example.orderservice.mapper.StatementMapper;
 import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.rabbit.annotation.Exchange;
+import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.amqp.rabbit.annotation.Queue;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -49,16 +45,15 @@ public class Listener {
         String destination=object.getString("destination");
         //插入新订单
         Order order=new Order();
-        StringBuilder order_id=new StringBuilder();
-        order_id.append(java.time.Year.now().toString());
-        order_id.append(java.time.MonthDay.now().toString().replaceAll("-",""));
-        if(order_id.toString().length()<"20210101".length()){
-            order_id.insert(4,"0");
-        }
+        String dateNowStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        dateNowStr=dateNowStr.replaceAll("-","");
+        dateNowStr=dateNowStr.replaceAll(":","");
+        dateNowStr=dateNowStr.replaceAll(" ","");
+        StringBuilder order_id=new StringBuilder(dateNowStr);
         while(true) {
-            order_id=new StringBuilder(order_id.substring(0,8));
+            order_id=new StringBuilder(order_id.substring(0,14));
             Random rd = new SecureRandom();
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 4; i++) {
                 int bit = rd.nextInt(10);
                 order_id.append(String.valueOf(bit));
             }
@@ -76,13 +71,13 @@ public class Listener {
         //插入新流水
         Statement statement=new Statement();
         statement.setOrder_id(order_id.toString());
-        statement.setOrder_state("已创建");
+        statement.setOrder_state("1");
         statement.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
         StringBuilder stat_id= new StringBuilder();
         while(true) {
             stat_id=new StringBuilder();
             Random rd = new SecureRandom();
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < 20; i++) {
                 int bit = rd.nextInt(10);
                 stat_id.append(String.valueOf(bit));
             }
@@ -94,6 +89,13 @@ public class Listener {
         }
         statement.setStat_id(stat_id.toString());
         statementMapper.insert(statement);
+        //通知派单微服务派单
+        Map<String,String> message=new HashMap<>();
+        message.put("order_id",order_id.toString());
+        message.put("passenger_id",passenger_id);
+        message.put("departure",departure);
+        message.put("destination",destination);
+        rabbitTemplate.convertAndSend(message);
     }
 
     @RabbitListener(bindings = @QueueBinding(
@@ -132,27 +134,27 @@ public class Listener {
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
         boolean flag=false;
         for(Statement statement:statementList){
-            if(!statement.getOrder_state().equals("已创建")&&!statement.getOrder_state().equals("已取消")){
+            if(!statement.getOrder_state().equals("1")&&!statement.getOrder_state().equals("3")){
                 return;
             }
-            else if(statement.getOrder_state().equals("已取消")){
+            else if(statement.getOrder_state().equals("3")){
                 flag=false;
                 break;
             }
-            else if(statement.getOrder_state().equals("已创建")){
+            else if(statement.getOrder_state().equals("1")){
                 flag=true;
             }
         }
         if(flag) {
             Statement statement1 = new Statement();
             statement1.setOrder_id(order_id);
-            statement1.setOrder_state("已派单");
+            statement1.setOrder_state("2");
             statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
             StringBuilder stat_id = new StringBuilder();
             while (true) {
                 stat_id = new StringBuilder();
                 Random rd = new SecureRandom();
-                for (int i = 0; i < 16; i++) {
+                for (int i = 0; i < 20; i++) {
                     int bit = rd.nextInt(10);
                     stat_id.append(String.valueOf(bit));
                 }
@@ -168,7 +170,7 @@ public class Listener {
 
 
         }else{//通知派单微服务释放司机
-            rabbitTemplate.convertAndSend(message);
+            //rabbitTemplate.convertAndSend(message);
         }
     }
 
@@ -201,7 +203,7 @@ public class Listener {
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
         boolean sendFlag=false;
         for(Statement statement:statementList){
-            if(!statement.getOrder_state().equals("已创建")&&!statement.getOrder_state().equals("已派单")){
+            if(!statement.getOrder_state().equals("1")&&!statement.getOrder_state().equals("2")){
                 //sendFlag=false;
                 return;
             }else{
@@ -211,12 +213,12 @@ public class Listener {
         //插入新流水
         Statement statement=new Statement();
         statement.setOrder_id(order_id);
-        statement.setOrder_state("已取消");
+        statement.setOrder_state("3");
         StringBuilder stat_id= new StringBuilder();
         while(true) {
             stat_id=new StringBuilder();
             Random rd = new SecureRandom();
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < 20; i++) {
                 int bit = rd.nextInt(10);
                 stat_id.append(String.valueOf(bit));
             }
@@ -261,10 +263,10 @@ public class Listener {
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
         boolean flag=false;
         for(Statement statement:statementList){
-            if(statement.getOrder_state().equals("已开始")||statement.getOrder_state().equals("已结束")||statement.getOrder_state().equals("已取消")){
+            if(statement.getOrder_state().equals("4")||statement.getOrder_state().equals("5")||statement.getOrder_state().equals("3")){
                 return;
             }
-            else if(statement.getOrder_state().equals("已派单")){
+            else if(statement.getOrder_state().equals("2")){
                 flag=true;
             }
         }
@@ -272,13 +274,13 @@ public class Listener {
         if(flag){
             Statement statement1 = new Statement();
             statement1.setOrder_id(order_id);
-            statement1.setOrder_state("已开始");
+            statement1.setOrder_state("4");
             statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
             StringBuilder stat_id = new StringBuilder();
             while (true) {
                 stat_id = new StringBuilder();
                 Random rd = new SecureRandom();
-                for (int i = 0; i < 16; i++) {
+                for (int i = 0; i < 20; i++) {
                     int bit = rd.nextInt(10);
                     stat_id.append(String.valueOf(bit));
                 }
@@ -320,10 +322,10 @@ public class Listener {
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
         boolean flag=false;
         for(Statement statement:statementList){
-            if(statement.getOrder_state().equals("已结束")||statement.getOrder_state().equals("已取消")){
+            if(statement.getOrder_state().equals("5")||statement.getOrder_state().equals("3")){
                 return;
             }
-            else if(statement.getOrder_state().equals("已开始")){
+            else if(statement.getOrder_state().equals("4")){
                 flag=true;
             }
         }
@@ -336,13 +338,13 @@ public class Listener {
             //插入新流水
             Statement statement1 = new Statement();
             statement1.setOrder_id(order_id);
-            statement1.setOrder_state("已结束");
+            statement1.setOrder_state("5");
             statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
             StringBuilder stat_id = new StringBuilder();
             while (true) {
                 stat_id = new StringBuilder();
                 Random rd = new SecureRandom();
-                for (int i = 0; i < 16; i++) {
+                for (int i = 0; i < 20; i++) {
                     int bit = rd.nextInt(10);
                     stat_id.append(String.valueOf(bit));
                 }
