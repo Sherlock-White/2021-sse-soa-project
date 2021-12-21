@@ -1,10 +1,13 @@
 package org.example.service;
 
+import org.springframework.stereotype.Service;
+
 /**
  * @description:
  * @author: LuBixing
  * @date: 2021/12/21 21:12
  */
+@Service
 public class CreditService {
     private final int[] credit;
 
@@ -12,9 +15,9 @@ public class CreditService {
         this.credit=null;
     }
 
-    public CreditService(int passenger_count,int driver_count) {
-        if(passenger_count > 0 && driver_count > 0 ){
-            this.credit=new int[driver_count];
+    public CreditService(int driverCount) {
+        if(driverCount > 0 ){
+            this.credit=new int[driverCount];
         }else{
             this.credit = null;
         }

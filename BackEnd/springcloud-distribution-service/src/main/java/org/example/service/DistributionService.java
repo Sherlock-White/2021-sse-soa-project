@@ -12,69 +12,68 @@ import java.util.Arrays;
  */
 @Service
 public class DistributionService {
-    private final int count;
-    private GraphMatch graphMatch;
+    private final GraphMatch graphMatch;
+    private final int passengerCount;
+    private final int driverCount;
 
     public DistributionService(){
-        count = 0;
+        this.graphMatch = null;
+        this.passengerCount = 0;
+        this.driverCount = 0;
     }
-    public DistributionService(int count){
-        this.count = count;
-        init();
-    }
-    /**
-     * 初始化数据
-     */
-    private void init(){
-        graphMatch = new GraphMatch();
-        int[][] edges = new int[count][count];
-        edges[0][2] = 1;
-        edges[1][0] = 1;
-        edges[1][1] = 1;
-        edges[2][2] = 1;
-        edges[2][1] = 1;
-        edges[2][3] = 1;
-        edges[3][1] = 1;
-        edges[3][2] = 1;
-        edges[4][2] = 1;
-        edges[4][4] = 1;
-        edges[4][3] = 1;
+    public DistributionService(int passengerCount,int driverCount){
+        this.graphMatch = new GraphMatch();
+        this.passengerCount = passengerCount;
+        this.driverCount = driverCount;
+
+        String[][] passenger ={
+                {"1","31.283036","121.501564"},
+                {"2","31.249582","121.455752"}};
+        String[][] driver ={
+                {"1","31.286428","121.212090"},
+                {"2","31.194202","121.320655"}};
+
+        //获取距离信息
+        DistanceService distanceService = new DistanceService(2,2,passenger,driver);
+        distanceService.calculateDistance();
+        int[][] edges = distanceService.getResult();
+
         graphMatch.setEdges(edges);
-        graphMatch.setOnPath(new boolean[count]);
-        int[] pathAry = new int[count];
+        graphMatch.setOnPath(new boolean[this.driverCount]);
+        int[] pathAry = new int[this.driverCount];
         Arrays.fill(pathAry, -1);
         graphMatch.setPath(pathAry);
     }
+
     /*
-     * @description: a method to expose entry to external world
+     * @description: 等初始化图完毕之后，由外部调用接口进行分配
      * @author: LuBixing
      * @date: 2021/12/21 14:14
      */
     public void distribute(){
-        for(int i = 0 ; i < count ; i ++) {
+        for(int i = 0 ; i < this.passengerCount; i ++) {
             search(graphMatch, i);
             clearOnPathSign(graphMatch);
         }
     }
 
-    /**
-     * 输出日志
+    /*
+     * @description:由外部调用获取匹配结果
+     * @author: LuBixing
+     * @date: 2021/12/21 22:20
+     * @param: null
+     * @return: 配对结果
      */
-    public int[] getValue(){
+    public int[] getResult(){
         return graphMatch.getPath();
-        /*
-        for(int i = 0 ; i < graphMatch.getPath().length ; i ++){
-            System.out.println(graphMatch.getPath()[i] + "<--->" + i);
-        }*/
     }
 
     /**
      * 清空当前路径上遍历过的Y点
      */
     private void clearOnPathSign(GraphMatch graphMatch){
-        graphMatch.setOnPath(new boolean[count]);
+        graphMatch.setOnPath(new boolean[this.driverCount]);
     }
-
     /**
      * 对于某左侧节点X的查找
      * @param graphMatch 图的对象
@@ -82,7 +81,7 @@ public class DistributionService {
      * @return 是否成功
      */
     private boolean search(GraphMatch graphMatch, Integer xIndex){
-        for(int yIndex = 0 ; yIndex < count ; yIndex ++){
+        for(int yIndex = 0 ; yIndex < this.driverCount ; yIndex ++){
             //没有连线
             if(graphMatch.getEdges()[xIndex][yIndex] != 1 ){
                 continue;

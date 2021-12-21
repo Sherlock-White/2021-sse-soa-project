@@ -1,12 +1,8 @@
 package org.example.service;
-//
-//import com.alibaba.fastjson.JSONArray;
-//import com.alibaba.fastjson.JSONObject;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -14,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Objects;
 
 /*
  * @description: service to aggregate some information(distance)
@@ -23,31 +20,40 @@ import java.net.URLConnection;
 @Service
 public class DistanceService {
     private final int[][] value;
+    private final String[][] passenger;
+    private final String[][] driver;
 
     public DistanceService(){
         this.value = null;
+        this.passenger = null;
+        this.driver = null;
     }
 
-    public DistanceService(int passenger_count,int driver_count) {
-        if(passenger_count > 0 && driver_count > 0 ){
-            this.value = new int[driver_count][passenger_count];
+    public DistanceService(int passengerCount,int driverCount,String[][] passenger, String[][] driver) {
+        if(passengerCount > 0 && driverCount > 0 ){
+            this.value = new int[passengerCount][driverCount];
+            this.passenger = passenger;
+            this.driver = driver;
         }else{
             this.value = null;
+            this.passenger = null;
+            this.driver = null;
         }
     }
 
-    public int[][] getValue(){
+    public int[][] getResult(){
         return value;
     }
+
     /*
      * @description:a method to get the distance between passengers and drivers
      * @author: zsy
      * @date: 2021/12/21 10:12
      * @param: String[][] passenger,String[][] driver
      */
-    public void distribute(String[][] passenger, String[][] driver){
-        for(int i=0;i<driver.length;i++) {
-            for (int j=0;j<passenger.length;j++){
+    public void calculateDistance(){
+        for(int i = 0; i< Objects.requireNonNull(passenger).length; i++) {
+            for (int j = 0; j< Objects.requireNonNull(driver).length; j++){
                 //格式：经度,纬度
                 //注意：高德最多取小数点后六位
                 String origin = driver[i][2]+","+driver[i][1];
@@ -59,7 +65,7 @@ public class DistanceService {
         }
     }
 
-    public static String loadJson (String url) {
+    private static String loadJson (String url) {
         StringBuilder json = new StringBuilder();
         try {
             //下面那条URL请求返回结果无中文，可不转换编码格式
@@ -79,7 +85,7 @@ public class DistanceService {
     /*
      * 高德地图WebAPI : 行驶距离测量
      */
-    public static int getDistance(String origins,String destination) {
+    private static int getDistance(String origins,String destination) {
         int type = 1;
         String url = "http://restapi.amap.com/v3/distance?"
                 + "origins="+origins
