@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags="时序数据库接口")
 @RestController
-@RequestMapping(value="/influxDB")
+@RequestMapping("/influxDB")
 public class Controller {
 
     @ApiOperation("查询数据库")
     @ApiImplicitParam(name = "params", value = "查询参数",dataType = "String")
     @GetMapping(value="/getData")
-    public String test(@RequestParam String params){
-        return "服务1时序数据库"+params;
+    public String test(){
+        return "服务1时序数据库";
     }
 
 }
