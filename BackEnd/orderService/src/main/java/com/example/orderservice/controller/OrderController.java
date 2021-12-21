@@ -1,5 +1,6 @@
 package com.example.orderservice.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.orderservice.entity.Order;
@@ -7,20 +8,21 @@ import com.example.orderservice.entity.Statement;
 import com.example.orderservice.mapper.OrderMapper;
 import com.example.orderservice.mapper.StatementMapper;
 import com.example.orderservice.request.*;
+import com.example.orderservice.result.*;
 import com.example.orderservice.feignClient.*;
+import com.sun.net.httpserver.Authenticator;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.Month;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.zaxxer.hikari.util.ClockSource.toMillis;
@@ -36,6 +38,7 @@ public class OrderController {
     @Autowired
     private UserClient userClient;
 
+    @ApiOperation(value = "获取乘客进行中的订单")
     @GetMapping("/v1/passengers/{passenger_id}/orders/current")
     public TaxiOrder getCurrentOrderForPassenger(@PathVariable String passenger_id){
         TaxiOrder taxiOrder=new TaxiOrder();
@@ -48,8 +51,12 @@ public class OrderController {
             taxiOrder.setDriver_id(order.getDriver_id());
             taxiOrder.setDeparture(order.getDeparture());
             taxiOrder.setDestination(order.getDestination());
-            taxiOrder.setPassenger_phone(userClient.findPassengerById(passenger_id).get("phone"));
-            taxiOrder.setDriver_phone(userClient.findDriverById(order.getDriver_id()).get("phone"));
+            Result result= userClient.findPassengerById(order.getPassenger_id());
+            Map<String,String> resultMap=(Map<String, String>) result.getObject();
+            taxiOrder.setPassenger_phone(resultMap.get("phone"));
+            result=userClient.findDriverById(order.getDriver_id());
+            resultMap=(Map<String, String>) result.getObject();
+            taxiOrder.setDriver_phone(resultMap.get("phone"));
             //查询流水
             QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
             statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
@@ -83,8 +90,13 @@ public class OrderController {
             taxiOrder.setDeparture(order.getDeparture());
             taxiOrder.setDestination(order.getDestination());
             taxiOrder.setPrice(order.getPrice());
-            taxiOrder.setPassenger_phone(userClient.findPassengerById(passenger_id).get("phone"));
-            taxiOrder.setDriver_phone(userClient.findDriverById(order.getDriver_id()).get("phone"));
+            Result result= userClient.findPassengerById(order.getPassenger_id());
+            Map<String,String> resultMap=(Map<String, String>) result.getObject();
+            taxiOrder.setPassenger_phone(resultMap.get("phone"));
+            result=userClient.findDriverById(order.getDriver_id());
+            resultMap=(Map<String, String>) result.getObject();
+            taxiOrder.setDriver_phone(resultMap.get("phone"));
+            //查询流水
             QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
             statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
             List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
@@ -124,8 +136,13 @@ public class OrderController {
             taxiOrder.setDeparture(order.getDeparture());
             taxiOrder.setDestination(order.getDestination());
             taxiOrder.setPrice(order.getPrice());
-            taxiOrder.setPassenger_phone(userClient.findPassengerById(order.getPassenger_id()).get("phone"));
-            taxiOrder.setDriver_phone(userClient.findDriverById(order.getDriver_id()).get("phone"));
+            Result result= userClient.findPassengerById(order.getPassenger_id());
+            Map<String,String> resultMap=(Map<String, String>) result.getObject();
+            taxiOrder.setPassenger_phone(resultMap.get("phone"));
+            result=userClient.findDriverById(order.getDriver_id());
+            resultMap=(Map<String, String>) result.getObject();
+            taxiOrder.setDriver_phone(resultMap.get("phone"));
+            //查询流水
             QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
             statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
             List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
@@ -162,8 +179,13 @@ public class OrderController {
         taxiOrder.setDeparture(order.getDeparture());
         taxiOrder.setDestination(order.getDestination());
         taxiOrder.setPrice(order.getPrice());
-        taxiOrder.setPassenger_phone(userClient.findPassengerById(order.getPassenger_id()).get("phone"));
-        taxiOrder.setDriver_phone(userClient.findDriverById(order.getDriver_id()).get("phone"));
+        Result result= userClient.findPassengerById(order.getPassenger_id());
+        Map<String,String> resultMap=(Map<String, String>) result.getObject();
+        taxiOrder.setPassenger_phone(resultMap.get("phone"));
+        result=userClient.findDriverById(order.getDriver_id());
+        resultMap=(Map<String, String>) result.getObject();
+        taxiOrder.setDriver_phone(resultMap.get("phone"));
+        //查询流水
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
         statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);

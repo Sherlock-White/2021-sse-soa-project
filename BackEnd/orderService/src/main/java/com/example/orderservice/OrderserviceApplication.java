@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients("com.example.orderservice.feignClient")
 @MapperScan("com.example.orderservice.mapper")
 @ComponentScan("com.example")
 public class OrderserviceApplication {
