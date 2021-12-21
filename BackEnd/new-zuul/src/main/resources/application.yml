@@ -26,6 +26,10 @@ zuul:
     route3:
       path: /userservice/**
       serviceId: userservice
+    route4:
+      path: /distribution-service/**
+      serviceId: distribution-service
+      url: http://139.224.251.185:8084
         #需要忽略的头部信息，不在传播到其他服务
   #需要忽略的头部信息，不在传播到其他服务
   sensitive-headers: Access-Control-Allow-Origin
