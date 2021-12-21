@@ -6,15 +6,14 @@ package org.example.service;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Vector;
 
 /*
  * @description: service to aggregate some information(distance)
@@ -23,11 +22,28 @@ import java.util.Vector;
  */
 @Service
 public class DistanceService {
-    //邻接矩阵
-    public int[][] value=new int[30][30];
-    private Vector<String>[] pair;
+    private final int[][] value;
 
-    public void distribute(String[][] passenger,String[][] driver){
+    public DistanceService(){
+        this.value = null;
+    }
+    public DistanceService(int passenger_count,int driver_count) {
+        if(passenger_count > 0 && driver_count > 0 ){
+            this.value = new int[driver_count][passenger_count];
+        }else{
+            this.value = null;
+        }
+    }
+    public int[][] getValue(){
+        return value;
+    }
+    /*
+     * @description:a method to get the distance between passengers and drivers
+     * @author: zsy
+     * @date: 2021/12/21 10:12
+     * @param: String[][] passenger,String[][] driver
+     */
+    public void distribute(String[][] passenger, String[][] driver){
         for(int i=0;i<driver.length;i++) {
             for (int j=0;j<passenger.length;j++){
                 //格式：经度,纬度
@@ -35,15 +51,8 @@ public class DistanceService {
                 String origin = driver[i][2]+","+driver[i][1];
                 String destination = passenger[j][2]+","+passenger[j][1];
                 int distance = getDistance(origin, destination);
+                assert this.value != null;
                 this.value[i][j]=distance;
-            }
-        }
-
-        //输出邻接矩阵
-        for(int i=0;i<driver.length;i++) {
-            System.out.print("\n");
-            for (int j=0;j<passenger.length;j++){
-                System.out.print(value[i][j]+" ");
             }
         }
     }
@@ -60,8 +69,6 @@ public class DistanceService {
                 json.append(inputLine);
             }
             in.close();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -89,7 +96,6 @@ public class DistanceService {
         String distance_str = distanceObject.getString("distance");
 
         //把距离从String变为int
-        int distance_int = Integer.parseInt(distance_str);
-        return distance_int;
+        return Integer.parseInt(distance_str);
     }
 }

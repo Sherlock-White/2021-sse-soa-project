@@ -13,7 +13,6 @@ public class DistanceController {
     @RequestMapping(value="/distance",method= RequestMethod.GET)
     @ApiOperation("获取距离")
     public int[][] test(){
-
         //司机和乘客记录均为“id”,"纬度","经度"
         String[][] passenger={
                 {"1","31.283036","121.501564"},
@@ -22,9 +21,8 @@ public class DistanceController {
                 {"1","31.286428","121.212090"},
                 {"2","31.194202","121.320655"}};
 
-        DistanceService ds=new DistanceService();
+        DistanceService ds=new DistanceService(2,2);
         ds.distribute(passenger,driver);
-
-        return ds.value;
+        return ds.getValue();
     }
 }
