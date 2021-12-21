@@ -1,31 +1,32 @@
 package org.example.service;
 
 import org.example.model.GraphMatch;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 
 /**
  * @description:
  * @author: LuBixing
  * @date: 2021/12/20 21:14
  */
+@Service
 public class DistributionService {
-    static int count;
+    private final int count;
+    private GraphMatch graphMatch;
 
-    /*public static void main(String[] args) {
-        GraphMatch graphMatch = init();
-        for(int i = 0 ; i < count ; i ++) {
-            search(graphMatch, i);
-            clearOnPathSign(graphMatch);
-        }
-        log(graphMatch);
-    }*/
-
+    public DistributionService(){
+        count = 0;
+    }
+    public DistributionService(int count){
+        this.count = count;
+        init();
+    }
     /**
      * 初始化数据
-     * @return
      */
-
-    private static GraphMatch init(){
-        GraphMatch graphMatch = new GraphMatch();
+    private void init(){
+        graphMatch = new GraphMatch();
         int[][] edges = new int[count][count];
         edges[0][2] = 1;
         edges[1][0] = 1;
@@ -41,19 +42,34 @@ public class DistributionService {
         graphMatch.setEdges(edges);
         graphMatch.setOnPath(new boolean[count]);
         int[] pathAry = new int[count];
-        for(int i = 0 ; i < pathAry.length ; i++){
-            pathAry[i] = -1;
-        }
+        Arrays.fill(pathAry, -1);
         graphMatch.setPath(pathAry);
-        return graphMatch;
+    }
+    /*
+     * @description: a method to expose entry to external world
+     * @author: LuBixing
+     * @date: 2021/12/21 14:14
+     */
+    public void distribute(){
+        for(int i = 0 ; i < count ; i ++) {
+            search(graphMatch, i);
+            clearOnPathSign(graphMatch);
+        }
     }
 
+    /**
+     * 输出日志
+     */
+    public void getValue(){
+        for(int i = 0 ; i < graphMatch.getPath().length ; i ++){
+            System.out.println(graphMatch.getPath()[i] + "<--->" + i);
+        }
+    }
 
     /**
      * 清空当前路径上遍历过的Y点
-     * @param graphMatch
      */
-    private static void clearOnPathSign(GraphMatch graphMatch){
+    private void clearOnPathSign(GraphMatch graphMatch){
         graphMatch.setOnPath(new boolean[count]);
     }
 
@@ -63,7 +79,7 @@ public class DistributionService {
      * @param xIndex X的索引位置
      * @return 是否成功
      */
-    private static boolean search(GraphMatch graphMatch , Integer xIndex){
+    private boolean search(GraphMatch graphMatch, Integer xIndex){
         for(int yIndex = 0 ; yIndex < count ; yIndex ++){
             //没有连线
             if(graphMatch.getEdges()[xIndex][yIndex] != 1 ){
@@ -84,15 +100,5 @@ public class DistributionService {
             }
         }
         return false;
-    }
-
-    /**
-     * 输出日志
-     * @param graphMatch
-     */
-    private static void log(GraphMatch graphMatch){
-        for(int i = 0 ; i < graphMatch.getPath().length ; i ++){
-            System.out.println(graphMatch.getPath()[i] + "<--->" + i);
-        }
     }
 }
