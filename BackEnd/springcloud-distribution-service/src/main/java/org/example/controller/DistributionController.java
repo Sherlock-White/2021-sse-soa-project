@@ -18,9 +18,9 @@ import org.example.service.DistributionService;
 public class DistributionController {
     @RequestMapping(value="/distribution",method = RequestMethod.GET)
     @ApiOperation("获取派单信息")
-    public void test(){
+    public int[] test(){
         DistributionService distributionService = new DistributionService(5);
         distributionService.distribute();
-        distributionService.getValue();
+        return distributionService.getValue();
     }
 }

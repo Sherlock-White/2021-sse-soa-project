@@ -60,10 +60,12 @@ public class DistributionService {
     /**
      * 输出日志
      */
-    public void getValue(){
+    public int[] getValue(){
+        return graphMatch.getPath();
+        /*
         for(int i = 0 ; i < graphMatch.getPath().length ; i ++){
             System.out.println(graphMatch.getPath()[i] + "<--->" + i);
-        }
+        }*/
     }
 
     /**
