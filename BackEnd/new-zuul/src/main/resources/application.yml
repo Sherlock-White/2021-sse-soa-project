@@ -26,6 +26,7 @@ zuul:
     route3:
       path: /userservice/**
       serviceId: userservice
+      url: http://47.103.9.250:9000
     route4:
       path: /distribution-service/**
       serviceId: distribution-service
