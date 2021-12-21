@@ -6,6 +6,7 @@ package org.example.service;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -23,13 +24,10 @@ import java.net.URLConnection;
 public class DistanceService {
     private final int[][] value;
     private final int[] credit;
-//
-//    @Autowired
-//    private UserClient userClient;
-
 
     public DistanceService(){
         this.value = null;
+        this.credit=null;
     }
 
     public DistanceService(int passenger_count,int driver_count) {

@@ -1,7 +1,8 @@
-package org.example.service.controller;
+package org.example.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.example.service.DistributionService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DistributionController {
     @RequestMapping(value="/distribution",method = RequestMethod.GET)
     @ApiOperation("获取派单信息")
-    public int[][] test(){
+
+
+    public void test(){
         //司机和乘客记录均为“id”,"纬度","经度"
         String[][] passenger={
                 {"1","31.283036","121.501564"},
@@ -22,12 +25,11 @@ public class DistributionController {
                 {"1","31.286428","121.212090"},
                 {"2","31.194202","121.320655"}};
 
-        DistanceService ds=new DistanceService(2,2);
-        ds.distribute(passenger,driver);
+
 
         DistributionService distributionService = new DistributionService(5);
         distributionService.distribute();
-        return distributionService.getValue();
+//        return distributionService.getValue();
 //        return ds.getValue();
     }
 }

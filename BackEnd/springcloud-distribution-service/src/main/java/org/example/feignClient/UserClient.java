@@ -1,19 +1,16 @@
-//package com.example.feignClient;
-//
-//
-//import com.example.orderservice.result.Result;
-//import org.springframework.cloud.openfeign.FeignClient;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//
-//import java.util.Map;
-////url待定
-//@FeignClient(value="userservice",url="http://47.103.9.250:9000")
-//public interface UserClient {
-//
-//    @PostMapping("/api/v1/userservice/returndriverchage")
-//    Result findDriverById(@RequestParam("name") String name);
-//
-//}
+package org.example.feignClient;
+
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.xml.transform.Result;
+import java.util.Map;
+//url待定
+@FeignClient(value="userservice",url="http://47.103.9.250:9000")
+public interface UserClient {
+
+    @PostMapping("/api/v1/userservice/returndriverchage")
+    Result findDriverById(@RequestParam("name") String name);
+
+}
