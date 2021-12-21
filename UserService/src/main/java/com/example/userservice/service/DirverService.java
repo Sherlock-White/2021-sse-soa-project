@@ -20,6 +20,11 @@ public class DirverService {
     DriverDAO driverDAO;
 
 
+    public Long credit(String name){
+        Driver driver=driverDAO.findByName(name);
+        return driver.getCreditworthiness();
+    }
+
     public boolean isExist(String name){
         Integer client=findByClientnameid(name);
         Integer driver=findByDrivernameid(name);

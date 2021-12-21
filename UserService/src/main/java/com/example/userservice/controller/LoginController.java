@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Api("用户管理")
 @RestController
@@ -369,5 +371,17 @@ public class LoginController {
         }
         return ResultFactory.buildResult(ResultCode.FAIL, "登录失败", 0);  //1代表client
     }
+    @ApiOperation("信用度")
+    @PostMapping("creditworthiness")
+    public List<Long> creditworthiness(@RequestParam(value = "paramlist")List<String> paramlist){
+        List<Long> list= new ArrayList<Long>();
+        for (String temp:paramlist){
+            Long l=driverService.credit(temp);
+            list.add(l);
+            System.out.println(l);
+        }
 
+        return list;
+
+    }
 }
