@@ -74,6 +74,7 @@
             <version>2.7.0</version>
         </dependency>
 
+        <!--Feign的依赖-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
