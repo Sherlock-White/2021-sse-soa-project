@@ -22,19 +22,31 @@ import java.net.URLConnection;
 @Service
 public class DistanceService {
     private final int[][] value;
+    private final int[] credit;
+//
+//    @Autowired
+//    private UserClient userClient;
+
 
     public DistanceService(){
         this.value = null;
     }
+
     public DistanceService(int passenger_count,int driver_count) {
         if(passenger_count > 0 && driver_count > 0 ){
             this.value = new int[driver_count][passenger_count];
+            this.credit=new int[driver_count];
         }else{
             this.value = null;
+            this.credit = null;
         }
     }
+
     public int[][] getValue(){
         return value;
+    }
+    public int[] getCredit(){
+        return credit;
     }
     /*
      * @description:a method to get the distance between passengers and drivers
