@@ -8,21 +8,22 @@ import org.example.model.GraphMatch;
  * @date: 2021/12/20 21:14
  */
 public class DistributionService {
-    static int count = 5;
+    static int count;
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         GraphMatch graphMatch = init();
         for(int i = 0 ; i < count ; i ++) {
             search(graphMatch, i);
             clearOnPathSign(graphMatch);
         }
         log(graphMatch);
-    }
+    }*/
 
     /**
      * 初始化数据
      * @return
      */
+
     private static GraphMatch init(){
         GraphMatch graphMatch = new GraphMatch();
         int[][] edges = new int[count][count];
@@ -56,7 +57,6 @@ public class DistributionService {
         graphMatch.setOnPath(new boolean[count]);
     }
 
-
     /**
      * 对于某左侧节点X的查找
      * @param graphMatch 图的对象
@@ -64,7 +64,6 @@ public class DistributionService {
      * @return 是否成功
      */
     private static boolean search(GraphMatch graphMatch , Integer xIndex){
-
         for(int yIndex = 0 ; yIndex < count ; yIndex ++){
             //没有连线
             if(graphMatch.getEdges()[xIndex][yIndex] != 1 ){
@@ -86,7 +85,6 @@ public class DistributionService {
         }
         return false;
     }
-
 
     /**
      * 输出日志
