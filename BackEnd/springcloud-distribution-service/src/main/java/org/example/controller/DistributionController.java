@@ -17,7 +17,6 @@ public class DistributionController {
     public int[] test(){
         DistributionService distributionService = new DistributionService(2,2);
         distributionService.distribute();
-        int[] pair = distributionService.getResult();
-        return pair;
+        return distributionService.getResult();
     }
 }
