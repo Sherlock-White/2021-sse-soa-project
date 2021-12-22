@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-    private String o_id;
+    private String order_id;
     private int state;
     private long time = System.currentTimeMillis();
 
-    public Order(String o_id, int state){
-        this.o_id=o_id;
+    public Order(String order_id, int state){
+        this.order_id=order_id;
         this.state=state;
     }
 }

@@ -17,14 +17,14 @@ public class OrderTakingController {
 
     @ApiOperation(value = "司机接到乘客")
     @PostMapping("v1/pickingup")
-    public void pickUp(@RequestParam(value = "o_id") String o_id){
-        rabbitTemplate.convertAndSend("itcast.fanout","",new Order(o_id,2));
+    public void pickUp(@RequestParam(value = "order_id") String order_id){
+        rabbitTemplate.convertAndSend("orderTaking","",new Order(order_id,4));
     }
 
     @ApiOperation(value = "订单完成")
     @PostMapping("v1/arrival")
-    public void arrival(@RequestParam(value = "o_id") String o_id){
-        rabbitTemplate.convertAndSend("itcast.fanout","",new Order(o_id,1));
+    public void arrival(@RequestParam(value = "order_id") String order_id){
+        rabbitTemplate.convertAndSend("orderTaking","",new Order(order_id,5));
     }
 
 }
