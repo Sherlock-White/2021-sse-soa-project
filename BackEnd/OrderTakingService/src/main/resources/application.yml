@@ -1,0 +1,19 @@
+server:
+  port: 9007
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://139.224.251.185:8761/eureka/
+
+spring:
+  application:
+    name: ordertakingservice
+  rabbitmq:
+    host: 47.102.204.30 # rabbitMQ的ip地址
+    port: 5672 # 端口
+    username: itcast
+    password: 123321
+    virtual-host: /
+
+
