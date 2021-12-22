@@ -17,7 +17,6 @@ public class DistributionService {
     private final int driverCount;
     private final String[][] passenger;
     private final String[][] driver;
-    private int[][] edges;
 
     public DistributionService(){
         this.graphMatch = null;
@@ -66,8 +65,13 @@ public class DistributionService {
     private int[][] calculateEdges(){
         int[][] distance = getDistance();
         int[] credit = getCredit();
-        /////////////////////////////////////计算放入edges
-        return null;
+        int[][] edges = new int[this.passengerCount][this.driverCount];
+        for(int i=0;i<this.passengerCount;i++){
+            for(int j=0;j<this.driverCount;j++){
+                edges[i][j] = distance[i][j] + credit[j];
+            }
+        }
+        return edges;
     }
 
     /*
@@ -76,6 +80,7 @@ public class DistributionService {
      * @date: 2021/12/21 14:14
      */
     public int[] distribute(){
+        int[][] edges = calculateEdges();
         assert graphMatch != null;
         graphMatch.setEdges(edges);
         graphMatch.setOnPath(new boolean[this.driverCount]);
