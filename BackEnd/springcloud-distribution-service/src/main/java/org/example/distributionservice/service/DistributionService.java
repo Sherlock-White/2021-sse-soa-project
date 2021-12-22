@@ -50,7 +50,13 @@ public class DistributionService {
      */
     private int[] getCredit(){
         CreditService creditService = new CreditService(this.driverCount);
-        return creditService.getCredit();
+        String[] driverList = new String[this.driverCount];
+        for(int index=0;index<this.driverCount;index++){
+            assert driver != null;
+            String name = driver[index][0];
+            driverList[index] = name;
+        }
+        return creditService.getCredit(driverList);
     }
     /*
      * @description:计算二分图的权值（目前根据距离和信用度）

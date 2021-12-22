@@ -1,6 +1,11 @@
 package org.example.distributionservice.service;
 
+import org.example.distributionservice.feignClient.CreditClient;
+import org.example.distributionservice.result.Result;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @description:
@@ -9,21 +14,29 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CreditService {
-    private final int[] credit;
-
+    private final int[] creditList;
+    CreditClient creditClient;
     public CreditService(){
-        this.credit=null;
+        this.creditList=null;
     }
 
     public CreditService(int driverCount) {
         if(driverCount > 0 ){
-            this.credit=new int[driverCount];
+            this.creditList=new int[driverCount];
         }else{
-            this.credit = null;
+            this.creditList = null;
         }
     }
 
-    public int[] getCredit(){
-        return credit;
+    public int[] getCredit(String[] driverList){
+        for (int index = 0; index< Objects.requireNonNull(driverList).length; index++) {
+            String name = driverList[index];
+            Result result = (Result) creditClient.findDriverById(name);
+            Map<String, String> resultMap = (Map<String, String>) result.getObject();
+            int credit = Integer.parseInt(resultMap.get("creditworthiness"));
+            assert creditList != null;
+            creditList[index] = credit;
+        }
+        return creditList;
     }
 }
