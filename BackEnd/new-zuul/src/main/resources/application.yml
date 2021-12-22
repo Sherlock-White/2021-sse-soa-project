@@ -18,24 +18,33 @@ eureka:
 zuul:
   routes:
     route1:
-      path: /test01/**
-      serviceId: eurekaservice1
-    route2:
-      path: /test02/**
-      serviceId: eurekaservice2
-    route3:
-      path: /userservice/**
+      path: /user-service/**
       serviceId: userservice
       url: http://47.103.9.250:9000
-    route4:
+    route2:
+      path: /taxi-service/**
+      serviceId: taxiservice
+      url: http://106.15.3.13:9001
+    route3:
       path: /distribution-service/**
       serviceId: distribution-service
       url: http://106.15.3.13:9002
+    route4:
+      path: /order-service/**
+      serviceId: orderservice
+      url: http://106.15.3.13:9003
     route5:
       path: /position-service/**
       serviceId: position-service
       url: http://139.224.251.185:9004
-        #需要忽略的头部信息，不在传播到其他服务
+    route6:
+      path: /map-service/**
+      serviceId: map
+      url: http://47.102.204.30:9005
+    route8:
+      path: /ordertaking-service/**
+      serviceId: ordertakingservice
+      url: http://106.15.3.13:9007
   #需要忽略的头部信息，不在传播到其他服务
   sensitive-headers: Access-Control-Allow-Origin
   ignored-headers: Access-Control-Allow-Origin,H-APP-Id,Token,APPToken
