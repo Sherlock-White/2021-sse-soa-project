@@ -15,36 +15,53 @@ public class DistributionService {
     private final GraphMatch graphMatch;
     private final int passengerCount;
     private final int driverCount;
+    private final String[][] passenger;
+    private final String[][] driver;
+    private int[][] edges;
 
     public DistributionService(){
         this.graphMatch = null;
         this.passengerCount = 0;
         this.driverCount = 0;
+        this.passenger = null;
+        this.driver = null;
     }
-    public DistributionService(int passengerCount,int driverCount){
+    public DistributionService(int passengerCount,int driverCount,String[][] passenger,String[][] driver){
         this.graphMatch = new GraphMatch();
         this.passengerCount = passengerCount;
         this.driverCount = driverCount;
-        /////////////////////////////////////////////////////////////////////
-        String[][] passenger ={
-                {"1","31.283036","121.501564"},
-                {"2","31.249582","121.455752"}};
-        String[][] driver ={
-                {"1","31.286428","121.212090"},
-                {"2","31.194202","121.320655"}};
+        this.passenger = passenger;
+        this.driver = driver;
+    }
+    /*
+     * @description: 实例化距离微服务获取距离关系
+     * @author: LuBixing
+     * @date: 2021/12/23 2:40
+     */
+    private int[][] getDistance(){
+        DistanceService distanceService = new DistanceService(this.passengerCount,this.driverCount,this.passenger,this.driver);
+        return distanceService.calculateDistance();
+    }
 
-        //获取距离信息/////////////////////////////////////////////////////////
-        DistanceService distanceService = new DistanceService(2,2,passenger,driver);
-        distanceService.calculateDistance();
-        //获取信用度信息
-        CreditService creditService = new CreditService();
-
-        int[][] edges = distanceService.getResult();
-        graphMatch.setEdges(edges);
-        graphMatch.setOnPath(new boolean[this.driverCount]);
-        int[] pathAry = new int[this.driverCount];
-        Arrays.fill(pathAry, -1);
-        graphMatch.setPath(pathAry);
+    /*
+     * @description:实例化信用度微服务获取司机信用度列表
+     * @author: LuBixing
+     * @date: 2021/12/23 2:43
+     */
+    private int[] getCredit(){
+        CreditService creditService = new CreditService(this.driverCount);
+        return creditService.getCredit();
+    }
+    /*
+     * @description:计算二分图的权值（目前根据距离和信用度）
+     * @author: LuBixing
+     * @date: 2021/12/23 2:45
+     */
+    private int[][] calculateEdges(){
+        int[][] distance = getDistance();
+        int[] credit = getCredit();
+        /////////////////////////////////////计算放入edges
+        return null;
     }
 
     /*
@@ -52,21 +69,18 @@ public class DistributionService {
      * @author: LuBixing
      * @date: 2021/12/21 14:14
      */
-    public void distribute(){
+    public int[] distribute(){
+        assert graphMatch != null;
+        graphMatch.setEdges(edges);
+        graphMatch.setOnPath(new boolean[this.driverCount]);
+        int[] pathAry = new int[this.driverCount];
+        Arrays.fill(pathAry, -1);
+        graphMatch.setPath(pathAry);
+
         for(int i = 0 ; i < this.passengerCount; i ++) {
             search(graphMatch, i);
             clearOnPathSign(graphMatch);
         }
-    }
-
-    /*
-     * @description:由外部调用获取匹配结果
-     * @author: LuBixing
-     * @date: 2021/12/21 22:20
-     * @param: null
-     * @return: 配对结果
-     */
-    public int[] getResult(){
         return graphMatch.getPath();
     }
 

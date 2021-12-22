@@ -41,17 +41,13 @@ public class DistanceService {
         }
     }
 
-    public int[][] getResult(){
-        return value;
-    }
-
     /*
      * @description:a method to get the distance between passengers and drivers
      * @author: zsy
      * @date: 2021/12/21 10:12
      * @param: String[][] passenger,String[][] driver
      */
-    public void calculateDistance(){
+    public int[][] calculateDistance(){
         for(int i = 0; i< Objects.requireNonNull(passenger).length; i++) {
             for (int j = 0; j< Objects.requireNonNull(driver).length; j++){
                 //格式：经度,纬度
@@ -63,6 +59,7 @@ public class DistanceService {
                 this.value[i][j]=distance;
             }
         }
+        return this.value;
     }
 
     private static String loadJson (String url) {

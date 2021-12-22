@@ -26,6 +26,4 @@ public class CreditService {
     public int[] getCredit(){
         return credit;
     }
-
-
 }
