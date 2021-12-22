@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class DistributionController {
     @RequestMapping(value="/distribution",method = RequestMethod.GET)
     @ApiOperation("获取派单信息")
-    public int[] test(){
-        DistributionService distributionService = new DistributionService(2,2);
-        distributionService.distribute();
-        return distributionService.getResult();
+    public void test(){
+        //DistributionService distributionService = new DistributionService(2,2);
+        //distributionService.distribute();
+        //return distributionService.getResult();
     }
 }

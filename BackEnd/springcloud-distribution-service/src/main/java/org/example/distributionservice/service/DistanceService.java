@@ -96,7 +96,7 @@ public class DistanceService {
         JSONObject jsonobject = JSONObject.fromObject(loadJson(url));
 
         //输出返回结果
-        System.out.println(jsonobject.toString());
+//        System.out.println(jsonobject.toString());
 
         //取距离
         JSONArray resultsArray = jsonobject.getJSONArray("results");
