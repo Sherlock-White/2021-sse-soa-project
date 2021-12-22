@@ -27,13 +27,13 @@ public class Listener {
                     type = ExchangeTypes.DIRECT
             )
             ))
+
     public void newDistributionListen(String msg){
             System.out.println("接到的消息是:"+msg);
             DistributionService distributionService = new DistributionService(2,2);
             distributionService.distribute();
             int[] result =distributionService.getResult();
             System.out.println("匹配信息是:"+result[0]+","+result[1]);
-
 
             String routingKey="";
             String message ="test_message";
