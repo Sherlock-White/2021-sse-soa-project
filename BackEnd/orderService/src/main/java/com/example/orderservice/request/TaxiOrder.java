@@ -14,7 +14,10 @@ public class TaxiOrder {
     private Double price;
     private String departure;
     private String destination;
-
+    private Double from_lng;
+    private Double from_lat;
+    private Double to_lng;
+    private Double to_lat;
 
     public String getOrder_id() {
         return order_id;
@@ -102,5 +105,37 @@ public class TaxiOrder {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public Double getFrom_lng() {
+        return from_lng;
+    }
+
+    public void setFrom_lng(Double from_lng) {
+        this.from_lng = from_lng;
+    }
+
+    public Double getFrom_lat() {
+        return from_lat;
+    }
+
+    public void setFrom_lat(Double from_lat) {
+        this.from_lat = from_lat;
+    }
+
+    public Double getTo_lng() {
+        return to_lng;
+    }
+
+    public void setTo_lng(Double to_lng) {
+        this.to_lng = to_lng;
+    }
+
+    public Double getTo_lat() {
+        return to_lat;
+    }
+
+    public void setTo_lat(Double to_lat) {
+        this.to_lat = to_lat;
     }
 }

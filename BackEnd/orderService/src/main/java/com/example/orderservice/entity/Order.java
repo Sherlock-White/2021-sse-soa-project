@@ -16,6 +16,12 @@ public class Order {
     private Double price;
     private String departure;
     private String destination;
+    private Double from_lng;
+    private Double from_lat;
+    private Double to_lng;
+    private Double to_lat;
+
+
 
 
 

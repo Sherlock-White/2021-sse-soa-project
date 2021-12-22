@@ -10,7 +10,7 @@ spring:
   application:
     name: Orderservice
   datasource:
-    url: jdbc:mysql://116.62.208.68:3306/didi?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+    url: jdbc:mysql://101.132.32.186:8066/didi?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456

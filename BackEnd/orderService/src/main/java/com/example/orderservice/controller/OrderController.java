@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.zaxxer.hikari.util.ClockSource.toMillis;
 
-//@Api(value = "订单微服务")
+@Api(value = "订单微服务")
 @RestController
 @CrossOrigin("*")
 @RequestMapping()
@@ -53,6 +53,10 @@ public class OrderController {
             taxiOrder.setDriver_id(order.getDriver_id());
             taxiOrder.setDeparture(order.getDeparture());
             taxiOrder.setDestination(order.getDestination());
+            taxiOrder.setFrom_lng(order.getFrom_lng());
+            taxiOrder.setFrom_lat(order.getFrom_lat());
+            taxiOrder.setTo_lng(order.getTo_lng());
+            taxiOrder.setTo_lat(order.getTo_lat());
 
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
@@ -95,6 +99,11 @@ public class OrderController {
             taxiOrder.setDeparture(order.getDeparture());
             taxiOrder.setDestination(order.getDestination());
             taxiOrder.setPrice(order.getPrice());
+            taxiOrder.setFrom_lng(order.getFrom_lng());
+            taxiOrder.setFrom_lat(order.getFrom_lat());
+            taxiOrder.setTo_lng(order.getTo_lng());
+            taxiOrder.setTo_lat(order.getTo_lat());
+
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
             taxiOrder.setPassenger_phone(resultMap.get("phone"));
@@ -142,6 +151,11 @@ public class OrderController {
             taxiOrder.setDeparture(order.getDeparture());
             taxiOrder.setDestination(order.getDestination());
             taxiOrder.setPrice(order.getPrice());
+            taxiOrder.setFrom_lng(order.getFrom_lng());
+            taxiOrder.setFrom_lat(order.getFrom_lat());
+            taxiOrder.setTo_lng(order.getTo_lng());
+            taxiOrder.setTo_lat(order.getTo_lat());
+
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
             taxiOrder.setPassenger_phone(resultMap.get("phone"));
@@ -186,6 +200,11 @@ public class OrderController {
         taxiOrder.setDeparture(order.getDeparture());
         taxiOrder.setDestination(order.getDestination());
         taxiOrder.setPrice(order.getPrice());
+        taxiOrder.setFrom_lng(order.getFrom_lng());
+        taxiOrder.setFrom_lat(order.getFrom_lat());
+        taxiOrder.setTo_lng(order.getTo_lng());
+        taxiOrder.setTo_lat(order.getTo_lat());
+        
         Result result= userClient.findPassengerById(order.getPassenger_id());
         Map<String,String> resultMap=(Map<String, String>) result.getObject();
         taxiOrder.setPassenger_phone(resultMap.get("phone"));
