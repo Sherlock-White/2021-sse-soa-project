@@ -1,5 +1,6 @@
 package com.taxi.taxiservice.controller;
 
+import com.taxi.taxiservice.entity.CancelRequest;
 import com.taxi.taxiservice.entity.TexiRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,23 +18,22 @@ public class TaxiHailingController {
 
     @ApiOperation(value = "用户打车请求")
     @PostMapping("v1/hailing")
-    public String hail(@RequestParam(value = "p_id") String p_id,
-                            @RequestParam(value = "from") String from,
-                            @RequestParam(value = "fromll") String fromll,
-                            @RequestParam(value = "to") String to,
-                            @RequestParam(value = "toll") String toll){
-        rabbitTemplate.convertAndSend("itcast.fanout","",new TexiRequest());
+    public String hail(@RequestParam(value = "passenger_id") String passenger_id,
+                       @RequestParam(value = "from") String from,
+                       @RequestParam(value = "from_lng") Double from_lng,
+                       @RequestParam(value = "from_lat") Double from_lat,
+                       @RequestParam(value = "to") String to,
+                       @RequestParam(value = "to_lng") Double to_lng,
+                       @RequestParam(value = "to_lat") Double to_lat){
+        rabbitTemplate.convertAndSend("taxiHailing","",
+                new TexiRequest(passenger_id,from,from_lng,from_lat,to,to_lng,to_lat));
         return "hi";
     }
 
     @ApiOperation(value = "用户打车请求")
     @PostMapping("v1/cancellation")
-    public String cancel(@RequestParam(value = "p_id") String p_id,
-                       @RequestParam(value = "from") String from,
-                       @RequestParam(value = "fromll") String fromll,
-                       @RequestParam(value = "to") String to,
-                       @RequestParam(value = "toll") String toll){
-        rabbitTemplate.convertAndSend("itcast.fanout","",new TexiRequest());
+    public String cancel(@RequestParam(value = "passenger_id") String passenger_id){
+        rabbitTemplate.convertAndSend("hailingCancel","",new CancelRequest(passenger_id));
         return "hi";
     }
 }

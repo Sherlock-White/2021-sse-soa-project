@@ -10,13 +10,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TexiRequest {
-    private String passengerId = "";
+    private String passenger_id = "";
     private String from = "";
-    private Long[] fromll = new Long[2];
+    private Double from_lng = 0.0d;
+    private Double from_lat = 0.0d;
     private String to = "";
-    private Long[] toll = new Long[2];
-    private Boolean cancel = false;
-    private Integer state = 1;
+    private Double to_lng = 0.0d;
+    private Double to_lat = 0.0d;
     private long time = System.currentTimeMillis();
 
+    public TexiRequest(String passenger_id,String from,
+                       Double from_lng,Double from_lat,
+                       String to,Double to_lng,Double to_lat){
+        this.passenger_id=passenger_id;
+        this.from=from;
+        this.from_lng=from_lng;
+        this.from_lat=from_lat;
+        this.to=to;
+        this.to_lng=to_lng;
+        this.to_lat=to_lat;
+    }
 }
