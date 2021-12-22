@@ -47,6 +47,9 @@
         <entry key="..\:/OnlineCarHailing/app/src/main/res/layout/signup_tab_fragment.xml" value="0.22" />
         <entry key="..\:/OnlineCarHailing/app/src/main/res/menu/adm_menu.xml" value="0.14666666666666667" />
         <entry key="..\:/OnlineCarHailing/app/src/main/res/menu/menu.xml" value="0.23385416666666667" />
+        <entry key="..\:/software/SOA/Group_Project/2021-sse-soa-project/FrontEnd/OnlineCarHailing/app/src/main/res/layout/activity_login.xml" value="0.1598731884057971" />
+        <entry key="..\:/software/SOA/Group_Project/2021-sse-soa-project/FrontEnd/OnlineCarHailing/app/src/main/res/layout/fragment_car_hailing.xml" value="0.12364130434782608" />
+        <entry key="..\:/software/SOA/Group_Project/2021-sse-soa-project/FrontEnd/OnlineCarHailing/app/src/main/res/layout/fragment_login_tab.xml" value="0.1598731884057971" />
       </map>
     </option>
   </component>
