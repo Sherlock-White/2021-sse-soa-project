@@ -1,5 +1,5 @@
 
-package org.example.rabbitMQ;
+/*package org.example.rabbitMQ;
 
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class Listener {
 
-    /*@Autowired
+    @Autowired
     private RabbitTemplate rabbitTemplate;
 
     @Transactional
@@ -36,6 +36,6 @@ public class Listener {
         String queueName="spring.test.queue";
         String message="hello";
         rabbitTemplate.convertAndSend(queueName,message);
-    }*/
+    }
 
-}
+}*/

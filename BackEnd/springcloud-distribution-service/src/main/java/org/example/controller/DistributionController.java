@@ -6,8 +6,6 @@ import org.example.service.DistributionService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.example.service.DistanceService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @Api(tags = "派单服务接口")

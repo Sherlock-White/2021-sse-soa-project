@@ -6,10 +6,10 @@ eureka:
   client:
     service-url:
       defaultZone: http://${eureka.instance.hostname}:8761/eureka/
-      # defaultZone: http://${eureka.instance.hostname}:8080/eureka/
+      #defaultZone: http://${eureka.instance.hostname}:8080/eureka/
   instance:
     hostname: 139.224.251.185
-    # hostname: localhost
+    #hostname: localhost
 
 #当前服务名称
 spring:
@@ -20,3 +20,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   application:
       name: distribution-service
+  rabbitmq:
+    host: 47.102.204.30
+    port: 5672
+    username: itcast
+    password: 123321
+    virtualHost: /

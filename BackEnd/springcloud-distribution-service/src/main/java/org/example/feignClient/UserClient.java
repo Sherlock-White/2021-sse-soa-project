@@ -1,4 +1,4 @@
-package org.example.feignClient;
+/*package org.example.feignClient;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,3 +14,4 @@ public interface UserClient {
     Result findDriverById(@RequestParam("name") String name);
 
 }
+*/

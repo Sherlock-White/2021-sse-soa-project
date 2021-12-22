@@ -83,7 +83,7 @@ public class DistributionService {
     private boolean search(GraphMatch graphMatch, Integer xIndex){
         for(int yIndex = 0 ; yIndex < this.driverCount ; yIndex ++){
             //没有连线
-            if(graphMatch.getEdges()[xIndex][yIndex] != 1 ){
+            if(graphMatch.getEdges()[xIndex][yIndex] <= 0 ){
                 continue;
             }
             //已经检测过该节点
