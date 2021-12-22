@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.distributionservice.service;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

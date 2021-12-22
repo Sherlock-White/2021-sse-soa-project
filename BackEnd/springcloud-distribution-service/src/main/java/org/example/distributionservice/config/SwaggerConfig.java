@@ -1,4 +1,4 @@
-package org.example.config;
+package org.example.distributionservice.config;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

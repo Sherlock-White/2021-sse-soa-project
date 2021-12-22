@@ -1,6 +1,6 @@
-package org.example.service;
+package org.example.distributionservice.service;
 
-import org.example.model.GraphMatch;
+import org.example.distributionservice.model.GraphMatch;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -25,7 +25,7 @@ public class DistributionService {
         this.graphMatch = new GraphMatch();
         this.passengerCount = passengerCount;
         this.driverCount = driverCount;
-
+        /////////////////////////////////////////////////////////////////////
         String[][] passenger ={
                 {"1","31.283036","121.501564"},
                 {"2","31.249582","121.455752"}};
@@ -33,11 +33,13 @@ public class DistributionService {
                 {"1","31.286428","121.212090"},
                 {"2","31.194202","121.320655"}};
 
-        //获取距离信息
+        //获取距离信息/////////////////////////////////////////////////////////
         DistanceService distanceService = new DistanceService(2,2,passenger,driver);
         distanceService.calculateDistance();
-        int[][] edges = distanceService.getResult();
+        //获取信用度信息
+        CreditService creditService = new CreditService();
 
+        int[][] edges = distanceService.getResult();
         graphMatch.setEdges(edges);
         graphMatch.setOnPath(new boolean[this.driverCount]);
         int[] pathAry = new int[this.driverCount];

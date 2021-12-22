@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.distributionservice.service;
 
 import org.springframework.stereotype.Service;
 
@@ -26,4 +26,6 @@ public class CreditService {
     public int[] getCredit(){
         return credit;
     }
+
+
 }
