@@ -11,6 +11,7 @@ import com.example.orderservice.request.*;
 import com.example.orderservice.result.*;
 import com.example.orderservice.feignClient.*;
 import com.sun.net.httpserver.Authenticator;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.zaxxer.hikari.util.ClockSource.toMillis;
 
+//@Api(value = "订单微服务")
 @RestController
 @CrossOrigin("*")
 @RequestMapping()
@@ -51,12 +53,14 @@ public class OrderController {
             taxiOrder.setDriver_id(order.getDriver_id());
             taxiOrder.setDeparture(order.getDeparture());
             taxiOrder.setDestination(order.getDestination());
+
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
             taxiOrder.setPassenger_phone(resultMap.get("phone"));
             result=userClient.findDriverById(order.getDriver_id());
             resultMap=(Map<String, String>) result.getObject();
             taxiOrder.setDriver_phone(resultMap.get("phone"));
+
             //查询流水
             QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
             statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
@@ -76,6 +80,7 @@ public class OrderController {
         return null;
     }
 
+    @ApiOperation(value ="按照时间顺序获取某位乘客的所有订单")
     @GetMapping("/v1/passengers/{passenger_id}/orders")
     public List<TaxiOrder> getOrdersForPassenger(@PathVariable String passenger_id){
         List<TaxiOrder> orderList=new ArrayList<TaxiOrder>();
@@ -122,6 +127,7 @@ public class OrderController {
         //return tmp.getOrdersForPassenger(passenger_id);
     }
 
+    @ApiOperation(value ="按照时间顺序获取某位司机的所有订单")
     @GetMapping("/v1/drivers/{driver_id}/orders")
     public List<TaxiOrder> getOrdersForDriver(@PathVariable String driver_id){
         List<TaxiOrder> orderList=new ArrayList<TaxiOrder>();
@@ -167,6 +173,7 @@ public class OrderController {
         return orderList;
     }
 
+    @ApiOperation(value ="根据订单id获取订单")
     @GetMapping("/v1/orders/{order_id}")
     public TaxiOrder getOrdersByID(@PathVariable String order_id){
         TaxiOrder taxiOrder=new TaxiOrder();
@@ -208,6 +215,7 @@ public class OrderController {
         return taxiOrder;
     }
 
+    /*
     @PostMapping("/cancelOrder")
     public boolean cancelOrder(@RequestParam String order_id){
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
@@ -480,5 +488,5 @@ public class OrderController {
         }else{
             return false;
         }
-    }
+    }*/
 }
