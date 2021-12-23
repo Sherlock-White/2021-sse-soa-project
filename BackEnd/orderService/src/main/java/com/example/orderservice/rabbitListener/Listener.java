@@ -169,44 +169,31 @@ public class Listener {
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
         boolean flag=false;
         for(Statement statement:statementList){
-            if(!statement.getOrder_state().equals("1")&&!statement.getOrder_state().equals("3")){
+            if(statement.getOrder_state().equals("2")||statement.getOrder_state().equals("4")||statement.getOrder_state().equals("5")){
                 return;
             }
-            else if(statement.getOrder_state().equals("3")){
-                flag=false;
+        }
+        Statement statement1 = new Statement();
+        statement1.setOrder_id(order_id);
+        statement1.setOrder_state("2");
+        statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
+        StringBuilder stat_id = new StringBuilder();
+        while (true) {
+            stat_id = new StringBuilder();
+            Random rd = new SecureRandom();
+            for (int i = 0; i < 20; i++) {
+                int bit = rd.nextInt(10);
+                stat_id.append(String.valueOf(bit));
+            }
+            QueryWrapper<Statement> statementWrapper = new QueryWrapper<>();
+            statementWrapper.eq("stat_id", stat_id.toString());
+            if (statementMapper.selectOne(statementWrapper) == null) {
                 break;
             }
-            else if(statement.getOrder_state().equals("1")){
-                flag=true;
-            }
         }
-        if(flag) {
-            Statement statement1 = new Statement();
-            statement1.setOrder_id(order_id);
-            statement1.setOrder_state("2");
-            statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
-            StringBuilder stat_id = new StringBuilder();
-            while (true) {
-                stat_id = new StringBuilder();
-                Random rd = new SecureRandom();
-                for (int i = 0; i < 20; i++) {
-                    int bit = rd.nextInt(10);
-                    stat_id.append(String.valueOf(bit));
-                }
-                QueryWrapper<Statement> statementWrapper = new QueryWrapper<>();
-                statementWrapper.eq("stat_id", stat_id.toString());
-                if (statementMapper.selectOne(statementWrapper) == null) {
-                    break;
-                }
-            }
-            statement1.setStat_id(stat_id.toString());
-            statementMapper.insert(statement1);
-            //读取取消订单队列消息，如果有取消需要通知派单微服务释放司机
+        statement1.setStat_id(stat_id.toString());
+        statementMapper.insert(statement1);
 
-
-        }else{//通知派单微服务释放司机
-            //rabbitTemplate.convertAndSend(message);
-        }
     }
 
     @Transactional
@@ -300,26 +287,15 @@ public class Listener {
         }else{
             return;
         }
-        //定义发送给派单微服务的消息
-        Map<String,String> message=new HashMap<>();
-        message.put("order_id",order_id);
-        message.put("driver_id",order.getDriver_id());
         //再判断可否取消
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
         statementQueryWrapper.eq("order_id",order_id).orderByDesc("stat_time");
         List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
-        boolean sendFlag=false;
         for(Statement statement:statementList){
             if(!statement.getOrder_state().equals("1")&&!statement.getOrder_state().equals("2")){
-                sendFlag=false;
                 return;
-            }else if(statement.getOrder_state().equals("2")){
-                sendFlag=true;
-            }else{
-                sendFlag=true;
             }
         }
-        /*
         //插入新流水
         Statement statement=new Statement();
         statement.setOrder_id(order_id);
@@ -341,11 +317,6 @@ public class Listener {
         statement.setStat_id(stat_id.toString());
         statement.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
         statementMapper.insert(statement);
-        */
-        //已派单状态下需要通知派单微服务释放司机
-        if(sendFlag){
-            rabbitTemplate.convertAndSend("cancelDispatch","",message);
-        }
     }
 
 //    @Transactional
