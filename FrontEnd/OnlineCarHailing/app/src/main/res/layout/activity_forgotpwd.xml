@@ -1,50 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".ForgotpwdActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="欢迎使用嗒嗒出行\n初次使用请填写注册信息"
-        android:textColor="@color/purple_500"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/username"
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/car_hailing"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.191"
+        app:layout_constraintHeight_percent="0.27"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.677" />
+        app:layout_constraintVertical_bias="0" />
 
+    <TextView
+        android:id="@+id/note"
+        android:layout_width="221dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="396dp"
+        android:text="找回密码"
+        android:textColor="@color/purple_500"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.215"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bg"
+        app:layout_constraintVertical_bias="0.064" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/myname1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_bg"
-        android:hint="注册名称"
+        android:hint="名称"
         android:inputType="text"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.548"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.209"
+        app:layout_constraintTop_toBottomOf="@+id/note"
+        app:layout_constraintVertical_bias="0.086"
         app:layout_constraintWidth_percent=".8" />
 
     <EditText
-        android:id="@+id/phone_number"
+        android:id="@+id/phone_number1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="手机号码"
         android:inputType="phone"
+        android:layout_marginTop="10dp"
+        android:hint="手机号"
         android:background="@drawable/edit_text_bg"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -53,18 +67,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/username"
+        app:layout_constraintTop_toBottomOf="@id/myname1"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintWidth_percent=".8" />
 
-
     <EditText
-        android:id="@+id/verification_code"
+        android:id="@+id/verification_code1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:inputType="phone"
         android:layout_marginTop="10dp"
         android:hint="验证码"
-        android:inputType="phone"
         android:background="@drawable/edit_text_bg"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -73,36 +86,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/phone_number"
+        app:layout_constraintTop_toBottomOf="@id/phone_number1"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintWidth_percent=".8" />
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/newpwd1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="密码"
         android:inputType="textPassword"
-        android:background="@drawable/edit_text_bg"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:flow_firstHorizontalBias="0"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/verification_code"
-        app:layout_constraintVertical_bias="0"
-        app:layout_constraintWidth_percent=".8" />
-
-
-    <EditText
-        android:id="@+id/identity"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="注册身份(乘客/司机)"
-        android:inputType="phone"
+        android:hint="新密码"
         android:background="@drawable/edit_text_bg"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -111,13 +104,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password"
+        app:layout_constraintTop_toBottomOf="@id/verification_code1"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintWidth_percent=".8" />
 
 
     <Button
-        android:id="@+id/getcode"
+        android:id="@+id/getcode1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
@@ -128,25 +121,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/identity"
-        app:layout_constraintVertical_bias="0.437"
+        app:layout_constraintTop_toBottomOf="@+id/newpwd1"
+        app:layout_constraintVertical_bias="0.207"
         app:layout_constraintWidth_percent=".8" />
 
     <Button
-        android:id="@+id/signup"
+        android:id="@+id/login1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
-        android:text="注册"
-        android:textColor="@color/white"
+        android:text="返回登录"
         android:textSize="18sp"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/getcode"
-        app:layout_constraintVertical_bias="0.188"
+        app:layout_constraintTop_toBottomOf="@+id/getcode1"
+        app:layout_constraintVertical_bias="0.5"
         app:layout_constraintWidth_percent=".8" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
