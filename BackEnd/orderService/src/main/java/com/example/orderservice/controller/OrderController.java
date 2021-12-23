@@ -68,10 +68,11 @@ public class OrderController {
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
             taxiOrder.setPassenger_phone(resultMap.get("phone"));
-            result=userClient.findDriverById(order.getDriver_id());
-            resultMap=(Map<String, String>) result.getObject();
-            taxiOrder.setDriver_phone(resultMap.get("phone"));
-
+            if(order.getDriver_id()!=null && !order.getDriver_id().isEmpty() && !order.getDriver_id().equals("")) {
+                result = userClient.findDriverById(order.getDriver_id());
+                resultMap = (Map<String, String>) result.getObject();
+                taxiOrder.setDriver_phone(resultMap.get("phone"));
+            }
             //查询流水
             QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
             statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
@@ -114,9 +115,11 @@ public class OrderController {
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
             taxiOrder.setPassenger_phone(resultMap.get("phone"));
-            result = userClient.findDriverById(order.getDriver_id());
-            resultMap = (Map<String, String>) result.getObject();
-            taxiOrder.setDriver_phone(resultMap.get("phone"));
+            if(order.getDriver_id()!=null && !order.getDriver_id().isEmpty() && !order.getDriver_id().equals("")) {
+                result = userClient.findDriverById(order.getDriver_id());
+                resultMap = (Map<String, String>) result.getObject();
+                taxiOrder.setDriver_phone(resultMap.get("phone"));
+            }
             //查询流水
             QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
             statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
@@ -215,9 +218,11 @@ public class OrderController {
         Result result= userClient.findPassengerById(order.getPassenger_id());
         Map<String,String> resultMap=(Map<String, String>) result.getObject();
         taxiOrder.setPassenger_phone(resultMap.get("phone"));
-        result=userClient.findDriverById(order.getDriver_id());
-        resultMap=(Map<String, String>) result.getObject();
-        taxiOrder.setDriver_phone(resultMap.get("phone"));
+        if(order.getDriver_id()!=null && !order.getDriver_id().isEmpty() && !order.getDriver_id().equals("")) {
+            result = userClient.findDriverById(order.getDriver_id());
+            resultMap = (Map<String, String>) result.getObject();
+            taxiOrder.setDriver_phone(resultMap.get("phone"));
+        }
         //查询流水
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
         statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
