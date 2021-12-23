@@ -1,5 +1,6 @@
 package com.example.orderservice.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -13,6 +14,7 @@ import com.example.orderservice.feignClient.*;
 import com.sun.net.httpserver.Authenticator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +41,10 @@ public class OrderController {
     private StatementMapper statementMapper;
     @Autowired
     private UserClient userClient;
+    @Autowired
+    private PosClient posClient;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @ApiOperation(value = "获取乘客进行中的订单")
     @GetMapping("/v1/passengers/{passenger_id}/orders/current")
@@ -234,7 +240,7 @@ public class OrderController {
         return taxiOrder;
     }
 
-    /*
+
     @PostMapping("/cancelOrder")
     public boolean cancelOrder(@RequestParam String order_id){
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
@@ -288,6 +294,16 @@ public class OrderController {
                          @RequestParam("departure") String departure,
                          @RequestParam("destination") String destination){
         if(this.existsUnpaidOrder(passenger_id)){return;}
+        //尝试调用高德接口
+        String fromPos = JSON.parseObject(JSON.parseArray(JSON.parseObject(posClient.getPos(departure)).get("geocodes").toString()).get(0).toString()).get("location").toString();
+        String[] fromPosVec2=fromPos.split(",");
+        Double from_lng=Double.parseDouble(fromPosVec2[0]);
+        Double from_lat=Double.parseDouble(fromPosVec2[1]);
+        String toPos = JSON.parseObject(JSON.parseArray(JSON.parseObject(posClient.getPos(destination)).get("geocodes").toString()).get(0).toString()).get("location").toString();
+        String[] toPosVec2=toPos.split(",");
+        Double to_lng=Double.parseDouble(toPosVec2[0]);
+        Double to_lat=Double.parseDouble(toPosVec2[1]);
+        //插入新订单
         Order order=new Order();
         String dateNowStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         dateNowStr=dateNowStr.replaceAll("-","");
@@ -311,8 +327,12 @@ public class OrderController {
         order.setPassenger_id(passenger_id);
         order.setDeparture(departure);
         order.setDestination(destination);
+        order.setFrom_lng(from_lng);
+        order.setFrom_lat(from_lat);
+        order.setTo_lng(to_lng);
+        order.setTo_lat(to_lat);
         orderMapper.insert(order);
-
+        //插入新流水
         Statement statement=new Statement();
         statement.setOrder_id(order_id.toString());
         statement.setOrder_state("1");
@@ -333,6 +353,13 @@ public class OrderController {
         }
         statement.setStat_id(stat_id.toString());
         statementMapper.insert(statement);
+        //通知派单微服务派单
+        Map<String,String> message=new HashMap<>();
+        message.put("order_id",order_id.toString());
+        message.put("passenger_id",passenger_id);
+        message.put("departure",departure);
+        message.put("destination",destination);
+        rabbitTemplate.convertAndSend("dispatch","",message);
     }
 
     @PostMapping("/orderTaken")
@@ -507,5 +534,5 @@ public class OrderController {
         }else{
             return false;
         }
-    }*/
+    }
 }

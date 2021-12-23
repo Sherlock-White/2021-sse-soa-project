@@ -40,7 +40,7 @@ public class Listener {
     @Transactional
     @RabbitListener(queues = {"newOrder"})
     public void newOrderListen(String msg){
-//        System.out.println("接收到消息：" + msg);
+        System.out.println("接收到消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
         String passenger_id=object.getString("passenger_id");
         String departure=object.getString("from");
