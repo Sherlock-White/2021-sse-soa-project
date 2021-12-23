@@ -11,8 +11,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="325dp"
-            android:layout_height="291dp"
+            android:layout_width="314dp"
+            android:layout_height="254dp"
             app:cardBackgroundColor="#E3E5E8"
             app:cardCornerRadius="40dp"
             app:cardElevation="2dp"
@@ -20,12 +20,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.468"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/end_point"
+            app:layout_constraintTop_toBottomOf="@+id/to"
             app:layout_constraintVertical_bias="0.143">
 
             <androidx.constraintlayout.utils.widget.ImageFilterButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="252dp"
                 android:src="@drawable/map" />
         </androidx.cardview.widget.CardView>
 
@@ -45,56 +45,70 @@
             app:layout_constraintVertical_bias="0.058" />
 
         <TextView
-            android:id="@+id/end_point"
-            android:layout_width="230dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="14dp"
-            android:hint="终点"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.137"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/start_point"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.049"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_baseline_location_on_24" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.049"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_name"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_baseline_location_on_24" />
-
-        <TextView
-            android:id="@+id/start_point"
-            android:layout_width="230dp"
-            android:layout_height="24dp"
+            android:id="@+id/from"
+            android:layout_width="247dp"
+            android:layout_height="40dp"
             android:layout_marginTop="16dp"
             android:hint="出发点"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.123"
+            app:layout_constraintHorizontal_bias="0.257"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/app_name"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.001" />
+
+        <TextView
+            android:id="@+id/to"
+            android:layout_width="247dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="14dp"
+            android:hint="终点"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.257"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/from"
+            app:layout_constraintVertical_bias="0.012" />
+
+        <Button
+            android:id="@+id/hail"
+            android:layout_width="327dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="80dp"
+            android:background="@drawable/button_bg"
+            android:text="打车"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent=".8" />
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:srcCompat="@drawable/ic_baseline_location_on_24" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_name"
+            app:layout_constraintVertical_bias="0.001"
+            app:srcCompat="@drawable/ic_baseline_location_on_24" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -112,40 +126,41 @@
             android:id="@+id/imageView4"
             android:layout_width="179dp"
             android:layout_height="35dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="56dp"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/information"
+            app:layout_constraintBottom_toTopOf="@+id/hail"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.108"
+            app:layout_constraintHorizontal_bias="0.099"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView"
             app:layout_constraintVertical_bias="0.888"
             app:srcCompat="@drawable/car"
             tools:visibility="visible" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/information"
-            android:layout_width="342dp"
-            android:layout_height="69dp"
-            android:layout_gravity="bottom"
-            app:cardBackgroundColor="#617185"
-            app:cardCornerRadius="40dp"
-            app:cardElevation="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.434"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
-            app:layout_constraintVertical_bias="0.566">
 
-            <TextView
-                android:layout_width="288dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="当前最近的车距离您: 780m"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-        </androidx.cardview.widget.CardView>
+        <!--        <androidx.cardview.widget.CardView-->
+<!--            android:id="@+id/information"-->
+<!--            android:layout_width="342dp"-->
+<!--            android:layout_height="69dp"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            app:cardBackgroundColor="#617185"-->
+<!--            app:cardCornerRadius="40dp"-->
+<!--            app:cardElevation="2dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.434"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/cardView"-->
+<!--            app:layout_constraintVertical_bias="0.566">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="288dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:text="当前最近的车距离您: 780m"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="20sp" />-->
+<!--        </androidx.cardview.widget.CardView>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
