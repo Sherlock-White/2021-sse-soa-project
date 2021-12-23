@@ -129,11 +129,13 @@ public class Listener {
         statement.setStat_id(stat_id.toString());
         statementMapper.insert(statement);
         //通知派单微服务派单
-        Map<String,String> message=new HashMap<>();
+        Map<String,Object> message=new HashMap<>();
         message.put("order_id",order_id.toString());
         message.put("passenger_id",passenger_id);
-        message.put("departure",departure);
-        message.put("destination",destination);
+        message.put("from_lng",from_lng);
+        message.put("from_lat",from_lat);
+        message.put("to_lng",to_lng);
+        message.put("to_lat",to_lat);
         rabbitTemplate.convertAndSend("dispatch","",message);
     }
 
