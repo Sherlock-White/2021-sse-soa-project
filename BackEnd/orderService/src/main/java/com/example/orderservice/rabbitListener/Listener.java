@@ -268,7 +268,7 @@ public class Listener {
         statementMapper.insert(statement);
         //已派单状态下需要通知派单微服务释放司机
         if(sendFlag){
-            rabbitTemplate.convertAndSend("cancelDispatching","",message);
+            rabbitTemplate.convertAndSend("cancelDispatch","",message);
         }
     }
 
