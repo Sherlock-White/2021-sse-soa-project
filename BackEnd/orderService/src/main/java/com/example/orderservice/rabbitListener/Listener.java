@@ -140,16 +140,9 @@ public class Listener {
     }
 
     @Transactional
-    @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "spring.test.queue", durable = "true"),
-            exchange = @Exchange(
-                    value = "spring.test.exchange",
-                    ignoreDeclarationExceptions = "true",
-                    type = ExchangeTypes.DIRECT
-            ),
-            key = {"#.#"}))
+    @RabbitListener(queues = {""})
     public void orderTakenListen(String msg){
-//        System.out.println("接收到消息：" + msg);
+        System.out.println("接收到派单消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
         String order_id=object.getString("order_id");
         String driver_id=object.getString("driver_id");
