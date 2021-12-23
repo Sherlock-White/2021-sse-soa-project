@@ -20,6 +20,7 @@ class OrderserviceApplicationTests {
     PosClient posClient;
     @Test
     void contextLoads() {
+        /*
         String departure="同济大学嘉定校区";
         String destination="同济大学四平路校区";
         String fromPos = JSON.parseObject(JSON.parseArray(JSON.parseObject(posClient.getPos(departure)).get("geocodes").toString()).get(0).toString()).get("location").toString();
@@ -33,6 +34,7 @@ class OrderserviceApplicationTests {
         }
 
         System.out.println("to_geocodes:"+to_geocodes);
+        */
 //        String toPos = JSON.parseObject(JSON.parseArray(JSON.parseObject(posClient.getPos(destination)).get("geocodes").toString()).get(0).toString()).get("location").toString();
 //        String[] toPosVec2=toPos.split(",");
 //        Double to_lng=Double.parseDouble(toPosVec2[0]);

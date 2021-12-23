@@ -218,9 +218,17 @@ public class Listener {
         //获取最新订单
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
         orderQueryWrapper.eq("passenger_id",passenger_id).orderByDesc("order_id");
-        Order order=orderMapper.selectList(orderQueryWrapper).get(0);
-        if(order==null){return;}
-        String order_id=order.getOrder_id();
+        String order_id;
+        Order order;
+        if(!orderMapper.selectList(orderQueryWrapper).isEmpty()) {
+            order = orderMapper.selectList(orderQueryWrapper).get(0);
+            if (order == null) {
+                return;
+            }
+            order_id=order.getOrder_id();
+        }else{
+            return;
+        }
         //定义发送给派单微服务的消息
         Map<String,String> message=new HashMap<>();
         message.put("order_id",order_id);
