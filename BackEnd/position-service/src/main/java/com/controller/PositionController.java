@@ -24,4 +24,7 @@ public class PositionController {
     public List<Position> queryWeather(){
         return weatherService.query();
     }
+    
+    @GetMapping("/test")
+    public String test(){return "successful connection";}
 }
