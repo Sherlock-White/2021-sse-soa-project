@@ -39,6 +39,8 @@ public class DistributionService {
      */
     private int[][] getDistance(){
         DistanceService distanceService = new DistanceService(this.passengerCount,this.driverCount,this.passenger,this.driver);
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&");
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&");
         return distanceService.calculateDistance();
     }
     /*

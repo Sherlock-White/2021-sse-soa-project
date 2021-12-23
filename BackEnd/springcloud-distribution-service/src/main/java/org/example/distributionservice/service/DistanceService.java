@@ -75,7 +75,7 @@ public class DistanceService {
             }
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return json.toString();
     }
