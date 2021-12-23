@@ -45,19 +45,39 @@ public class Listener {
         String passenger_id=object.getString("passenger_id");
         String departure=object.getString("from");
         String destination=object.getString("to");
+        if(existsUnpaidOrder(passenger_id)){return;}
         //Double from_lng=object.getDouble("from_lng");
         //Double from_lat=object.getDouble("from_lat");
         //Double to_lng=object.getDouble("to_lng");
         //Double to_lat=object.getDouble("to_lat");
         //尝试调用高德接口
-        String fromPos = JSON.parseObject(JSON.parseArray(JSON.parseObject(posClient.getPos(departure)).get("geocodes").toString()).get(0).toString()).get("location").toString();
-        String[] fromPosVec2=fromPos.split(",");
-        Double from_lng=Double.parseDouble(fromPosVec2[0]);
-        Double from_lat=Double.parseDouble(fromPosVec2[1]);
-        String toPos = JSON.parseObject(JSON.parseArray(JSON.parseObject(posClient.getPos(destination)).get("geocodes").toString()).get(0).toString()).get("location").toString();
-        String[] toPosVec2=toPos.split(",");
-        Double to_lng=Double.parseDouble(toPosVec2[0]);
-        Double to_lat=Double.parseDouble(toPosVec2[1]);
+        Double from_lng=120.332981;
+        Double from_lat=31.332981;
+        Double to_lng=120.328815;
+        Double to_lat=31.271292;
+
+        String from_geocodes=JSON.parseObject(posClient.getPos(departure)).get("geocodes").toString();
+        if(!from_geocodes.equals("[]")) {
+            String fromPos = JSON.parseObject(JSON.parseArray(from_geocodes).get(0).toString()).get("location").toString();
+            String[] fromPosVec2 = fromPos.split(",");
+            if (fromPosVec2.length == 2) {
+                from_lng = Double.parseDouble(fromPosVec2[0]);
+                from_lat = Double.parseDouble(fromPosVec2[1]);
+            }
+        }
+        String to_geocodes=JSON.parseObject(posClient.getPos(destination)).get("geocodes").toString();
+        if(!to_geocodes.equals("[]")) {
+            String toPos = JSON.parseObject(JSON.parseArray(to_geocodes).get(0).toString()).get("location").toString();
+            String[] toPosVec2 = toPos.split(",");
+            if (toPosVec2.length == 2) {
+                to_lng = Double.parseDouble(toPosVec2[0]);
+                to_lat = Double.parseDouble(toPosVec2[1]);
+            }
+        }
+        System.out.println(from_lng);
+        System.out.println(from_lat);
+        System.out.println(to_lng);
+        System.out.println(to_lat);
         //插入新订单
         Order order=new Order();
         String dateNowStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -402,6 +422,24 @@ public class Listener {
                 statement1.setStat_id(stat_id.toString());
                 statementMapper.insert(statement1);
             }
+        }
+    }
+
+    private boolean existsUnpaidOrder(String passenger_id){
+        QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
+        orderQueryWrapper.eq("passenger_id",passenger_id).orderByDesc("order_id");
+        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return false;}
+        Order order=orderMapper.selectList(orderQueryWrapper).get(0);
+        if(order==null){
+            return false;
+        }
+        QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
+        statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
+        Statement statement=statementMapper.selectList(statementQueryWrapper).get(0);
+        if(!statement.getOrder_state().equals("3")&&!statement.getOrder_state().equals("5")){
+            return true;
+        }else{
+            return false;
         }
     }
 }

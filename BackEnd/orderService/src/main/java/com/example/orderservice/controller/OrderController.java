@@ -240,7 +240,7 @@ public class OrderController {
         return taxiOrder;
     }
 
-
+    /*
     @PostMapping("/cancelOrder")
     public boolean cancelOrder(@RequestParam String order_id){
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
@@ -287,6 +287,7 @@ public class OrderController {
         }
         return true;
     }
+
 
     @Transactional
     @PostMapping("/newOrder")
@@ -534,5 +535,5 @@ public class OrderController {
         }else{
             return false;
         }
-    }
+    }*/
 }
