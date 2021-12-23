@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.onlinecarhailing">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
@@ -11,7 +14,16 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OnlineCarHailing">
+        android:theme="@style/Theme.OnlineCarHailing"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".ForgotpwdActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginTabFragment"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".AdmMainActivity"
             android:exported="true" />

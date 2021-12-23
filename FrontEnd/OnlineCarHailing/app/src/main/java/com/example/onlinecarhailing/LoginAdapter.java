@@ -19,6 +19,7 @@ public class LoginAdapter extends FragmentPagerAdapter{
         this.totalTabs=totalTabs;
         mTabs[0]="登录";
         mTabs[1]="注册";
+
     }
 
     @NonNull
