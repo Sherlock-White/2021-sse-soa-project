@@ -1,6 +1,8 @@
 package org.example.distributionservice.service;
 
+import org.example.distributionservice.feignClient.PositionClient;
 import org.example.distributionservice.model.GraphMatch;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
