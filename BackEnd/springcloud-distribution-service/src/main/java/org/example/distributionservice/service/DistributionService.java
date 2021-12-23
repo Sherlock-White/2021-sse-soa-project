@@ -41,7 +41,6 @@ public class DistributionService {
         DistanceService distanceService = new DistanceService(this.passengerCount,this.driverCount,this.passenger,this.driver);
         return distanceService.calculateDistance();
     }
-
     /*
      * @description:实例化信用度微服务获取司机信用度列表
      * @author: LuBixing
@@ -73,7 +72,6 @@ public class DistributionService {
         }
         return edges;
     }
-
     /*
      * @description: 等初始化图完毕之后，由外部调用接口进行分配
      * @author: LuBixing
@@ -94,7 +92,6 @@ public class DistributionService {
         }
         return graphMatch.getPath();
     }
-
     /**
      * 清空当前路径上遍历过的Y点
      */
