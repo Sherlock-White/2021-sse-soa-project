@@ -181,7 +181,7 @@ public class ProfileFragment extends Fragment {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast toastCenter = Toast.makeText(getActivity(), "注册成功\n已自动登录", Toast.LENGTH_LONG);
+                                        Toast toastCenter = Toast.makeText(getActivity(), "修改信息成功\n已自动登录", Toast.LENGTH_LONG);
                                         //确定Toast显示位置，并显示
                                         toastCenter.setGravity(Gravity.CENTER, 0, 0);
                                         toastCenter.show();
@@ -193,7 +193,7 @@ public class ProfileFragment extends Fragment {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast toastCenter = Toast.makeText(getActivity(), "注册失败", Toast.LENGTH_LONG);
+                                        Toast toastCenter = Toast.makeText(getActivity(), "修改信息失败", Toast.LENGTH_LONG);
                                         //确定Toast显示位置，并显示
                                         toastCenter.setGravity(Gravity.CENTER, 0, 0);
                                         toastCenter.show();
@@ -206,7 +206,7 @@ public class ProfileFragment extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast toastCenter = Toast.makeText(getActivity(), "注册失败", Toast.LENGTH_LONG);
+                                    Toast toastCenter = Toast.makeText(getActivity(), "修改失败", Toast.LENGTH_LONG);
                                     //确定Toast显示位置，并显示
                                     toastCenter.setGravity(Gravity.CENTER, 0, 0);
                                     toastCenter.show();
