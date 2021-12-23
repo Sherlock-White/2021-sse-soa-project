@@ -17,6 +17,7 @@ public class DistributionService {
     private final int driverCount;
     private final String[][] passenger;
     private final String[][] driver;
+    private int[][] edges;
 
     public DistributionService(){
         this.graphMatch = null;
@@ -24,6 +25,7 @@ public class DistributionService {
         this.driverCount = 0;
         this.passenger = null;
         this.driver = null;
+        this.edges = null;
     }
     public DistributionService(int passengerCount,int driverCount,String[][] passenger,String[][] driver){
         this.graphMatch = new GraphMatch();
@@ -31,6 +33,7 @@ public class DistributionService {
         this.driverCount = driverCount;
         this.passenger = passenger;
         this.driver = driver;
+        this.calculateEdges();
     }
     /*
      * @description: 实例化距离微服务获取距离关系
@@ -39,8 +42,6 @@ public class DistributionService {
      */
     private int[][] getDistance(){
         DistanceService distanceService = new DistanceService(this.passengerCount,this.driverCount,this.passenger,this.driver);
-        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&");
-        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&");
         return distanceService.calculateDistance();
     }
     /*
@@ -63,16 +64,15 @@ public class DistributionService {
      * @author: LuBixing
      * @date: 2021/12/23 2:45
      */
-    private int[][] calculateEdges(){
-        int[][] distance = getDistance();
-        int[] credit = getCredit();
-        int[][] edges = new int[this.passengerCount][this.driverCount];
+    private void calculateEdges(){
+        int[][] distance = this.getDistance();
+        int[] credit = this.getCredit();
+        edges = new int[this.passengerCount][this.driverCount];
         for(int i=0;i<this.passengerCount;i++){
             for(int j=0;j<this.driverCount;j++){
                 edges[i][j] = distance[i][j] + credit[j];
             }
         }
-        return edges;
     }
     /*
      * @description: 等初始化图完毕之后，由外部调用接口进行分配
@@ -80,8 +80,6 @@ public class DistributionService {
      * @date: 2021/12/21 14:14
      */
     public int[] distribute(){
-        int[][] edges = calculateEdges();
-        assert graphMatch != null;
         graphMatch.setEdges(edges);
         graphMatch.setOnPath(new boolean[this.driverCount]);
         int[] pathAry = new int[this.driverCount];

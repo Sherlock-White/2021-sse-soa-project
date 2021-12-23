@@ -22,11 +22,15 @@ public class DistanceService {
     private final int[][] value;
     private final String[][] passenger;
     private final String[][] driver;
+    private final int passengerCount;
+    private final int driverCount;
 
     public DistanceService(){
         this.value = null;
         this.passenger = null;
         this.driver = null;
+        this.passengerCount = 0;
+        this.driverCount = 0;
     }
 
     public DistanceService(int passengerCount,int driverCount,String[][] passenger, String[][] driver) {
@@ -34,10 +38,14 @@ public class DistanceService {
             this.value = new int[passengerCount][driverCount];
             this.passenger = passenger;
             this.driver = driver;
+            this.passengerCount = passengerCount;
+            this.driverCount = driverCount;
         }else{
             this.value = null;
             this.passenger = null;
             this.driver = null;
+            this.passengerCount = 0;
+            this.driverCount = 0;
         }
     }
 
@@ -48,12 +56,12 @@ public class DistanceService {
      * @param: String[][] passenger,String[][] driver
      */
     public int[][] calculateDistance(){
-        for(int i = 0; i< Objects.requireNonNull(passenger).length; i++) {
-            for (int j = 0; j< Objects.requireNonNull(driver).length; j++){
+        for(int i = 0; i< passengerCount; i++) {
+            for (int j = 0; j< driverCount; j++){
                 //格式：经度,纬度
                 //注意：高德最多取小数点后六位
-                String origin = driver[i][2]+","+driver[i][1];
-                String destination = passenger[j][2]+","+passenger[j][1];
+                String origin = passenger[i][2]+","+passenger[i][1];
+                String destination = driver[j][2]+","+driver[j][1];
                 int distance = getDistance(origin, destination);
                 assert this.value != null;
                 this.value[i][j]=distance;

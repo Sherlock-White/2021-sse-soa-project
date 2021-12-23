@@ -61,7 +61,7 @@ public class Listener {
         //通知订单微服务更新状态
         Map<String,String> message=new HashMap<>();
         message.put("order_id",order_id);
-        message.put("driver_id","driver"+result[0]);
+        message.put("driver_id",driver[result[0]][0]);
         message.put("is_distributed","2");//1表示未派单，2表示已派单
         System.out.println(message);
 
