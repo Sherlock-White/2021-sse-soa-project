@@ -140,7 +140,7 @@ public class Listener {
     }
 
     @Transactional
-    //@RabbitListener(queues = {""})
+    @RabbitListener(queues = {"DispatchResponse"})
     public void orderTakenListen(String msg){
         System.out.println("接收到派单消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
@@ -266,7 +266,7 @@ public class Listener {
 
 
     @Transactional
-    @RabbitListener()
+    @RabbitListener(queues = {"CancelFromDispatch"})
     public void cancelOrderFromDispatching(String msg){
 //        System.out.println("接收到消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
