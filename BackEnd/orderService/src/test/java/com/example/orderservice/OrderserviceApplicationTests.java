@@ -1,5 +1,9 @@
 package com.example.orderservice;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.example.orderservice.feignClient.PosClient;
 import com.example.orderservice.mapper.OrderMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +16,15 @@ import java.util.Date;
 
 @SpringBootTest
 class OrderserviceApplicationTests {
-//    @Autowired
-//    OrderMapper orderMapper;
+    @Autowired
+    PosClient posClient;
     @Test
     void contextLoads() {
-        String dateNowStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        dateNowStr=dateNowStr.replaceAll("-","");
-        dateNowStr=dateNowStr.replaceAll(":","");
-        dateNowStr=dateNowStr.replaceAll(" ","");
-        System.out.println(dateNowStr);
+        String departure="同济大学";
+        String fromPos = JSON.parseObject(JSON.parseArray(JSON.parseObject(posClient.getPos(departure)).get("geocodes").toString()).get(0).toString()).get("location").toString();
+        String[] fromPosVec2=fromPos.split(",");
+        System.out.println(Double.parseDouble(fromPosVec2[0]));
+        System.out.println(Double.parseDouble(fromPosVec2[1]));
     }
 
 }

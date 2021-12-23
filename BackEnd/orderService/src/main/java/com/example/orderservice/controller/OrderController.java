@@ -107,8 +107,8 @@ public class OrderController {
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
             taxiOrder.setPassenger_phone(resultMap.get("phone"));
-            result=userClient.findDriverById(order.getDriver_id());
-            resultMap=(Map<String, String>) result.getObject();
+            result = userClient.findDriverById(order.getDriver_id());
+            resultMap = (Map<String, String>) result.getObject();
             taxiOrder.setDriver_phone(resultMap.get("phone"));
             //查询流水
             QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
@@ -204,7 +204,7 @@ public class OrderController {
         taxiOrder.setFrom_lat(order.getFrom_lat());
         taxiOrder.setTo_lng(order.getTo_lng());
         taxiOrder.setTo_lat(order.getTo_lat());
-        
+
         Result result= userClient.findPassengerById(order.getPassenger_id());
         Map<String,String> resultMap=(Map<String, String>) result.getObject();
         taxiOrder.setPassenger_phone(resultMap.get("phone"));

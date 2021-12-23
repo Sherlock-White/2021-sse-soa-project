@@ -1,10 +1,13 @@
 package com.example.orderservice.rabbitListener;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.orderservice.entity.Order;
 import com.example.orderservice.entity.Statement;
+import com.example.orderservice.feignClient.PosClient;
 import com.example.orderservice.mapper.OrderMapper;
 import com.example.orderservice.mapper.StatementMapper;
 import org.springframework.amqp.core.ExchangeTypes;
@@ -29,6 +32,10 @@ public class Listener {
     private StatementMapper statementMapper;
     @Autowired
     private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private PosClient posClient;
+
+    //final private String key="5d377f781223f6c299389cc8c484c723";
 
     @Transactional
     @RabbitListener(queues = {"newOrder"})
@@ -38,10 +45,19 @@ public class Listener {
         String passenger_id=object.getString("passenger_id");
         String departure=object.getString("from");
         String destination=object.getString("to");
-        Double from_lng=object.getDouble("from_lng");
-        Double from_lat=object.getDouble("from_lat");
-        Double to_lng=object.getDouble("to_lng");
-        Double to_lat=object.getDouble("to_lat");
+        //Double from_lng=object.getDouble("from_lng");
+        //Double from_lat=object.getDouble("from_lat");
+        //Double to_lng=object.getDouble("to_lng");
+        //Double to_lat=object.getDouble("to_lat");
+        //尝试调用高德接口
+        String fromPos = JSON.parseObject(JSON.parseArray(JSON.parseObject(posClient.getPos(departure)).get("geocodes").toString()).get(0).toString()).get("location").toString();
+        String[] fromPosVec2=fromPos.split(",");
+        Double from_lng=Double.parseDouble(fromPosVec2[0]);
+        Double from_lat=Double.parseDouble(fromPosVec2[1]);
+        String toPos = JSON.parseObject(JSON.parseArray(JSON.parseObject(posClient.getPos(destination)).get("geocodes").toString()).get(0).toString()).get("location").toString();
+        String[] toPosVec2=toPos.split(",");
+        Double to_lng=Double.parseDouble(toPosVec2[0]);
+        Double to_lat=Double.parseDouble(toPosVec2[1]);
         //插入新订单
         Order order=new Order();
         String dateNowStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
