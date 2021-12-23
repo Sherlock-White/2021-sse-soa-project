@@ -41,39 +41,48 @@ public class CarHailingFragment extends Fragment {
         from=root.findViewById(R.id.from);
         to=root.findViewById(R.id.to);
         hail=root.findViewById(R.id.hail);
-        System.out.println(hail.getText());
 
 
 
         hail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("1");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("2");
+                        Intent intenttest = getActivity().getIntent();
+                        String passenger_id = intenttest.getStringExtra("name");
+                        OkHttpClient client = new OkHttpClient().newBuilder()
+                                .build();
+                        MediaType mediaType = MediaType.parse("text/plain");
+                        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                                .addFormDataPart("passenger_id",passenger_id)
+                                .addFormDataPart("from","同济大学嘉定校区")
+                                .addFormDataPart("from_lng","44.3")
+                                .addFormDataPart("from_lat","45.5")
+                                .addFormDataPart("to","同济大学四平路校区")
+                                .addFormDataPart("to_lng","23.3")
+                                .addFormDataPart("to_lat","24.5")
+                                .build();
+                        Request request = new Request.Builder()
+                                .url("http://106.15.3.13:9001/api/v1/hailing")
+                                .method("POST", body)
+                                .build();
 
-                OkHttpClient client = new OkHttpClient().newBuilder()
-                        .build();
-                MediaType mediaType = MediaType.parse("text/plain");
-                RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                        .addFormDataPart("passenger_id","client2")
-                        .addFormDataPart("from","同济大学嘉定校区")
-                        .addFormDataPart("from_lng","44.3")
-                        .addFormDataPart("from_lat","45.5")
-                        .addFormDataPart("to","同济大学四平路校区")
-                        .addFormDataPart("to_lng","23.3")
-                        .addFormDataPart("to_lat","24.5")
-                        .build();
-                Request request = new Request.Builder()
-                        .url("106.15.3.13:9001/api/v1/hailing")
-                        .method("POST", body)
-                        .build();
-                try {
-                    Response response = client.newCall(request).execute();
-                } catch (IOException e) {
-                    Toast toastCenter = Toast.makeText(getActivity(), "打车请求失败", Toast.LENGTH_LONG);
-                    //确定Toast显示位置，并显示
-                    toastCenter.setGravity(Gravity.CENTER, 0, 0);
-                    toastCenter.show();
-                }
-                getFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new WaitingFragment()).commit();
+                        try {
+                            Response response = client.newCall(request).execute();
+                        } catch (IOException e) {
+                            Toast toastCenter = Toast.makeText(getActivity(), "打车请求失败", Toast.LENGTH_LONG);
+                            //确定Toast显示位置，并显示
+                            toastCenter.setGravity(Gravity.CENTER, 0, 0);
+                            toastCenter.show();
+                        }
+                        getFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new WaitingFragment()).commit();
+                    }
+                }).start();
+
             }
         });
 
