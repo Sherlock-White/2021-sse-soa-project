@@ -260,6 +260,7 @@ public class Listener {
         */
         //已派单状态下需要通知派单微服务释放司机
         if(sendFlag){
+
             rabbitTemplate.convertAndSend("cancelDispatch","",message);
         }
     }
