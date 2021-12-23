@@ -85,7 +85,7 @@ public class Listener {
         order.setFrom_lng(from_lng);
         order.setFrom_lat(from_lat);
         order.setTo_lng(to_lng);
-        order.setFrom_lat(to_lat);
+        order.setTo_lat(to_lat);
         orderMapper.insert(order);
         //插入新流水
         Statement statement=new Statement();
