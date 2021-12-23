@@ -47,7 +47,7 @@ public class PositionController {
 //            stmt.execute("use restful_test");
 //            stmt.execute("create table restful_test.weather(ts timestamp, temperature float) tags(location nchar(64))");
 //            stmt.executeUpdate("insert into t1 using restful_test.weather tags('北京') values(now, 18.2)");
-        ResultSet rs = stmt.executeQuery("select * from taxi.position2 where id=400");
+        ResultSet rs = stmt.executeQuery("select * from taxi.position2 where id=1");
         ResultSetMetaData meta = rs.getMetaData();
         while (rs.next()) {
             for (int i = 1; i <= meta.getColumnCount(); i++) {
