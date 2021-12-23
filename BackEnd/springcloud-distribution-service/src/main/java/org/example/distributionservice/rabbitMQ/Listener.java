@@ -24,7 +24,7 @@ public class Listener {
     @RabbitListener(queues = {"dispatch"})
     public void newDistributionListen(String msg){
         System.out.println("接到的消息是:"+msg);
-        JSONObject object=JSONObject.parseObject(msg);
+        /*JSONObject object=JSONObject.parseObject(msg);
         String order_id=object.getString("order_id");
         String passenger_id=object.getString("passenger_id");
         String from_lng=object.getString("from_lng");   //经度
@@ -45,6 +45,6 @@ public class Listener {
         message.put("order_id",order_id);
         message.put("driver_id","driver"+result[0]);
         message.put("is_distributed","2");//1表示未派单，2表示已派单
-        rabbitTemplate.convertAndSend("dispatch","",message);
+        rabbitTemplate.convertAndSend("dispatch","",message);*/
     }
 }
