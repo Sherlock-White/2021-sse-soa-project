@@ -52,6 +52,7 @@ public class OrderController {
         TaxiOrder taxiOrder=new TaxiOrder();
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
         orderQueryWrapper.eq("passenger_id",passenger_id).orderByDesc("order_id");
+        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return null;}
         Order order=orderMapper.selectList(orderQueryWrapper).get(0);
         if(order!=null) {
             taxiOrder.setOrder_id(order.getOrder_id());
