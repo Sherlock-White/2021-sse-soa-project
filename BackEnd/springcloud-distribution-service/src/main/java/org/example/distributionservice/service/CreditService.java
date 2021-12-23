@@ -1,10 +1,9 @@
 package org.example.distributionservice.service;
 
 import org.example.distributionservice.feignClient.CreditClient;
+import org.example.distributionservice.result.Result;
 import org.springframework.stereotype.Service;
 
-import javax.xml.transform.Result;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,27 +28,19 @@ public class CreditService {
         }
     }
 
-    public String[] getCredit(String[] driverList){
-        //["driver1","driver2"]
-        //List<String>
-        //Result result = (Result) creditClient.findDriverById(driverList);
-        //Map<String, String> resultMap = (Map<String, String>) result.getObject();
-
-        //拿到数组，挨个转一下int装进去
-        //int credit = Integer.parseInt(resultMap.get("creditworthiness"));
-        //assert creditList != null;
-        //creditList[index] = credit;
-
+    public int[] getCredit(String[] driverList){
         /*for (int index = 0; index< Objects.requireNonNull(driverList).length; index++) {
-            //String name = driverList[index];
-            Result result = (Result) creditClient.findDriverById(driverList);
+            String name = driverList[index];
+            Result result = (Result) creditClient.findDriverById(name);
             Map<String, String> resultMap = (Map<String, String>) result.getObject();
             int credit = Integer.parseInt(resultMap.get("creditworthiness"));
             assert creditList != null;
             creditList[index] = credit;
         }*/
-        //String name = driverList[index];
-        String[] creditList = creditClient.findDriverById(driverList);
+        for(int index = 0;index<driverList.length;index++){
+            assert creditList != null;
+            creditList[index] = 100;
+        }
         return creditList;
     }
 }
