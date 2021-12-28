@@ -2,6 +2,7 @@ package org.example.distributionservice.service;
 
 import org.example.distributionservice.feignClient.PositionClient;
 import org.example.distributionservice.model.GraphMatch;
+import org.example.distributionservice.model.OneMatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.Arrays;
 @Service
 public class DistributionService {
     private final GraphMatch graphMatch;
+    private final OneMatch oneMatch;
     private final int passengerCount;
     private final int driverCount;
     private final String[][] passenger;
@@ -23,6 +25,7 @@ public class DistributionService {
 
     public DistributionService(){
         this.graphMatch = null;
+        this.oneMatch = null;
         this.passengerCount = 0;
         this.driverCount = 0;
         this.passenger = null;
@@ -30,9 +33,15 @@ public class DistributionService {
         this.edges = null;
     }
     public DistributionService(int passengerCount,int driverCount,String[][] passenger,String[][] driver){
-        this.graphMatch = new GraphMatch();
         this.passengerCount = passengerCount;
         this.driverCount = driverCount;
+        if(this.passengerCount > 1){
+            this.graphMatch = new GraphMatch();
+            this.oneMatch = null;
+        }else{
+            this.graphMatch = null;
+            this.oneMatch = new OneMatch();
+        }
         this.passenger = passenger;
         this.driver = driver;
         this.calculateEdges();
@@ -82,17 +91,28 @@ public class DistributionService {
      * @date: 2021/12/21 14:14
      */
     public int[] distribute(){
-        graphMatch.setEdges(edges);
-        graphMatch.setOnPath(new boolean[this.driverCount]);
-        int[] pathAry = new int[this.driverCount];
-        Arrays.fill(pathAry, -1);
-        graphMatch.setPath(pathAry);
+        if(this.passengerCount > 1) {
+            graphMatch.setEdges(edges);
+            graphMatch.setOnPath(new boolean[this.driverCount]);
+            int[] pathAry = new int[this.driverCount];
+            Arrays.fill(pathAry, -1);
+            graphMatch.setPath(pathAry);
 
-        for(int i = 0 ; i < this.passengerCount; i ++) {
-            search(graphMatch, i);
-            clearOnPathSign(graphMatch);
+            for (int i = 0; i < this.passengerCount; i++) {
+                search(graphMatch, i);
+                clearOnPathSign(graphMatch);
+            }
+            return graphMatch.getPath();
+        }else{
+            oneMatch.setEdges(edges);
+            oneMatch.setMinIndex(0);
+            for(int i = 0;i<this.driverCount;i++){
+                if(oneMatch.getEdges()[0][i] < oneMatch.getMinIndex()){
+                    oneMatch.setMinIndex(i);
+                }
+            }
+            return oneMatch.getPath();
         }
-        return graphMatch.getPath();
     }
     /**
      * 清空当前路径上遍历过的Y点
