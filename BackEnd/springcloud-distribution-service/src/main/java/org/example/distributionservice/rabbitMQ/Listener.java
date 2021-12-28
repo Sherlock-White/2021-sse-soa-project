@@ -43,6 +43,7 @@ public class Listener {
             )
     ))
     public void newDistributionListen(String msg){
+        //获取订单信息
         JSONObject object = JSONObject.parseObject(msg);
         System.out.println(object.toString());
         String order_id=object.getString("order_id");
@@ -51,16 +52,16 @@ public class Listener {
         String from_lat=object.getString("from_lat");   //纬度
         String to_lng=object.getString("to_lng");
         String to_lat=object.getString("to_lat");
-
-        //////////////////////////////////////////////
         String[][] passenger ={{passenger_id,from_lat,from_lng}};
         /*String[][] driver ={
                 {"driver1","31.286428","121.212090"},
                 {"driver2","31.194202","121.320655"}};*/
+
+        //获取周围司机
         List<Object> driverList = positionClient.getNearDriverList();
         System.out.println(driverList.toString());
         //{ts=2021-07-06 15:04:20.0, id=247, jing=30.73341, wei=104.04514}
-        String[][] driver = new String[10][3];
+        String[][] driver = new String[driverList.size()/5][3];
         for(int i=0;i<driverList.size();i=i+5){
             Object obj = driverList.get(i);
             Map map = JSONObject.parseObject(JSONObject.toJSONString(obj), Map.class);
@@ -70,7 +71,7 @@ public class Listener {
         }
         System.out.println(driver);
 
-        DistributionService distributionService = new DistributionService(1,2,passenger,driver);
+        DistributionService distributionService = new DistributionService(1,driverList.size()/5,passenger,driver);
         int[] result = distributionService.distribute();
         System.out.println("派单结果"+result[0]);
 
