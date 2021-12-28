@@ -66,7 +66,7 @@ public class Listener {
             Map map = JSONObject.parseObject(JSONObject.toJSONString(obj), Map.class);
             driver[i/5][0] = "driver"+map.get("id");
             driver[i/5][1] = map.get("jing").toString();//是纬度
-            driver[i/5][2] = map.get("wei").toString();//是经度
+            driver[i/5][2] = map.get("wei").toString(); //是经度
         }
         System.out.println(driver);
 
