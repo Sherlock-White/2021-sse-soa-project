@@ -41,7 +41,7 @@ public class DcarHailingFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = "http://106.15.3.13:9003/v1/passengers/client4/orders/current";
+                String url = "http://106.15.3.13:9003/v1/passengers/client9/orders/current";
 //                String url = "http://127.0.0.1:9003/v1/passengers/" + _username + "/orders";
 
                 OkHttpClient client = new OkHttpClient().newBuilder()
@@ -83,6 +83,7 @@ public class DcarHailingFragment extends Fragment {
                                 .build();
                         try {
                             Response response = client.newCall(request).execute();
+                            System.out.println(response);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -109,6 +110,7 @@ public class DcarHailingFragment extends Fragment {
                                 .build();
                         try {
                             Response response = client.newCall(request).execute();
+                            System.out.println(response);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
