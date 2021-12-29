@@ -8,7 +8,7 @@ import javax.xml.transform.Result;
 import java.util.List;
 import java.util.Map;
 //url待定
-@FeignClient(value="position-service",url="http://139.224.251.185:9004")
+@FeignClient(value="position-service",url="http://139.224.251.185:9004",fallback = PositionClientImpl.class)
 public interface PositionClient {
     @GetMapping("/position/getAll")
     List<Object> getNearDriverList();
