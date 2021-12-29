@@ -1,0 +1,29 @@
+server:
+  port: 9005 # 服务提供方
+
+
+# 指定当前eureka客户端的注册地址,
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+  instance:
+    hostname: 139.224.251.185
+
+#rabbitmq配置
+logging:
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
+#当前服务名称
+spring:
+  application:
+    name: map
+  rabbitmq:
+    host: 47.102.204.30 # rabbitMQ的ip地址
+    port: 5672 # 端口
+    username: itcast
+    password: 123321
+    virtual-host: /
+    listener:
+      simple:
+        prefetch: 1
