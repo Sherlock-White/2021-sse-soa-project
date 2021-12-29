@@ -63,11 +63,11 @@ public class CarHailingFragment extends Fragment {
                         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                                 .addFormDataPart("passenger_id",passenger_id)
                                 .addFormDataPart("from",_from)
-//                                .addFormDataPart("from_lng","44.3")
-//                                .addFormDataPart("from_lat","45.5")
+                                .addFormDataPart("from_lng","44.3")
+                                .addFormDataPart("from_lat","45.5")
                                 .addFormDataPart("to",_to)
-//                                .addFormDataPart("to_lng","23.3")
-//                                .addFormDataPart("to_lat","24.5")
+                                .addFormDataPart("to_lng","23.3")
+                                .addFormDataPart("to_lat","24.5")
                                 .build();
                         Request request = new Request.Builder()
                                 .url("http://106.15.3.13:9001/api/v1/hailing")
@@ -76,6 +76,7 @@ public class CarHailingFragment extends Fragment {
 
                         try {
                             Response response = client.newCall(request).execute();
+                            System.out.println(response);
                             getActivity().runOnUiThread( new  Runnable() {
                                 @Override
                                 public  void  run() {

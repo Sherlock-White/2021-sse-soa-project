@@ -46,10 +46,10 @@
 
         <EditText
             android:id="@+id/from"
-            android:layout_width="247dp"
-            android:layout_height="40dp"
+            android:layout_width="279dp"
+            android:layout_height="54dp"
             android:layout_marginTop="16dp"
-            android:text="出发点"
+            android:hint="出发点"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,10 +60,10 @@
 
         <EditText
             android:id="@+id/to"
-            android:layout_width="247dp"
-            android:layout_height="40dp"
+            android:layout_width="293dp"
+            android:layout_height="59dp"
             android:layout_marginTop="14dp"
-            android:text="终点"
+            android:hint="终点"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -90,19 +90,19 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="49dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintHorizontal_bias="0.041"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
             app:srcCompat="@drawable/ic_baseline_location_on_24" />
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
+            android:layout_width="54dp"
+            android:layout_height="47dp"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
