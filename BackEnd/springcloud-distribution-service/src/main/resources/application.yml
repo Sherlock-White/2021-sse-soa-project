@@ -31,7 +31,3 @@ spring:
     username: itcast
     password: 123321
     virtualHost: /
-
-feign:
-  hystrix:
-    enabled=true

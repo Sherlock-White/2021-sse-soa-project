@@ -1,6 +1,7 @@
 package org.example.distributionservice.service;
 
 import org.example.distributionservice.feignClient.CreditClient;
+import org.example.distributionservice.result.Result;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -28,15 +29,18 @@ public class CreditService {
     }
 
     public int[] getCredit(String[] driverList){
-        String[] creditStringList = creditClient.findDriverById(driverList);
-        int[] creditList = new int[creditStringList.length];
-        for(int index = 0;index<creditList.length;index++){
-            creditList[index] = Integer.parseInt(creditStringList[index]);
-        }
-        /*for(int index = 0;index<driverList.length;index++){
+        /*for (int index = 0; index< Objects.requireNonNull(driverList).length; index++) {
+            String name = driverList[index];
+            Result result = (Result) creditClient.findDriverById(name);
+            Map<String, String> resultMap = (Map<String, String>) result.getObject();
+            int credit = Integer.parseInt(resultMap.get("creditworthiness"));
+            assert creditList != null;
+            creditList[index] = credit;
+        }*/
+        for(int index = 0;index<driverList.length;index++){
             assert creditList != null;
             creditList[index] = 100;
-        }*/
+        }
         return creditList;
     }
 }
