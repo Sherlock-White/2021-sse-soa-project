@@ -11,7 +11,7 @@
         android:text="欢迎使用嗒嗒出行\n请填写登陆信息"
         android:textColor="@color/purple_500"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/phone_number"
+        app:layout_constraintBottom_toTopOf="@+id/login0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.156"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,12 +19,12 @@
         app:layout_constraintVertical_bias="0.663" />
 
     <EditText
-        android:id="@+id/phone_number"
+        android:id="@+id/login0"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_bg"
-        android:hint="手机号码"
-        android:inputType="phone"
+        android:hint="名称"
+        android:inputType="text"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -51,7 +51,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/phone_number"
+        app:layout_constraintTop_toBottomOf="@id/login0"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintWidth_percent=".8" />
 
@@ -73,7 +73,7 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/forgotpassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

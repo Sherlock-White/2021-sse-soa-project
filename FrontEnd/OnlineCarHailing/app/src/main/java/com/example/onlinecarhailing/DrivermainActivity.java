@@ -1,16 +1,16 @@
 package com.example.onlinecarhailing;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-
 import com.example.onlinecarhailing.hail.CarHailingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class DrivermainActivity extends AppCompatActivity {
 
     //声明控件变量
     BottomNavigationView bottomNavigationView;
@@ -18,17 +18,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_drivermain);
 
         //绑定变量和控件
-        bottomNavigationView=findViewById(R.id.bottomNav);
+        bottomNavigationView=findViewById(R.id.dbottomNav);
 
         //创建默认fragment
         if(savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new CarHailingFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.dfragmentContainer,new DcarHailingFragment()).commit();
         }
 
-        //设置fragment的切换监听
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -36,19 +35,18 @@ public class MainActivity extends AppCompatActivity {
 
                 //根据选择不同显示不同界面
                 switch(item.getItemId()){
-                    case R.id.order:
-                        fragment=new OrderFragment();
+                    case R.id.dcar_hailing:
+                        fragment=new DcarHailingFragment();
                         break;
-                    case R.id.car_hailing:
-                        fragment=new CarHailingFragment();
-                        break;
-                    case R.id.profile:
-                        fragment=new ProfileFragment();
+                    case R.id.dprofile:
+                        fragment=new DprofileFragment();
                         break;
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,fragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.dfragmentContainer,fragment).commit();
                 return true;
             }
         });
+
+
     }
 }

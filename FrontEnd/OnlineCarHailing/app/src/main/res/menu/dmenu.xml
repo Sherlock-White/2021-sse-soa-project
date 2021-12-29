@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/dcar_hailing"
+        android:title="接单"
+        android:icon="@drawable/ic_baseline_directions_car_24"/>
+
+    <item android:id="@+id/dprofile"
+        android:title="个人中心"
+        android:icon="@drawable/ic_baseline_person_24"/>
+
+</menu>

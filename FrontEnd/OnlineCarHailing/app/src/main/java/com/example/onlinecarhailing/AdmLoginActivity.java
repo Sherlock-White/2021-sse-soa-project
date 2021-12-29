@@ -31,7 +31,7 @@ public class AdmLoginActivity extends AppCompatActivity {
         phone_number=findViewById(R.id.phone_number);
         password=findViewById(R.id.password);
         login=findViewById(R.id.login);
-        adm_entry=findViewById(R.id.adm_entry);
+//        adm_entry=findViewById(R.id.adm_entry);
 
         //登录按钮的响应
         login.setOnClickListener(new View.OnClickListener() {
