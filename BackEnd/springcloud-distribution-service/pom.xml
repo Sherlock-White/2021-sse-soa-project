@@ -82,6 +82,12 @@
             <version>2.7.0</version>
         </dependency>
 
+        <!--熔断器-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
+
         <!--Feign的依赖-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
