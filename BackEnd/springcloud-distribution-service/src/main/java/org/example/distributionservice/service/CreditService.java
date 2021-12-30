@@ -28,16 +28,16 @@ public class CreditService {
     }
 
     public int[] getCredit(String[] driverList){
-        String[] creditStringList = creditClient.findDriverById(driverList);
-        int[] creditList = new int[creditStringList.length];
-        for(int index = 0;index<creditList.length;index++){
-            creditList[index] = Integer.parseInt(creditStringList[index]);
-        }
+//        String[] creditStringList = creditClient.findDriverById(driverList);
+//        int[] creditList = new int[creditStringList.length];
+//        for(int index = 0;index<creditList.length;index++){
+//            creditList[index] = Integer.parseInt(creditStringList[index]);
+//        }
 
-        /*for(int index = 0;index<driverList.length;index++){
+        for(int index = 0;index<driverList.length;index++){
             assert creditList != null;
             creditList[index] = 100;
-        }*/
+        }
         return creditList;
     }
 }

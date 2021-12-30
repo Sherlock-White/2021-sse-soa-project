@@ -36,8 +36,6 @@ spring:
       simple:
         #自动签收auto  手动 manual
         acknowledge-mode: manual
-    publisher-confirms: true
-    publisher-returns: true
 feign:
   hystrix:
     enabled=true

@@ -69,7 +69,7 @@ public class Listener {
             driver[i/5][1] = map.get("jing").toString();//是纬度
             driver[i/5][2] = map.get("wei").toString(); //是经度
         }
-        System.out.println(driver);
+        //System.out.println(driver);
 
         DistributionService distributionService = new DistributionService(1,driverList.size()/5,passenger,driver);
         int[] result = distributionService.distribute();
