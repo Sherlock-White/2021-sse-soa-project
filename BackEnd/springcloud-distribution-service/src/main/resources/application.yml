@@ -32,6 +32,6 @@ spring:
     password: 123321
     virtualHost: /
 
-  feign:
-    hystrix:
-      enabled=true
+feign:
+  hystrix:
+    enabled=true
