@@ -13,6 +13,12 @@ pipeline {
                     sh 'mvn clean package dockerfile:build'
                 }
 
+                sh 'docker tag taxi_service 101.132.32.186:82/soa/taxi_service:latest'
+
+                withCredentials([usernamePassword(credentialsId: '4aaec766-4890-4f07-949d-cf4175901cd7', passwordVariable: 'password', usernameVariable: 'username')]) {
+                    sh 'docker login -u ${username} -p ${password} 101.132.32.186:82'
+                    sh 'docker push 101.132.32.186:82/soa/taxi_service:latest'
+                }
 
             }
         }
