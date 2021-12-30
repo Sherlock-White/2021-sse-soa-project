@@ -24,7 +24,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 //扫描org.example.controller包下文件
-                .apis(RequestHandlerSelectors.basePackage("org.example.orderservice.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.orderservice.controller"))
                 //扫描@Api注解的类
                 .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 //扫描@ApiOperation注解的方法
