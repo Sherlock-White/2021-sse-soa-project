@@ -34,15 +34,17 @@ public class Listener {
     private PositionClient positionClient;
     //@RabbitListener(queues = {"dispatch"})
     @Transactional
-    @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "dispatch", durable = "true"),
-            exchange = @Exchange(
-                    value = "dispatch",
-                    ignoreDeclarationExceptions = "true",
-                    type = ExchangeTypes.FANOUT
-            )
-    ))
+//    @RabbitListener(bindings = @QueueBinding(
+//            value = @Queue(value = "dispatch", durable = "true"),
+//            exchange = @Exchange(
+//                    value = "dispatch",
+//                    ignoreDeclarationExceptions = "true",
+//                    type = ExchangeTypes.FANOUT
+//            )
+//    ))
+    @RabbitListener(queues = {"dispatch"})
     public void newDistributionListen(String msg){
+        System.out.println(msg);
         //获取订单信息
         JSONObject object = JSONObject.parseObject(msg);
         System.out.println(object.toString());
