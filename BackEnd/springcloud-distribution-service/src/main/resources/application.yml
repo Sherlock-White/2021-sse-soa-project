@@ -31,7 +31,11 @@ spring:
     username: itcast
     password: 123321
     virtualHost: /
-
+    #消费端配置
+    listener:
+      simple:
+        #自动签收auto  手动 manual
+        acknowledge-mode: manual
 feign:
   hystrix:
     enabled=true
