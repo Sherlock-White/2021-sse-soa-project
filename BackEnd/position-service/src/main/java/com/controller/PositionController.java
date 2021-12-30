@@ -60,7 +60,7 @@ public class PositionController {
 //            stmt.execute("use restful_test");
 //            stmt.execute("create table restful_test.weather(ts timestamp, temperature float) tags(location nchar(64))");
 //            stmt.executeUpdate("insert into t1 using restful_test.weather tags('北京') values(now, 18.2)");
-        ResultSet rs = stmt.executeQuery("select * from taxi.position2 order by ts ASC limit "+ASC_N+","+ASC_N+10);
+        ResultSet rs = stmt.executeQuery("select * from taxi.position2 order by ts ASC limit "+ASC_N+",10");
         ASC_N+=10;
         ResultSetMetaData meta = rs.getMetaData();
         while (rs.next()) {
