@@ -24,7 +24,7 @@ zuul:
     route2:
       taxi-service:
         path: /taxi-service/**
-        serviceId: taxiservice
+        serviceId: taxi-service
         #url: http://106.15.3.13:9001
     route3:
       path: /distribution-service/**
