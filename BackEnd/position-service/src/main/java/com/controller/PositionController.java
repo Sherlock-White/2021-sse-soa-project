@@ -5,6 +5,7 @@ import com.entity.Position;
 import com.service.PositionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class PositionController {
 //    }
 
 
-    @ApiOperation("获取同一时间十辆车的位置")
+    @ApiOperation("获取同一时间车的位置")
     @CrossOrigin
     @GetMapping(value="/getAll")
     public List<Position> query() throws SQLException, ClassNotFoundException {
@@ -92,7 +93,8 @@ public class PositionController {
 
     @CrossOrigin
     @GetMapping(value="/getTime")
-    public List<Position> queryTime(String ts) throws SQLException, ClassNotFoundException {
+    @ApiOperation("获取某一时刻车的位置")
+    public List<Position> queryTime(@RequestBody @ApiParam(value = "time", required = true) String ts) throws SQLException, ClassNotFoundException {
         final String host = "139.224.251.185";
         //return weatherService.queryAll();
         List<Position> list = new ArrayList<Position>();

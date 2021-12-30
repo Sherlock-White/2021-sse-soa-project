@@ -22,7 +22,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 //扫描com.au.sa包下文件
-                .apis(RequestHandlerSelectors.basePackage("com.au.sa"))
+                .apis(RequestHandlerSelectors.basePackage("com.controller"))
                 //扫描@Api注解的类
                 .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 //扫描@ApiOperation注解的方法
@@ -34,8 +34,8 @@ public class SwaggerConfig {
     //接口文档的描述
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("XXX模块")
-                .description("XXX模块")
+                .title("位置微服务")
+                .description("位置微服务")
                 .version("1.0")
                 .build();
     }
