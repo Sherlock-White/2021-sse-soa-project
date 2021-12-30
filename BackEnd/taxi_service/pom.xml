@@ -79,6 +79,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>taxi_service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
