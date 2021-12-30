@@ -22,9 +22,9 @@ zuul:
       serviceId: userservice
       url: http://47.103.9.250:9000
     route2:
-      taxi-service:
+      taxiservice:
         path: /taxi-service/**
-        serviceId: taxi-service
+        serviceId: taxiservice
         #url: http://106.15.3.13:9001
     route3:
       path: /distribution-service/**
@@ -60,7 +60,7 @@ ribbon:
   eureka:
     enabled: false
 
-taxi-service:
+taxiservice:
   ribbon:
     listOfServers: http://106.15.3.13:9001,http://101.132.32.186:9001
 
