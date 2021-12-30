@@ -20,6 +20,7 @@ pipeline {
                     sh 'docker push 101.132.32.186:82/soa/taxi_service:latest'
                 }
 
+                sh 'docker run -d --name taxi_service -p 9001:9001 taxi_service:latest'
             }
         }
     }
