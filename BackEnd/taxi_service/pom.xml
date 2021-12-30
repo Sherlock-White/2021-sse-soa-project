@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.taxi</groupId>
-    <artifactId>TaxiService</artifactId>
+    <artifactId>taxi_service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>TaxiService</name>
-    <description>TaxiService</description>
+    <name>taxi_service</name>
+    <description>taxi_service</description>
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
