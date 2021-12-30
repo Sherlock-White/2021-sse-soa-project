@@ -10,7 +10,7 @@ pipeline {
         stage('编译构建') {
             steps {
                 dir('./BackEnd/TaxiService') {
-                    sh 'mvn clean package'
+                    sh 'mvn clean package dockerfile:build'
                 }
             }
         }
