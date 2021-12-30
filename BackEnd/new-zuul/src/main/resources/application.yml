@@ -22,9 +22,10 @@ zuul:
       serviceId: userservice
       url: http://47.103.9.250:9000
     route2:
-      path: /taxi-service/**
-      serviceId: taxiservice
-      url: http://106.15.3.13:9001
+      taxi-service:
+        path: /taxi-service/**
+        serviceId: taxiservice
+        #url: http://106.15.3.13:9001
     route3:
       path: /distribution-service/**
       serviceId: distribution-service
@@ -55,6 +56,13 @@ zuul:
     socket-timeout-millis: 60000
     connect-timeout-millis: 60000
 
+ribbon:
+  eureka:
+    enabled: false
+
+taxi-service:
+  ribbon:
+    listOfServers: http://106.15.3.13:9001,http://101.132.32.186:9001
 
 #  sensitive-headers: Access-Control-Allow-Origin
 #  ignored-headers: Access-Control-Allow-Credentials,Access-Control-Allow-Origin,Vary,X-Frame-Options,token
