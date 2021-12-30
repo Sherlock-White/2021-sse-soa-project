@@ -38,14 +38,7 @@ public class Listener {
     //final private String key="5d377f781223f6c299389cc8c484c723";
 
     @Transactional
-    @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "newOrder", durable = "true"),
-            exchange = @Exchange(
-                    value = "taxiHailing",
-                    ignoreDeclarationExceptions = "true",
-                    type = ExchangeTypes.FANOUT
-            )
-    ))
+    @RabbitListener(queues = {"newOrder"})
     public void newOrderListen(String msg){
         System.out.println("接收到消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
@@ -143,9 +136,8 @@ public class Listener {
         message.put("from_lat",from_lat.toString());
         message.put("to_lng",to_lng.toString());
         message.put("to_lat",to_lat.toString());
-        rabbitTemplate.convertAndSend("dispatch","",JSON.toJSONString(message));
+        rabbitTemplate.convertAndSend("dispatch","",message);
     }
-
 
     @Transactional
     @RabbitListener(queues = {"DispatchResponse"})
@@ -269,7 +261,7 @@ public class Listener {
         //已派单状态下需要通知派单微服务释放司机
         if(sendFlag){
 
-            rabbitTemplate.convertAndSend("cancelDispatch","",JSON.toJSONString(message));
+            rabbitTemplate.convertAndSend("cancelDispatch","",message);
         }
     }
 
@@ -383,7 +375,7 @@ public class Listener {
     @Transactional
     @RabbitListener(queues="orderTaking")
     public void passengerListen(String msg){
-        System.out.println("接收到消息：" + msg);
+//        System.out.println("接收到消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
         if(object.getString("state").equals("5")) {
             String order_id = object.getString("order_id");
