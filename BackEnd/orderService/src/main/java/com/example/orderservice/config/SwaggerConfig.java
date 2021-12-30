@@ -13,7 +13,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.*;
-
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -25,7 +24,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 //扫描org.example.controller包下文件
-                .apis(RequestHandlerSelectors.basePackage("org.example.controller"))
+                .apis(RequestHandlerSelectors.basePackage("org.example.orderservice.controller"))
                 //扫描@Api注解的类
                 .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 //扫描@ApiOperation注解的方法
