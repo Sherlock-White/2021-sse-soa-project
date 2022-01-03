@@ -22,3 +22,33 @@
 
 ## 开发环境
 JDK：1.8  
+
+## 分支说明
+### main
+比较旧的分支，主要是中期的一些测试服务  
+### cyh:
+位置服务、zuul网关、eureka服务注册中心  
+├── README.md                     // help  
+└── BackEn                        // 后端服务  
+    ├── new-zuul                  // zuul网关  
+    ├── position-service          // 获取位置服务  
+    ├── ribbon-service-consumer   
+    └── springcloud-eureka-server // 服务注册中心  
+### frontend
+移动端前端
+### hnc
+用户服务
+### hth
+订单服务（但好像有些改坏了，所以没在跑）
+### lzr
+监控服务
+### order_taking_service
+接单服务
+### sxy
+排单服务
+### taxi_service
+打车服务
+### try-to-save-order
+回退订单服务到没配好swagger的阶段（目前正在跑）
+### zsy
+稍微旧一点的派单服务
