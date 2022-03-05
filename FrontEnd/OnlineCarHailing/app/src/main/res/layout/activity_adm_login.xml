@@ -7,19 +7,19 @@
     tools:context=".AdmLoginActivity">
 
 
-
     <ImageView
         android:id="@+id/img"
-        android:layout_width="300dp"
-        android:layout_height="0dp"
+        android:layout_width="371dp"
+        android:layout_height="178dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/car_hailing"
+        android:src="@drawable/car_with_people"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.27"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintVertical_bias="0.146" />
 
     <TextView
         android:id="@+id/note"
@@ -27,14 +27,12 @@
         android:layout_height="53dp"
         android:layout_marginBottom="356dp"
         android:text="欢迎使用嗒嗒出行\n请填写管理员登录信息"
-        android:textColor="@color/purple_500"
+        android:textColor="@color/theme"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.215"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bg"
-        app:layout_constraintVertical_bias="0.064" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/phone_number"

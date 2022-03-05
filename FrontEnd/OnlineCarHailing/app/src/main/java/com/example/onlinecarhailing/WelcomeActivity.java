@@ -31,8 +31,8 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        logo=findViewById(R.id.logo);
-        name=findViewById(R.id.name);
+//        logo=findViewById(R.id.logo);
+//        name=findViewById(R.id.name);
         begin =findViewById(R.id.begin);
 
         lottieAnimationView=findViewById(R.id.lottie);

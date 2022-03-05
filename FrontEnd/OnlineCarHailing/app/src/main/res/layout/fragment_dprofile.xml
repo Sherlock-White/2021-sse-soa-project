@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4E1B2">
+    android:background="#FFFFFF">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="78dp"
+        android:layout_height="37dp"
         android:text="个人中心"
-        android:textColor="@color/purple_500"
+        android:textColor="@color/theme"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/dusername2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,13 +25,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_bg"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:hint="注册名称"
         android:inputType="text"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
@@ -78,6 +78,7 @@
         app:layout_constraintTop_toBottomOf="@id/dtruename2"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintWidth_percent=".8" />
+
     <EditText
         android:id="@+id/dident2"
         android:layout_width="0dp"
@@ -96,6 +97,7 @@
         app:layout_constraintTop_toBottomOf="@id/dphone_number2"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintWidth_percent=".8" />
+
     <EditText
         android:id="@+id/dcarnum2"
         android:layout_width="0dp"
@@ -116,8 +118,6 @@
         app:layout_constraintWidth_percent=".8" />
 
 
-
-
     <Button
         android:id="@+id/didentcode2"
         android:layout_width="0dp"
@@ -133,6 +133,7 @@
         app:layout_constraintTop_toBottomOf="@+id/dcarnum2"
         app:layout_constraintVertical_bias="0.437"
         app:layout_constraintWidth_percent=".8" />
+
     <Button
         android:id="@+id/dchange2"
         android:layout_width="0dp"
@@ -148,8 +149,6 @@
         app:layout_constraintTop_toBottomOf="@+id/didentcode2"
         app:layout_constraintVertical_bias="0.437"
         app:layout_constraintWidth_percent=".8" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

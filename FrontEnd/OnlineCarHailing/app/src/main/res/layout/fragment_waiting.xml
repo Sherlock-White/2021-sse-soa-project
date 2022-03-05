@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:text="         00:00:00"
-        android:textColor="@color/purple_500"
+        android:textColor="@color/theme"
         android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

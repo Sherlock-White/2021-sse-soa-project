@@ -81,8 +81,6 @@ public class OrderFragment extends Fragment {
                         String departure=jsonObject.getString("departure");
                         String destination=jsonObject.getString("destination");
 
-
-
                         mObjectList.add("订单编号："+orderid+"\n"+"司机姓名："+driver+ " "+"司机手机："+driver_phone+"\n"+"订单状态："+state+"\n"+"出发地："+departure+"\n"+"目的地："+destination);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
