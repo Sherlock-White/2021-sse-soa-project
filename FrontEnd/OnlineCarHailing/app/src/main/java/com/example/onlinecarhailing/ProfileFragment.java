@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,7 +27,8 @@ import okhttp3.Response;
 
 public class ProfileFragment extends Fragment {
 
-    EditText phone_number, commonaddress1, commonaddress2, username, truename;
+    EditText phone_number, commonaddress1, commonaddress2, username;
+    TextView truename;
     Button change2;
 
 
