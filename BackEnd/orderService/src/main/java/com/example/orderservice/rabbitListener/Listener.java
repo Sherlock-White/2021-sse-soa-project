@@ -205,7 +205,7 @@ public class Listener {
     }
 
     @Transactional
-    @RabbitListener(queues = {"cancelOrderFromHailing"})
+    @RabbitListener(queues = {"hailingCancel"})
     public void cancelOrderFromHailing(String msg){
 //        System.out.println("接收到消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
