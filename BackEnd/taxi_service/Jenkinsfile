@@ -7,7 +7,7 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/taxi_service']], extensions: [], userRemoteConfigs: [[credentialsId: 'f98411a7-74b5-4f6f-a32a-7ec84ffa116d', url: 'git@github.com:Sherlock-White/2021-sse-soa-project.git']]])
             }
         }
-        stage('编译、构建、打包、部署') {
+        stage('本地编译、构建、打包、部署') {
             steps {
                 dir('./BackEnd/taxi_service') {
                     sh 'mvn clean package dockerfile:build'
@@ -15,12 +15,15 @@ pipeline {
 
                 sh 'docker tag taxi_service 101.132.32.186:82/soa/taxi_service:latest'
 
+                sh 'docker run -d --name taxi_service -p 9001:9001 taxi_service:latest'
+            }
+        }
+        stage('推送至Harbor') {
+            steps {
                 withCredentials([usernamePassword(credentialsId: '4aaec766-4890-4f07-949d-cf4175901cd7', passwordVariable: 'password', usernameVariable: 'username')]) {
                     sh 'docker login -u ${username} -p ${password} 101.132.32.186:82'
                     sh 'docker push 101.132.32.186:82/soa/taxi_service:latest'
                 }
-
-                sh 'docker run -d --name taxi_service -p 9001:9001 taxi_service:latest'
             }
         }
     }
