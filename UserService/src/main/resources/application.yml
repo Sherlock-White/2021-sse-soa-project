@@ -4,7 +4,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://139.224.251.185:8761/eureka/
+      defaultZone: http://106.15.3.13:8085/eureka/
 #    register-with-eureka: false
 #    fetch-registry: false
 
