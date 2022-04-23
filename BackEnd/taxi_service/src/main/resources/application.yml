@@ -16,4 +16,10 @@ spring:
     password: 123321
     virtual-host: /
 
+feign:
+  httpclient:
+    enabled: true
+    max-connections-per-route: 10
+    max-connections: 100
+
 
