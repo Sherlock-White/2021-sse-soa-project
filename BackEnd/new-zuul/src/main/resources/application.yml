@@ -8,7 +8,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/ #当前zuul网关想要注册到哪个注册中心这里注册到之前搭的9000上。
+      defaultZone: http://106.15.3.13:8085/eureka/ #当前zuul网关想要注册到哪个注册中心这里注册到之前搭的9000上。
 
 #路由规则定义。这里定义两种路由规则route1和route2
 #，代表访问网关/test01/**或/test02/**时。
