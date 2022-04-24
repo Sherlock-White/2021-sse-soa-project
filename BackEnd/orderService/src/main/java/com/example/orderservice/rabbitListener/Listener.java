@@ -173,11 +173,10 @@ public class Listener {
         }
         //判断是否有已取消的流水，为后续分情况处理，插入新流水
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
-        statementQueryWrapper.eq("order_id",order_id);
+        statementQueryWrapper.eq("order_id",order_id).orderByDesc("stat_time");
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
-        boolean flag=false;
         for(Statement statement:statementList){
-            if(statement.getOrder_state().equals("2")||statement.getOrder_state().equals("4")||statement.getOrder_state().equals("5")){
+            if(!statement.getOrder_state().equals("1")){
                 return;
             }
         }
@@ -385,9 +384,9 @@ public class Listener {
     public void passengerListen(String msg){
         System.out.println("接收到消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
-        if(object.getString("state").equals("5")) {
+        if(object.getString("state").equals("6")) {
             String order_id = object.getString("order_id");
-            Double price = 25.50;
+            //Double price = 25.50;
             //判断是否有该订单
             QueryWrapper<Order> orderQueryWrapper = new QueryWrapper<>();
             orderQueryWrapper.eq("order_id", order_id);
@@ -401,24 +400,19 @@ public class Listener {
             List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
             boolean flag = false;
             for (Statement statement : statementList) {
-                if (statement.getOrder_state().equals("5") || statement.getOrder_state().equals("3")) {
+                if (statement.getOrder_state().equals("6") || statement.getOrder_state().equals("3")) {
                     return;
-                } else if (statement.getOrder_state().equals("4")) {
+                } else if (statement.getOrder_state().equals("5")) {
                     flag = true;
                 }
             }
-            //修改订单金额字段，插入新流水
+            //插入新流水
             if (flag) {
-                //登入金额
-                UpdateWrapper<Order> orderUpdateWrapper = new UpdateWrapper<>();
-                orderUpdateWrapper.eq("order_id", order_id).set("price", price);
-                orderMapper.update(order, orderUpdateWrapper);
-                //插入新流水
                 Statement statement1 = new Statement();
                 statement1.setOrder_id(order_id);
-                statement1.setOrder_state("5");
+                statement1.setOrder_state("6");
                 statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
-                StringBuilder stat_id = new StringBuilder();
+                StringBuilder stat_id;
                 while (true) {
                     stat_id = new StringBuilder();
                     Random rd = new SecureRandom();
@@ -435,7 +429,9 @@ public class Listener {
                 statement1.setStat_id(stat_id.toString());
                 statementMapper.insert(statement1);
             }
-        }else if(object.getString("state").equals("4")){
+        }
+        //乘客上车
+        else if(object.getString("state").equals("4")){
             String order_id=object.getString("order_id");
             //判断是否有该订单
             QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
@@ -450,7 +446,7 @@ public class Listener {
             List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
             boolean flag=false;
             for(Statement statement:statementList){
-                if(statement.getOrder_state().equals("4")||statement.getOrder_state().equals("5")||statement.getOrder_state().equals("3")){
+                if(statement.getOrder_state().equals("6")||statement.getOrder_state().equals("4")||statement.getOrder_state().equals("5")||statement.getOrder_state().equals("3")){
                     return;
                 }
                 else if(statement.getOrder_state().equals("2")){
@@ -483,6 +479,7 @@ public class Listener {
         }
     }
 
+    //是否存在未结束的订单
     private boolean existsUnpaidOrder(String passenger_id){
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
         orderQueryWrapper.eq("passenger_id",passenger_id).orderByDesc("order_id");
@@ -494,7 +491,7 @@ public class Listener {
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
         statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
         Statement statement=statementMapper.selectList(statementQueryWrapper).get(0);
-        if(!statement.getOrder_state().equals("3")&&!statement.getOrder_state().equals("5")){
+        if(!statement.getOrder_state().equals("3")&&!statement.getOrder_state().equals("6")){
             return true;
         }else{
             return false;

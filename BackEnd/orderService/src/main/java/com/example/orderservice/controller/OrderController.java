@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.Month;
 import java.time.ZoneId;
@@ -46,6 +47,65 @@ public class OrderController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+
+    @ApiOperation(value = "乘客到达，并返回金额")
+    @GetMapping("/v1/orders/completed/{order_id}")
+    public Double passengerArriving(@PathVariable String order_id){
+        QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
+        orderQueryWrapper.eq("order_id",order_id);
+        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return null;}
+        Order order=orderMapper.selectList(orderQueryWrapper).get(0);
+        if(order!=null){
+            Double price;
+
+            QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
+            if(!statementList.get(0).getOrder_state().equals("4")){
+                return 0.0;
+            }
+
+            Instant start_time = statementList.get(0).getStat_time();
+            if(start_time==null) return 0.0;
+            Instant end_time = Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8));
+            int min = (int) Duration.between(start_time,end_time).getSeconds()/60;
+
+            if(min<=10) price=18.0;
+            else if(min<=60) price=18.0+0.5*(min-10);
+            else if(min<=180) price=18.0+2*(60-10)+(min-10);
+            else price=18.0+2*(60-10)+(180-10);
+
+            UpdateWrapper<Order> orderUpdateWrapper = new UpdateWrapper<>();
+            orderUpdateWrapper.eq("order_id", order_id).set("price", price);
+            orderMapper.update(order, orderUpdateWrapper);
+
+            Statement statement1 = new Statement();
+            statement1.setOrder_id(order_id);
+            statement1.setOrder_state("5");
+            statement1.setStat_time(end_time);
+            StringBuilder stat_id;
+            while (true) {
+                stat_id = new StringBuilder();
+                Random rd = new SecureRandom();
+                for (int i = 0; i < 20; i++) {
+                    int bit = rd.nextInt(10);
+                    stat_id.append(String.valueOf(bit));
+                }
+                QueryWrapper<Statement> statementWrapper = new QueryWrapper<>();
+                statementWrapper.eq("stat_id", stat_id.toString());
+                if (statementMapper.selectOne(statementWrapper) == null) {
+                    break;
+                }
+            }
+            statement1.setStat_id(stat_id.toString());
+            statementMapper.insert(statement1);
+
+            return price;
+        }
+        return 0.0;
+    }
+
+
     @ApiOperation(value = "获取乘客进行中的订单")
     @GetMapping("/v1/passengers/{passenger_id}/orders/current")
     public TaxiOrder getCurrentOrderForPassenger(@PathVariable String passenger_id){
@@ -67,7 +127,7 @@ public class OrderController {
 
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
-            taxiOrder.setPassenger_phone(resultMap.get("phone"));
+            if(resultMap!=null) taxiOrder.setPassenger_phone(resultMap.get("phone"));
             if(order.getDriver_id()!=null && !order.getDriver_id().isEmpty() && !order.getDriver_id().equals("")) {
                 result = userClient.findDriverById(order.getDriver_id());
                 resultMap = (Map<String, String>) result.getObject();
@@ -81,16 +141,68 @@ public class OrderController {
             for (Statement statement : statementList) {
                 if (statement.getOrder_state().equals("5") || statement.getOrder_state().equals("3")) {
                     taxiOrder.setEnd_time(statement.getStat_time());
-                } else if (statement.getOrder_state().equals("2")) {
+                } else if (statement.getOrder_state().equals("4")) {
                     taxiOrder.setStart_time(statement.getStat_time());
+                }else if(statement.getOrder_state().equals("1")){
+                    if(taxiOrder.getStart_time()!=null && !taxiOrder.getStart_time().equals(""))  taxiOrder.setStart_time(statement.getStat_time());
                 }
             }
         }
-        if(!taxiOrder.getOrder_state().equals("5")&&!taxiOrder.getOrder_state().equals("3")) {
+        if(!taxiOrder.getOrder_state().equals("6")&&!taxiOrder.getOrder_state().equals("3")) {
             return taxiOrder;
         }
         return null;
     }
+
+
+    @ApiOperation(value = "获取司机进行中的订单")
+    @GetMapping("/v1/drivers/{driver_id}/orders/current")
+    public TaxiOrder getCurrentOrderForDriver(@PathVariable String driver_id){
+        TaxiOrder taxiOrder=new TaxiOrder();
+        QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
+        orderQueryWrapper.eq("driver_id",driver_id).orderByDesc("order_id");
+        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return null;}
+        Order order=orderMapper.selectList(orderQueryWrapper).get(0);
+        if(order!=null) {
+            taxiOrder.setOrder_id(order.getOrder_id());
+            taxiOrder.setPassenger_id(order.getPassenger_id());
+            taxiOrder.setDriver_id(order.getDriver_id());
+            taxiOrder.setDeparture(order.getDeparture());
+            taxiOrder.setDestination(order.getDestination());
+            taxiOrder.setFrom_lng(order.getFrom_lng());
+            taxiOrder.setFrom_lat(order.getFrom_lat());
+            taxiOrder.setTo_lng(order.getTo_lng());
+            taxiOrder.setTo_lat(order.getTo_lat());
+
+            Result result= userClient.findPassengerById(order.getPassenger_id());
+            Map<String,String> resultMap=(Map<String, String>) result.getObject();
+            if(resultMap!=null) taxiOrder.setPassenger_phone(resultMap.get("phone"));
+            if(order.getDriver_id()!=null && !order.getDriver_id().isEmpty() && !order.getDriver_id().equals("")) {
+                result = userClient.findDriverById(order.getDriver_id());
+                resultMap = (Map<String, String>) result.getObject();
+                if(resultMap!=null) taxiOrder.setDriver_phone(resultMap.get("phone"));
+            }
+            //查询流水
+            QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
+            taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
+            for (Statement statement : statementList) {
+                if (statement.getOrder_state().equals("5") || statement.getOrder_state().equals("3")) {
+                    taxiOrder.setEnd_time(statement.getStat_time());
+                } else if (statement.getOrder_state().equals("4")) {
+                    taxiOrder.setStart_time(statement.getStat_time());
+                }else if(statement.getOrder_state().equals("1")){
+                    if(taxiOrder.getStart_time()!=null && !taxiOrder.getStart_time().equals(""))  taxiOrder.setStart_time(statement.getStat_time());
+                }
+            }
+        }
+        if(!taxiOrder.getOrder_state().equals("6")&&!taxiOrder.getOrder_state().equals("3")) {
+            return taxiOrder;
+        }
+        return null;
+    }
+
 
     @ApiOperation(value ="按照时间顺序获取某位乘客的所有订单")
     @GetMapping("/v1/passengers/{passenger_id}/orders")
@@ -127,6 +239,10 @@ public class OrderController {
             taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
             //获取订单开始时间
             Statement stat;
+            statementQueryWrapper.clear();
+            statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","1");
+            stat=statementMapper.selectOne(statementQueryWrapper);
+            if(stat!=null){taxiOrder.setStart_time(stat.getStat_time());}
             statementQueryWrapper.clear();
             statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","4");
             stat=statementMapper.selectOne(statementQueryWrapper);
@@ -180,6 +296,10 @@ public class OrderController {
             //获取订单开始时间
             Statement stat;
             statementQueryWrapper.clear();
+            statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","1");
+            stat=statementMapper.selectOne(statementQueryWrapper);
+            if(stat!=null){taxiOrder.setStart_time(stat.getStat_time());}
+            statementQueryWrapper.clear();
             statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","4");
             stat=statementMapper.selectOne(statementQueryWrapper);
             if(stat!=null){taxiOrder.setStart_time(stat.getStat_time());}
@@ -195,6 +315,18 @@ public class OrderController {
             orderList.add(taxiOrder);
         }
         return orderList;
+    }
+
+    @ApiOperation(value ="根据订单id获取订单")
+    @GetMapping("/v1/orders/price/{order_id}")
+    public Double getOrderPriceByID(@PathVariable String order_id){
+        QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
+        orderQueryWrapper.eq("order_id",order_id);
+        Order order=orderMapper.selectOne(orderQueryWrapper);
+        if(order!=null){
+            if(order.getPrice()>0) return order.getPrice();
+        }
+        return 0.0;
     }
 
     @ApiOperation(value ="根据订单id获取订单")
@@ -230,6 +362,10 @@ public class OrderController {
         taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
         //获取订单开始时间
         Statement stat;
+        statementQueryWrapper.clear();
+        statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","1");
+        stat=statementMapper.selectOne(statementQueryWrapper);
+        if(stat!=null){taxiOrder.setStart_time(stat.getStat_time());}
         statementQueryWrapper.clear();
         statementQueryWrapper.eq("order_id",order.getOrder_id()).eq("order_state","4");
         stat=statementMapper.selectOne(statementQueryWrapper);
