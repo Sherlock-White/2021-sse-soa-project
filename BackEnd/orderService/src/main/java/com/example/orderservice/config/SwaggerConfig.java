@@ -30,7 +30,7 @@ public class SwaggerConfig /*implements WebMvcConfigurer*/ {
     @Bean
     public Docket createUserApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("orderService")
+                .groupName("OrderService")
                 .apiInfo(apiUserInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.example.orderservice.controller"))// com包下所有API都交给Swagger2管理
@@ -45,7 +45,7 @@ public class SwaggerConfig /*implements WebMvcConfigurer*/ {
     private ApiInfo apiUserInfo() {
         return new ApiInfoBuilder()
                 .title("orderAPI") // 标题
-                .description("订单") // 描述
+                .description("order") // 描述
                 .termsOfServiceUrl("https://www.tongji.edu.cn") // 服务网址，一般写公司地址
                 .version("1.0") // 版本
                 .build();
