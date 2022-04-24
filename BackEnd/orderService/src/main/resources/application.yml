@@ -13,7 +13,7 @@ spring:
     url: jdbc:mysql://101.132.32.186:8066/didi?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-    password: 123456
+    password: gongzuom1ma
   rabbitmq:
     host: 47.102.204.30
     port: 5672
