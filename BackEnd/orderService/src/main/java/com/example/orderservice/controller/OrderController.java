@@ -67,8 +67,10 @@ public class OrderController {
 
             Instant start_time = statementList.get(0).getStat_time();
             if(start_time==null) return null;
-            Instant end_time = Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8));
-            int min = (int) Duration.between(start_time,end_time).getSeconds()/60;
+            System.out.println("上车时间："+start_time);
+            Instant end_time = Instant.now().plusMillis(TimeUnit.HOURS.toMillis(16));
+            int min = (int) Duration.between(start_time,end_time).getSeconds()/60-480;
+            System.out.println("行程用时："+min+"分钟");
 
             if(min<=10) price=18.0;
             else if(min<=60) price=18.0+0.5*(min-10);

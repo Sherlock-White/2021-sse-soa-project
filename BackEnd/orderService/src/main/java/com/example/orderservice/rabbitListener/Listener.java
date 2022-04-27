@@ -118,7 +118,7 @@ public class Listener {
         Statement statement=new Statement();
         statement.setOrder_id(order_id.toString());
         statement.setOrder_state("1");
-        statement.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
+        statement.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(16)));
         StringBuilder stat_id= new StringBuilder();
         while(true) {
             stat_id=new StringBuilder();
@@ -183,7 +183,7 @@ public class Listener {
         Statement statement1 = new Statement();
         statement1.setOrder_id(order_id);
         statement1.setOrder_state("2");
-        statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
+        statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(16)));
         StringBuilder stat_id = new StringBuilder();
         while (true) {
             stat_id = new StringBuilder();
@@ -323,7 +323,7 @@ public class Listener {
             }
         }
         statement.setStat_id(stat_id.toString());
-        statement.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
+        statement.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(16)));
         statementMapper.insert(statement);
     }
 
@@ -382,9 +382,10 @@ public class Listener {
     @Transactional
     @RabbitListener(queues="orderTaking")
     public void passengerListen(String msg){
-        System.out.println("接收到消息：" + msg);
+        System.out.println("接收到消息："+msg);
         JSONObject object=JSONObject.parseObject(msg);
-        if(object.getString("state").equals("6")) {
+        //支付订单
+        if(object.getString("state").toString().equals("6")) {
             String order_id = object.getString("order_id");
             //Double price = 25.50;
             //判断是否有该订单
@@ -411,7 +412,8 @@ public class Listener {
                 Statement statement1 = new Statement();
                 statement1.setOrder_id(order_id);
                 statement1.setOrder_state("6");
-                statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
+                Instant time=Instant.now().plusMillis(TimeUnit.HOURS.toMillis(16));
+                statement1.setStat_time(time);
                 StringBuilder stat_id;
                 while (true) {
                     stat_id = new StringBuilder();
@@ -431,7 +433,7 @@ public class Listener {
             }
         }
         //乘客上车
-        else if(object.getString("state").equals("4")){
+        else if(object.getString("state").toString().equals("4")){
             String order_id=object.getString("order_id");
             //判断是否有该订单
             QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
@@ -458,7 +460,8 @@ public class Listener {
                 Statement statement1 = new Statement();
                 statement1.setOrder_id(order_id);
                 statement1.setOrder_state("4");
-                statement1.setStat_time(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
+                Instant time = Instant.now().plusMillis(TimeUnit.HOURS.toMillis(16));
+                statement1.setStat_time(time);
                 StringBuilder stat_id = new StringBuilder();
                 while (true) {
                     stat_id = new StringBuilder();

@@ -11,8 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Wrapper;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.temporal.ChronoField;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
 class OrderserviceApplicationTests {
@@ -20,6 +22,7 @@ class OrderserviceApplicationTests {
     PosClient posClient;
     @Test
     void contextLoads() {
+        System.out.println(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8)));
         /*
         String departure="同济大学嘉定校区";
         String destination="同济大学四平路校区";
