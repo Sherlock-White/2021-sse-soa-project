@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Order {
     private String order_id;
-    private int state = 0;
-    private long time = System.currentTimeMillis();
+    private String state ;
+    private String time = new Long(System.currentTimeMillis()).toString();
 
-    public Order(String order_id, int state){
+    public Order(String order_id, String state){
         this.order_id=order_id;
         this.state=state;
     }

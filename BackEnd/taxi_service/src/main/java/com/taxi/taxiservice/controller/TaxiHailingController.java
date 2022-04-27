@@ -42,8 +42,9 @@ public class TaxiHailingController {
 
     @ApiOperation(value = "支付")
     @PostMapping("v1/payment")
-    public void pay(@RequestParam(value = "order_id") String order_id){
-        rabbitTemplate.convertAndSend("ordertaking","",new Order(order_id,6));
+    public String pay(@RequestParam(value = "order_id") String order_id){
+        rabbitTemplate.convertAndSend("orderTaking","",new Order(order_id,"6"));
+        return "success";
     }
 
     @ApiOperation(value = "用户取消打车请求")
