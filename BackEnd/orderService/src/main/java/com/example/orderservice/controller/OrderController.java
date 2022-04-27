@@ -62,11 +62,11 @@ public class OrderController {
             statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
             List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
             if(!statementList.get(0).getOrder_state().equals("4")){
-                return 0.0;
+                return null;
             }
 
             Instant start_time = statementList.get(0).getStat_time();
-            if(start_time==null) return 0.0;
+            if(start_time==null) return null;
             Instant end_time = Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8));
             int min = (int) Duration.between(start_time,end_time).getSeconds()/60;
 
@@ -102,7 +102,7 @@ public class OrderController {
 
             return price;
         }
-        return 0.0;
+        return null;
     }
 
 
@@ -317,7 +317,7 @@ public class OrderController {
         return orderList;
     }
 
-    @ApiOperation(value ="根据订单id获取订单")
+    @ApiOperation(value ="根据订单id获取订单的价格")
     @GetMapping("/v1/orders/price/{order_id}")
     public Double getOrderPriceByID(@PathVariable String order_id){
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
@@ -326,7 +326,7 @@ public class OrderController {
         if(order!=null){
             if(order.getPrice()>0) return order.getPrice();
         }
-        return 0.0;
+        return null;
     }
 
     @ApiOperation(value ="根据订单id获取订单")
