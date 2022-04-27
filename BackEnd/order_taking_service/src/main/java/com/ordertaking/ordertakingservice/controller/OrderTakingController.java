@@ -27,7 +27,7 @@ public class OrderTakingController {
     @ApiOperation(value = "行程结束")
     @PostMapping("v1/arrival")
     public Double arrival(@RequestParam(value = "order_id") String order_id){
-        return orderClient.getPrice(new Order(order_id,5));
+        return orderClient.getPrice(order_id);
     }
 
 }
