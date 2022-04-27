@@ -35,13 +35,13 @@ public class TaxiHailingController {
     }
 
     @ApiOperation(value = "获取订单价格")
-    @PostMapping("v1/getPrice")
-    public Double getPrice(@RequestParam(value = "order_id") String order_id){
+    @GetMapping("v1/price/{order_id}")
+    public Double getPrice(@PathVariable(value = "order_id") String order_id){
         return orderClient.getPrice(order_id);
     }
 
     @ApiOperation(value = "支付")
-    @PostMapping("v1/pay")
+    @PostMapping("v1/payment")
     public void pay(@RequestParam(value = "order_id") String order_id){
         rabbitTemplate.convertAndSend("ordertaking","",new Order(order_id,6));
     }
