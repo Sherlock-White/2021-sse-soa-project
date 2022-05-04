@@ -47,6 +47,41 @@ public class OrderController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @ApiOperation(value = "返回乘客最近一笔订单的状态")
+    @GetMapping("/v1/orders/recent/state/passenger/{passenger_id}")
+    public String getRecentStateForPassenger(@PathVariable String passenger_id){
+        QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
+        orderQueryWrapper.eq("passenger_id",passenger_id).orderByDesc("order_id");
+        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return null;}
+        Order order=orderMapper.selectList(orderQueryWrapper).get(0);
+        if(order!=null){
+            QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
+            if(!statementList.isEmpty()){
+                return statementList.get(0).getOrder_state();
+            }
+        }
+        return null;
+    }
+
+    @ApiOperation(value = "返回司机最近一笔订单的状态")
+    @GetMapping("/v1/orders/recent/state/driver/{driver_id}")
+    public String getRecentStateForDriver(@PathVariable String driver_id){
+        QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
+        orderQueryWrapper.eq("driver_id",driver_id).orderByDesc("order_id");
+        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return null;}
+        Order order=orderMapper.selectList(orderQueryWrapper).get(0);
+        if(order!=null){
+            QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
+            if(!statementList.isEmpty()){
+                return statementList.get(0).getOrder_state();
+            }
+        }
+        return null;
+    }
 
     @ApiOperation(value = "乘客到达，并返回金额")
     @GetMapping("/v1/orders/completed/{order_id}")
