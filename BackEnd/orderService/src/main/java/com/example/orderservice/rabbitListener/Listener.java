@@ -278,24 +278,24 @@ public class Listener {
     public void cancelOrderFromDispatching(String msg){
         System.out.println("接收到消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
-        String passenger_id=object.getString("passenger_id");
+        String order_id=object.getString("order_id");
         String driver_id=object.getString("driver_id");
         String state=object.getString("is_distributed");
         //获取最新订单
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
-        orderQueryWrapper.eq("passenger_id",passenger_id).orderByDesc("order_id");
-        String order_id;
+        orderQueryWrapper.eq("order_id",order_id);
+        String passenger_id;
         Order order;
         if(!orderMapper.selectList(orderQueryWrapper).isEmpty()) {
             order = orderMapper.selectList(orderQueryWrapper).get(0);
             if (order == null) {
                 return;
             }
-            order_id=order.getOrder_id();
+            passenger_id=order.getPassenger_id();
         }else{
             return;
         }
-        System.out.println(order_id);
+        System.out.println(passenger_id);
         //再判断可否取消
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
         statementQueryWrapper.eq("order_id",order_id).orderByDesc("stat_time");
