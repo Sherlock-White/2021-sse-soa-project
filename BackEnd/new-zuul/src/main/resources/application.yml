@@ -20,12 +20,12 @@ zuul:
     route1:
       path: /user-service/**
       serviceId: userservice
-      url: http://47.103.9.250:9000
+      url: http://106.15.3.13:9000
     route2:
       taxiservice:
         path: /taxi-service/**
         serviceId: taxiservice
-        #url: http://106.15.3.13:9001
+        url: http://101.132.32.186:9001
     route3:
       path: /distribution-service/**
       serviceId: distribution-service
@@ -45,7 +45,7 @@ zuul:
     route8:
       path: /ordertaking-service/**
       serviceId: ordertakingservice
-      url: http://106.15.3.13:9007
+      url: http://101.132.32.186:9007
   #需要忽略的头部信息，不在传播到其他服务
   sensitive-headers: Access-Control-Allow-Origin
   ignored-headers: Access-Control-Allow-Origin,H-APP-Id,Token,APPToken
