@@ -53,10 +53,12 @@ public class Listener {
         String departure=object.getString("from");
         String destination=object.getString("to");
         if(existsUnpaidOrder(passenger_id)){return;}
-        //Double from_lng=object.getDouble("from_lng");
-        //Double from_lat=object.getDouble("from_lat");
-        //Double to_lng=object.getDouble("to_lng");
-        //Double to_lat=object.getDouble("to_lat");
+        Double from_lng=object.getDouble("from_lng");
+        Double from_lat=object.getDouble("from_lat");
+        Double to_lng=object.getDouble("to_lng");
+        Double to_lat=object.getDouble("to_lat");
+
+        /*
         //尝试调用高德接口
         Double from_lng=120.332981;
         Double from_lat=31.332981;
@@ -81,6 +83,7 @@ public class Listener {
                 to_lat = Double.parseDouble(toPosVec2[1]);
             }
         }
+        */
         System.out.println(from_lng);
         System.out.println(from_lat);
         System.out.println(to_lng);
