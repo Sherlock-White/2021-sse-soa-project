@@ -336,12 +336,30 @@ public class LoginController {
 //        clientDAO.save(client);
         return ResultFactory.buildResult(ResultCode.SUCCESS, "修改资料成功", driver);  //1代表client
     }
+
+    @ApiOperation("返回司机状态")
+    @PostMapping("returndriverstate")
+    public Result returndriverstate(@RequestParam(value = "name") String name){
+        Driver driver = driverService.findByDrivernamecl(name);
+        return ResultFactory.buildResult(ResultCode.SUCCESS, "返回状态成功", driver.getState());
+    }
+
     @ApiOperation("司机信息更改")
     @PostMapping("driverchage")
     public Result driverchage(@RequestBody Driver driver) {
 
         driverDAO.save(driver);
         return ResultFactory.buildResult(ResultCode.SUCCESS, "修改资料成功", 1);  //1代表client
+    }
+
+    @ApiOperation("司机状态更改")
+    @PostMapping("driverstatechage")
+    public Result driverstatechage(@RequestParam(value = "name") String name,@RequestParam(value = "state") Long state) {
+
+        Driver driver = driverService.findByDrivernamecl(name);
+        driver.setState(state);
+        driverDAO.save(driver);
+        return ResultFactory.buildResult(ResultCode.SUCCESS, "修改状态成功", driver.getState());
     }
 
     @ApiOperation("身份认证")
@@ -384,4 +402,7 @@ public class LoginController {
         return list;
 
     }
+
+
+
 }
