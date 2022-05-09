@@ -22,10 +22,9 @@ zuul:
       serviceId: userservice
       url: http://106.15.3.13:9000
     route2:
-      taxiservice:
-        path: /taxi-service/**
-        serviceId: taxiservice
-        url: http://101.132.32.186:9001
+      path: /taxi-service/**
+      serviceId: taxiservice
+      url: http://101.132.32.186:9001
     route3:
       path: /distribution-service/**
       serviceId: distribution-service
