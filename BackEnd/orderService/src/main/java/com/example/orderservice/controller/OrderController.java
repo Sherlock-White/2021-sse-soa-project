@@ -50,9 +50,12 @@ public class OrderController {
     @ApiOperation(value = "返回乘客最近一笔订单的状态")
     @GetMapping("/v1/orders/recent/state/passenger/{passenger_id}")
     public String getRecentStateForPassenger(@PathVariable String passenger_id){
+        Result result= userClient.findPassengerById(passenger_id);
+        Map<String,String> resultMap=(Map<String, String>) result.getObject();
+        if(resultMap==null) return null;
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
         orderQueryWrapper.eq("passenger_id",passenger_id).orderByDesc("order_id");
-        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return null;}
+        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return "6";}
         Order order=orderMapper.selectList(orderQueryWrapper).get(0);
         if(order!=null){
             QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
@@ -62,15 +65,18 @@ public class OrderController {
                 return statementList.get(0).getOrder_state();
             }
         }
-        return null;
+        return "6";
     }
 
     @ApiOperation(value = "返回司机最近一笔订单的状态")
     @GetMapping("/v1/orders/recent/state/driver/{driver_id}")
     public String getRecentStateForDriver(@PathVariable String driver_id){
+        Result result= userClient.findDriverById(driver_id);
+        Map<String,String> resultMap=(Map<String, String>) result.getObject();
+        if(resultMap==null) return null;
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
         orderQueryWrapper.eq("driver_id",driver_id).orderByDesc("order_id");
-        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return null;}
+        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return "6";}
         Order order=orderMapper.selectList(orderQueryWrapper).get(0);
         if(order!=null){
             QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
@@ -80,7 +86,7 @@ public class OrderController {
                 return statementList.get(0).getOrder_state();
             }
         }
-        return null;
+        return "6";
     }
 
     @ApiOperation(value = "乘客到达，并返回金额")
