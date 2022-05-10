@@ -10,7 +10,7 @@ import java.util.List;
  * @date: 2021/12/29 19:53
  */
 @Component
-public class PositionClientImpl implements PositionClient{
+public class PosClientImpl implements PosClient {
     @Override
     public List<Object> getNearDriverList(){
         return null;

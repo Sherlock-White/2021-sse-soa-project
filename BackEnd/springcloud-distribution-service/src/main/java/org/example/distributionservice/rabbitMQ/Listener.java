@@ -2,36 +2,26 @@ package org.example.distributionservice.rabbitMQ;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSON;
-import net.sf.json.JSONArray;
 //import net.sf.json.JSONObject;
 
-import org.apache.juli.logging.Log;
-import org.example.distributionservice.feignClient.PositionClient;
+import org.example.distributionservice.feignClient.PosClient;
 import org.example.distributionservice.service.DistributionService;
-import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.rabbit.annotation.Exchange;
-import org.springframework.amqp.rabbit.annotation.Queue;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.SecureRandom;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class Listener {
     @Autowired
     private RabbitTemplate rabbitTemplate;
     @Autowired
-    private PositionClient positionClient;
+    private PosClient posClient;
     //@RabbitListener(queues = {"dispatch"})
     @Transactional
 //    @RabbitListener(bindings = @QueueBinding(
@@ -60,7 +50,7 @@ public class Listener {
                 {"driver2","31.194202","121.320655"}};*/
 
         //获取周围司机
-        List<Object> driverList = positionClient.getNearDriverList();
+        List<Object> driverList = posClient.getNearDriverList();
         System.out.println(driverList.toString());
         //{ts=2021-07-06 15:04:20.0, id=247, jing=30.73341, wei=104.04514}
         String[][] driver = new String[driverList.size()/5][3];
