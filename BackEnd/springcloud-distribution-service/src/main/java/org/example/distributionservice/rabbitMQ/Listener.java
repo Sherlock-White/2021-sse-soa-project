@@ -9,6 +9,7 @@ import org.example.distributionservice.service.DistributionService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.Map;
 public class Listener {
     @Autowired
     private RabbitTemplate rabbitTemplate;
+    @Qualifier("org.example.distributionservice.feignClient.PosClient")
     @Autowired
     private PosClient posClient;
     //@RabbitListener(queues = {"dispatch"})
@@ -50,27 +52,28 @@ public class Listener {
                 {"driver2","31.194202","121.320655"}};*/
 
         //获取周围司机
-        List<Object> driverList = posClient.getNearDriverList();
-        System.out.println(driverList.toString());
+//        List<Object> driverList = posClient.getNearDriverList();
+//        System.out.println(driverList.toString());
         //{ts=2021-07-06 15:04:20.0, id=247, jing=30.73341, wei=104.04514}
-        String[][] driver = new String[driverList.size()/5][3];
-        for(int i=0;i<driverList.size();i=i+5){
-            Object obj = driverList.get(i);
-            Map map = JSONObject.parseObject(JSONObject.toJSONString(obj), Map.class);
-            driver[i/5][0] = "driver"+map.get("id");
-            driver[i/5][1] = map.get("jing").toString();//是纬度
-            driver[i/5][2] = map.get("wei").toString(); //是经度
-        }
+//        String[][] driver = new String[driverList.size()/5][3];
+//        for(int i=0;i<driverList.size();i=i+5){
+//            Object obj = driverList.get(i);
+//            Map map = JSONObject.parseObject(JSONObject.toJSONString(obj), Map.class);
+//            driver[i/5][0] = "driver"+map.get("id");
+//            driver[i/5][1] = map.get("jing").toString();//是纬度
+//            driver[i/5][2] = map.get("wei").toString(); //是经度
+//        }
         //System.out.println(driver);
 
-        DistributionService distributionService = new DistributionService(1,driverList.size()/5,passenger,driver);
-        int[] result = distributionService.distribute();
-        System.out.println("派单结果"+result[0]);
+//        DistributionService distributionService = new DistributionService(1,driverList.size()/5,passenger,driver);
+//        int[] result = distributionService.distribute();
+//        System.out.println("派单结果"+result[0]);
 
         //通知订单微服务更新状态
         Map<String,String> message=new HashMap<>();
         message.put("order_id",order_id);
-        message.put("driver_id",driver[result[0]][0]);
+//        message.put("driver_id",driver[result[0]][0]);
+        message.put("driver_id","sxy");       //测试直接返回247
         message.put("is_distributed","2");//1表示未派单，2表示已派单
         System.out.println(message);
 
