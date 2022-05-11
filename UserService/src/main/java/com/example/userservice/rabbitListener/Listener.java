@@ -5,8 +5,10 @@ import com.example.userservice.dao.DriverDAO;
 import com.example.userservice.entity.Driver;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Component
 public class Listener {
     @Autowired
     DriverDAO driverDAO;
