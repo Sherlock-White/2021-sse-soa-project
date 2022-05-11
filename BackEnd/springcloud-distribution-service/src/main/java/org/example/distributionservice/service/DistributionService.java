@@ -34,11 +34,11 @@ public class DistributionService {
         this.driverCount = driverCount;
         this.graphMatch = new GraphMatch();
         //if(this.passengerCount > 1){
-            //this.graphMatch = new GraphMatch();
-            //this.oneMatch = null;
+        //this.graphMatch = new GraphMatch();
+        //this.oneMatch = null;
         //}else{
-            //this.graphMatch = null;
-            //this.oneMatch = new OneMatch();
+        //this.graphMatch = null;
+        //this.oneMatch = new OneMatch();
         //}
         this.passenger = passenger;
         this.driver = driver;
@@ -90,17 +90,17 @@ public class DistributionService {
      */
     public int[] distribute(){
         //if(this.passengerCount > 1) {
-            graphMatch.setEdges(edges);
-            graphMatch.setOnPath(new boolean[this.driverCount]);
-            int[] pathAry = new int[this.driverCount];
-            Arrays.fill(pathAry, -1);
-            graphMatch.setPath(pathAry);
+        graphMatch.setEdges(edges);
+        graphMatch.setOnPath(new boolean[this.driverCount]);
+        int[] pathAry = new int[this.driverCount];
+        Arrays.fill(pathAry, -1);
+        graphMatch.setPath(pathAry);
 
-            for (int i = 0; i < this.passengerCount; i++) {
-                search(graphMatch, i);
-                clearOnPathSign(graphMatch);
-            }
-            return graphMatch.getPath();
+        for (int i = 0; i < this.passengerCount; i++) {
+            search(graphMatch, i);
+            clearOnPathSign(graphMatch);
+        }
+        return graphMatch.getPath();
 //        }else{
 //            oneMatch.setEdges(edges);
 //            oneMatch.setMinIndex(0);

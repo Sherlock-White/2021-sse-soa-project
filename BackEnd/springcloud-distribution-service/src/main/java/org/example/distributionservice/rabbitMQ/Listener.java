@@ -1,3 +1,4 @@
+
 package org.example.distributionservice.rabbitMQ;
 
 import com.alibaba.fastjson.JSONObject;
@@ -6,6 +7,7 @@ import com.alibaba.fastjson.JSON;
 
 import org.example.distributionservice.feignClient.PosClient;
 import org.example.distributionservice.service.DistributionService;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,10 @@ import java.util.Map;
 
 @Component
 public class Listener {
+    @Autowired
+    private RabbitTemplate rabbitTemplate3;//发送给用户微服务改变司机状态
+    @Autowired
+    private RabbitTemplate rabbitTemplate2;//订单取消返回订单微服务
     @Autowired
     private RabbitTemplate rabbitTemplate;
     @Qualifier("org.example.distributionservice.feignClient.PosClient")
@@ -78,5 +84,32 @@ public class Listener {
         System.out.println(message);
 
         rabbitTemplate.convertAndSend("DispatchResponse","",JSON.toJSONString(message));
+    }
+    @Transactional
+    @RabbitListener(queues={"cancelDispatch"})
+    public void cancelOrderListen(Message messagePar){
+        String msg=new String(messagePar.getBody());
+        System.out.println("Start"+msg);
+
+        //获取订单信息'
+        JSONObject object=JSONObject.parseObject(msg);
+        System.out.println(object.toString());
+        String order_id=object.getString("order_id");
+        String driver_id=object.getString("driver_id");
+        //判断是否改变司机状态
+        if(driver_id.equals("")){
+            System.out.println(driver_id + "is null");
+            return;
+        }
+        Map<String,String> drivermessage=new HashMap<>();
+        drivermessage.put("driver_id",driver_id);
+        rabbitTemplate3.convertAndSend("ReleaseDriver","",JSON.toJSONString(drivermessage));
+        //通知订单微服务取消订单
+        Map<String,String> message=new HashMap<>();
+        message.put("order_id",order_id);
+        message.put("driver_id",driver_id);
+        message.put("is_distributed","1");//1表示未派单，2表示已派单
+        System.out.println(message);
+        rabbitTemplate2.convertAndSend("CancelFromDispatch","",JSON.toJSONString(message));
     }
 }
