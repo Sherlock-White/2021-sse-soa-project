@@ -74,6 +74,7 @@ public class OrderController {
         Result result= userClient.findDriverById(driver_id);
         Map<String,String> resultMap=(Map<String, String>) result.getObject();
         if(resultMap==null) return null;
+
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
         orderQueryWrapper.eq("driver_id",driver_id).orderByDesc("order_id");
         if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return "6";}
@@ -171,6 +172,7 @@ public class OrderController {
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
             if(resultMap!=null) taxiOrder.setPassenger_phone(resultMap.get("phone"));
+            //System.out.println("passenger_phone:"+taxiOrder.getPassenger_phone());
             if(order.getDriver_id()!=null && !order.getDriver_id().isEmpty() && !order.getDriver_id().equals("")) {
                 result = userClient.findDriverById(order.getDriver_id());
                 resultMap = (Map<String, String>) result.getObject();
