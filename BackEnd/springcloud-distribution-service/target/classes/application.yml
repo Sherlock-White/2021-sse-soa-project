@@ -5,10 +5,9 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
-      #defaultZone: http://${eureka.instance.hostname}:8080/eureka/
+      defaultZone: http://${eureka.instance.hostname}:8085/eureka/
   instance:
-    hostname: 139.224.251.185
+    hostname: 106.15.3.13
     #hostname: localhost
 
 #当前服务名称
