@@ -19,6 +19,16 @@ public class TaxiOrder {
     private Double to_lng;
     private Double to_lat;
 
+    public String getNumberplate() {
+        return numberplate;
+    }
+
+    public void setNumberplate(String numberplate) {
+        this.numberplate = numberplate;
+    }
+
+    private String numberplate;
+
     public String getOrder_id() {
         return order_id;
     }
