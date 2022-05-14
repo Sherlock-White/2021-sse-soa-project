@@ -47,7 +47,7 @@ public class OrderController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @ApiOperation(value = "通过乘客id返回乘客打车位置")
+    @ApiOperation(value = "通过乘客id返回乘客打车位置，如果乘客没有正在进行中订单则返回空")
     @GetMapping("/v1/passenger/{passenger_id}/fromPos")
     public Object getFromPosByPassenger(@PathVariable String passenger_id){
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
