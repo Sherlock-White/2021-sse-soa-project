@@ -405,4 +405,13 @@ public class LoginController {
 
 
 
+
+    @ApiOperation("返回司机id")
+    @PostMapping("returndriverid")
+    public Result returndriverid(@RequestParam(value = "name") String name) {
+
+        Driver driver = driverService.findByDrivernamecl(name);
+        return ResultFactory.buildResult(ResultCode.SUCCESS, "返回司机id成功", driver.getId());
+    }
+
 }
