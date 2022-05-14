@@ -47,6 +47,46 @@ public class OrderController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @ApiOperation(value = "通过乘客id返回乘客打车位置")
+    @GetMapping("/v1/passenger/{passenger_id}/fromPos")
+    public Object getFromPosByPassenger(@PathVariable String passenger_id){
+        QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
+        orderQueryWrapper.eq("passenger_id",passenger_id).orderByDesc("order_id");
+        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return null;}
+        Order order=orderMapper.selectList(orderQueryWrapper).get(0);
+        if(order!=null){
+            QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
+            if(!statementList.isEmpty()){
+                if(statementList.get(0).getOrder_state().equals("3")||statementList.get(0).getOrder_state().equals("6")){
+                    return null;
+                }
+                Map<String,Double> msg=new HashMap<>();
+                msg.put("from_lng",order.getFrom_lng());
+                msg.put("from_lat",order.getFrom_lat());
+                return msg;
+            }
+        }
+        return null;
+    }
+
+    @ApiOperation(value = "通过订单id返回乘客打车位置")
+    @GetMapping("/v1/order/{order_id}/fromPos")
+    public Object getFromPosByOrder(@PathVariable String order_id){
+        QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
+        orderQueryWrapper.eq("order_id",order_id);
+        if(orderMapper.selectList(orderQueryWrapper).isEmpty()){return null;}
+        Order order=orderMapper.selectList(orderQueryWrapper).get(0);
+        if(order!=null){
+            Map<String,Double> msg=new HashMap<>();
+            msg.put("from_lng",order.getFrom_lng());
+            msg.put("from_lat",order.getFrom_lat());
+            return msg;
+        }
+        return null;
+    }
+
     @ApiOperation(value = "返回乘客最近一笔订单的状态")
     @GetMapping("/v1/orders/recent/state/passenger/{passenger_id}")
     public String getRecentStateForPassenger(@PathVariable String passenger_id){
