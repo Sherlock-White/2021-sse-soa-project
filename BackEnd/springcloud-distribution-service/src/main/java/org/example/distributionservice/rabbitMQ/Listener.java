@@ -94,10 +94,10 @@ public class Listener {
         String order_id=object.getString("order_id");
         String driver_id=object.getString("driver_id");
         //判断是否改变司机状态
-        if(driver_id.equals("")){
-            System.out.println(driver_id + "is null");
-            return;
-        }
+//        if(driver_id.equals("")){
+//            System.out.println(driver_id + "is null");
+//            return;
+//        }
         Map<String,String> drivermessage=new HashMap<>();
         drivermessage.put("driver_id",driver_id);
         rabbitTemplate3.convertAndSend("ReleaseDriver","",JSON.toJSONString(drivermessage));
