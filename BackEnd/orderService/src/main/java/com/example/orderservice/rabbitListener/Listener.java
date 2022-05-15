@@ -153,15 +153,6 @@ public class Listener {
         message.put("to_lng",to_lng.toString());
         message.put("to_lat",to_lat.toString());
         rabbitTemplate.convertAndSend("dispatch","",JSON.toJSONString(message));
-        //通知位置为服务乘客打车地点坐标
-        System.out.println("我要发位置消息");
-        Map<String,String> msgPos=new HashMap<>();
-        msgPos.put("order_id",order_id.toString());
-        msgPos.put("passenger_id",passenger_id);
-        msgPos.put("from_lng",from_lng.toString());
-        msgPos.put("from_lat",from_lat.toString());
-        rabbitTemplate.convertAndSend("positionservice","",JSON.toJSONString(msgPos));
-        System.out.println("我已发位置消息");
     }
 
 
