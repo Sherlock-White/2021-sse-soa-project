@@ -375,6 +375,7 @@ public class OrderController {
 
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
+            System.out.println(resultMap);
             taxiOrder.setPassenger_phone(resultMap.get("phone"));
             result=userClient.findDriverById(order.getDriver_id());
             resultMap=(Map<String, String>) result.getObject();

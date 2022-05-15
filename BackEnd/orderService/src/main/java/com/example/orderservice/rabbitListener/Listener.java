@@ -37,6 +37,12 @@ public class Listener {
 
     //final private String key="5d377f781223f6c299389cc8c484c723";
 
+//    @Transactional
+//    @RabbitListener(queues = {"position"})
+//    public void testPos(String msg){
+//        System.out.println("接收到消息："+msg);
+//    }
+
     @Transactional
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "newOrder", durable = "true"),
@@ -147,12 +153,13 @@ public class Listener {
         message.put("to_lng",to_lng.toString());
         message.put("to_lat",to_lat.toString());
         rabbitTemplate.convertAndSend("dispatch","",JSON.toJSONString(message));
+        //通知位置为服务乘客打车地点坐标
         Map<String,String> msgPos=new HashMap<>();
         msgPos.put("order_id",order_id.toString());
         msgPos.put("passenger_id",passenger_id);
         msgPos.put("from_lng",from_lng.toString());
         msgPos.put("from_lat",from_lat.toString());
-        rabbitTemplate.convertAndSend("position","",JSON.toJSONString(msgPos));
+        rabbitTemplate.convertAndSend("positionservice","",JSON.toJSONString(msgPos));
 
     }
 
