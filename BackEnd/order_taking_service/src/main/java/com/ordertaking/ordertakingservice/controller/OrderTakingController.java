@@ -1,6 +1,5 @@
 package com.ordertaking.ordertakingservice.controller;
 
-import com.ordertaking.ordertakingservice.clients.OrderClient;
 import com.ordertaking.ordertakingservice.entity.Order;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,19 +14,18 @@ import org.springframework.web.bind.annotation.*;
 public class OrderTakingController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
-    @Autowired
-    private OrderClient orderClient;
 
     @ApiOperation(value = "司机接到乘客")
     @PostMapping("v1/pickingup")
-    public void pickUp(@RequestParam(value = "order_id") String order_id){
+    public String pickUp(@RequestParam(value = "order_id") String order_id){
         rabbitTemplate.convertAndSend("orderTaking","",new Order(order_id,4));
+        return "success";
     }
 
     @ApiOperation(value = "行程结束")
     @PostMapping("v1/arrival")
-    public Double arrival(@RequestParam(value = "order_id") String order_id){
-        return orderClient.getPrice(order_id);
+    public String arrival(@RequestParam(value = "order_id") String order_id){
+        rabbitTemplate.convertAndSend("orderTaking","",new Order(order_id,5));
+        return "success";
     }
-
 }
