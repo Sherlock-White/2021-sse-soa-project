@@ -20,10 +20,14 @@ public class Listener {
         String msg = new String(message.getBody());
         System.out.println("接收到消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
-        String driver_id=object.getString("driver_id");
-        Driver driver = driverDAO.findByName(driver_id);
-        driver.setState((long)0);
-        driverDAO.save(driver);
+        if(!object.getString("driver_id").isEmpty()&&!object.getString("driver_id").equals("")) {
+            String driver_id = object.getString("driver_id");
+            Driver driver = driverDAO.findByName(driver_id);
+            if(driver!=null) {
+                driver.setState((long) 0);
+                driverDAO.save(driver);
+            }
+        }
     }
 
 }
