@@ -20,10 +20,6 @@ import java.util.Map;
 @Component
 public class Listener {
     @Autowired
-    private RabbitTemplate rabbitTemplate3;//发送给用户微服务改变司机状态
-    @Autowired
-    private RabbitTemplate rabbitTemplate2;//订单取消返回订单微服务
-    @Autowired
     private RabbitTemplate rabbitTemplate;
     @Autowired
     private PositionClient positionClient;
@@ -105,6 +101,6 @@ public class Listener {
         message.put("is_distributed","1");//1表示未派单，2表示已派单
         System.out.println(message);
         //通知用户微服务释放司机 + 订单微服务取消订单
-        rabbitTemplate2.convertAndSend("CancelFromDispatch","",JSON.toJSONString(message));
+        rabbitTemplate.convertAndSend("CancelFromDispatch","",JSON.toJSONString(message));
     }
 }
