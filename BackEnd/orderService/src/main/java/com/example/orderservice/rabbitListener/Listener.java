@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -470,6 +471,74 @@ public class Listener {
                 Statement statement1 = new Statement();
                 statement1.setOrder_id(order_id);
                 statement1.setOrder_state("4");
+                Instant time = Instant.now().plusMillis(TimeUnit.HOURS.toMillis(16));
+                statement1.setStat_time(time);
+                StringBuilder stat_id = new StringBuilder();
+                while (true) {
+                    stat_id = new StringBuilder();
+                    Random rd = new SecureRandom();
+                    for (int i = 0; i < 20; i++) {
+                        int bit = rd.nextInt(10);
+                        stat_id.append(String.valueOf(bit));
+                    }
+                    QueryWrapper<Statement> statementWrapper = new QueryWrapper<>();
+                    statementWrapper.eq("stat_id", stat_id.toString());
+                    if (statementMapper.selectOne(statementWrapper) == null) {
+                        break;
+                    }
+                }
+                statement1.setStat_id(stat_id.toString());
+                statementMapper.insert(statement1);
+            }
+        }
+        //乘客上车
+        else if(object.getString("state").toString().equals("5")){
+            String order_id=object.getString("order_id");
+            //判断是否有该订单
+            QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
+            orderQueryWrapper.eq("order_id",order_id);
+            Order order=orderMapper.selectOne(orderQueryWrapper);
+            if(order==null){
+                return;
+            }
+            //判断是否已上车
+            QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
+            statementQueryWrapper.eq("order_id",order_id).orderByDesc("order_state");
+            List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
+            boolean flag=false;
+            for(Statement statement:statementList){
+                if(statement.getOrder_state().equals("6")||statement.getOrder_state().equals("5")||statement.getOrder_state().equals("3")){
+                    return;
+                }
+                else if(statement.getOrder_state().equals("4")){
+                    flag=true;
+                }
+            }
+            //计算金额
+            if(flag)
+            {
+                Double price;
+                Instant start_time = statementList.get(0).getStat_time();
+                if(start_time==null) return;
+                System.out.println("上车时间："+start_time);
+                Instant end_time = Instant.now().plusMillis(TimeUnit.HOURS.toMillis(16));
+                int min = (int) Duration.between(start_time,end_time).getSeconds()/60-480;
+                System.out.println("行程用时："+min+"分钟");
+
+                if(min<=10) price=18.0;
+                else if(min<=60) price=18.0+0.5*(min-10);
+                else if(min<=180) price=18.0+2*(60-10)+(min-10);
+                else price=18.0+2*(60-10)+(180-10);
+
+                UpdateWrapper<Order> orderUpdateWrapper = new UpdateWrapper<>();
+                orderUpdateWrapper.eq("order_id", order_id).set("price", price);
+                orderMapper.update(order, orderUpdateWrapper);
+            }
+            //插入新流水
+            if(flag){
+                Statement statement1 = new Statement();
+                statement1.setOrder_id(order_id);
+                statement1.setOrder_state("5");
                 Instant time = Instant.now().plusMillis(TimeUnit.HOURS.toMillis(16));
                 statement1.setStat_time(time);
                 StringBuilder stat_id = new StringBuilder();
