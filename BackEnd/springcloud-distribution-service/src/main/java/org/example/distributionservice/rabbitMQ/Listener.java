@@ -98,15 +98,13 @@ public class Listener {
 //            System.out.println(driver_id + "is null");
 //            return;
 //        }
-        Map<String,String> drivermessage=new HashMap<>();
-        drivermessage.put("driver_id",driver_id);
-        rabbitTemplate3.convertAndSend("ReleaseDriver","",JSON.toJSONString(drivermessage));
-        //通知订单微服务取消订单
+
         Map<String,String> message=new HashMap<>();
         message.put("order_id",order_id);
         message.put("driver_id",driver_id);
         message.put("is_distributed","1");//1表示未派单，2表示已派单
         System.out.println(message);
+        //通知用户微服务释放司机 + 订单微服务取消订单
         rabbitTemplate2.convertAndSend("CancelFromDispatch","",JSON.toJSONString(message));
     }
 }
