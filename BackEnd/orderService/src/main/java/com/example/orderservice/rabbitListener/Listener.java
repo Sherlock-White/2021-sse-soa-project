@@ -182,7 +182,7 @@ public class Listener {
         }
         //判断是否有已取消的流水，为后续分情况处理，插入新流水
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
-        statementQueryWrapper.eq("order_id",order_id).orderByDesc("stat_time");
+        statementQueryWrapper.eq("order_id",order_id).orderByDesc("order_state");
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
         for(Statement statement:statementList){
             if(!statement.getOrder_state().equals("1")){
@@ -238,7 +238,7 @@ public class Listener {
         message.put("driver_id",order.getDriver_id());
         //再判断可否取消
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
-        statementQueryWrapper.eq("order_id",order_id).orderByDesc("stat_time");
+        statementQueryWrapper.eq("order_id",order_id).orderByDesc("order_state");
         List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
         boolean sendFlag=false;
         for(Statement statement:statementList){
@@ -307,7 +307,7 @@ public class Listener {
         System.out.println(passenger_id);
         //再判断可否取消
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
-        statementQueryWrapper.eq("order_id",order_id).orderByDesc("stat_time");
+        statementQueryWrapper.eq("order_id",order_id).orderByDesc("order_state");
         List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
         for(Statement statement:statementList){
             if(!statement.getOrder_state().equals("1")&&!statement.getOrder_state().equals("2")){
@@ -502,7 +502,7 @@ public class Listener {
             return false;
         }
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
-        statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
+        statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("order_state");
         Statement statement=statementMapper.selectList(statementQueryWrapper).get(0);
         if(!statement.getOrder_state().equals("3")&&!statement.getOrder_state().equals("6")){
             return true;

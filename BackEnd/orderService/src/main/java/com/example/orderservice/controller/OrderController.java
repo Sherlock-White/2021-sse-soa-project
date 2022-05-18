@@ -56,7 +56,7 @@ public class OrderController {
         Order order=orderMapper.selectList(orderQueryWrapper).get(0);
         if(order!=null){
             QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
-            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("order_state");
             List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
             if(!statementList.isEmpty()){
                 if(statementList.get(0).getOrder_state().equals("3")||statementList.get(0).getOrder_state().equals("6")){
@@ -99,7 +99,7 @@ public class OrderController {
         Order order=orderMapper.selectList(orderQueryWrapper).get(0);
         if(order!=null){
             QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
-            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("order_state");
             List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
             if(!statementList.isEmpty()){
                 return statementList.get(0).getOrder_state();
@@ -121,7 +121,7 @@ public class OrderController {
         Order order=orderMapper.selectList(orderQueryWrapper).get(0);
         if(order!=null){
             QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
-            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("order_state");
             List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
             if(!statementList.isEmpty()){
                 return statementList.get(0).getOrder_state();
@@ -141,7 +141,7 @@ public class OrderController {
             Double price;
 
             QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
-            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("order_state");
             List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
             if(!statementList.get(0).getOrder_state().equals("4")){
                 return null;
@@ -223,7 +223,7 @@ public class OrderController {
             }
             //查询流水
             QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
-            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("order_state");
             List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
             taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
             for (Statement statement : statementList) {
@@ -272,7 +272,7 @@ public class OrderController {
             }
             //查询流水
             QueryWrapper<Statement> statementQueryWrapper = new QueryWrapper<>();
-            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("stat_time");
+            statementQueryWrapper.eq("order_id", order.getOrder_id()).orderByDesc("order_state");
             List<Statement> statementList = statementMapper.selectList(statementQueryWrapper);
             taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
             for (Statement statement : statementList) {
@@ -325,7 +325,7 @@ public class OrderController {
             }
             //查询流水
             QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
-            statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
+            statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("order_state");
             List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
             taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
             //获取订单开始时间
@@ -382,7 +382,7 @@ public class OrderController {
             if(resultMap!=null) taxiOrder.setDriver_phone(resultMap.get("phone"));
             //查询流水
             QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
-            statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
+            statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("order_state");
             List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
             taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
             //获取订单开始时间
@@ -452,7 +452,7 @@ public class OrderController {
         }
         //查询流水
         QueryWrapper<Statement> statementQueryWrapper=new QueryWrapper<>();
-        statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("stat_time");
+        statementQueryWrapper.eq("order_id",order.getOrder_id()).orderByDesc("order_state");
         List<Statement> statementList=statementMapper.selectList(statementQueryWrapper);
         taxiOrder.setOrder_state(statementList.get(0).getOrder_state());
         //获取订单开始时间
