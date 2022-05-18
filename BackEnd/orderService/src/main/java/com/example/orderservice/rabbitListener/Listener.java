@@ -53,7 +53,7 @@ public class Listener {
             )
     ))
     public void newOrderListen(String msg){
-        System.out.println("接收到消息：" + msg);
+        System.out.println("接收到打车消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
         String passenger_id=object.getString("passenger_id");
         String departure=object.getString("from");
@@ -215,7 +215,7 @@ public class Listener {
     @Transactional
     @RabbitListener(queues = {"cancelOrderFromHailing"})
     public void cancelOrderFromHailing(String msg){
-        System.out.println("接收到消息：" + msg);
+        System.out.println("接收到来自打车的取消消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
         String passenger_id=object.getString("passenger_id");
         //获取最新订单
@@ -285,7 +285,7 @@ public class Listener {
     @Transactional
     @RabbitListener(queues = {"CancelFromDispatch"})
     public void cancelOrderFromDispatching(String msg){
-        System.out.println("接收到消息：" + msg);
+        System.out.println("接收到来自派单的取消消息：" + msg);
         JSONObject object=JSONObject.parseObject(msg);
         String order_id=object.getString("order_id");
         String driver_id=object.getString("driver_id");
@@ -392,7 +392,7 @@ public class Listener {
     @Transactional
     @RabbitListener(queues="orderTaking")
     public void passengerListen(String msg){
-        System.out.println("接收到消息："+msg);
+        System.out.println("接收到乘客支付或者乘客上车消息："+msg);
         JSONObject object=JSONObject.parseObject(msg);
         //支付订单
         if(object.getString("state").toString().equals("6")) {
