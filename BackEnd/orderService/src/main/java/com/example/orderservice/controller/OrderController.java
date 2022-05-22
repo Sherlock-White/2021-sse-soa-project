@@ -208,6 +208,7 @@ public class OrderController {
             taxiOrder.setFrom_lat(order.getFrom_lat());
             taxiOrder.setTo_lng(order.getTo_lng());
             taxiOrder.setTo_lat(order.getTo_lat());
+            taxiOrder.setPrice(order.getPrice());
 
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
@@ -261,6 +262,7 @@ public class OrderController {
             taxiOrder.setFrom_lat(order.getFrom_lat());
             taxiOrder.setTo_lng(order.getTo_lng());
             taxiOrder.setTo_lat(order.getTo_lat());
+            taxiOrder.setPrice(order.getPrice());
 
             Result result= userClient.findPassengerById(order.getPassenger_id());
             Map<String,String> resultMap=(Map<String, String>) result.getObject();
