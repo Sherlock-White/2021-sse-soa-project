@@ -1,0 +1,37 @@
+Index: src/main/java/org/example/distributionservice/rabbitMQ/Listener.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\npackage org.example.distributionservice.rabbitMQ;\r\n\r\nimport com.alibaba.fastjson.JSONObject;\r\nimport com.alibaba.fastjson.JSON;\r\n//import net.sf.json.JSONObject;\r\n\r\nimport org.example.distributionservice.feignClient.PositionClient;\r\nimport org.springframework.amqp.core.Message;\r\nimport org.springframework.amqp.rabbit.annotation.RabbitListener;\r\nimport org.springframework.amqp.rabbit.core.RabbitTemplate;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.beans.factory.annotation.Qualifier;\r\nimport org.springframework.stereotype.Component;\r\nimport org.springframework.transaction.annotation.Transactional;\r\n\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\n\r\n@Component\r\npublic class Listener {\r\n    @Autowired\r\n    private RabbitTemplate rabbitTemplate3;//发送给用户微服务改变司机状态\r\n    @Autowired\r\n    private RabbitTemplate rabbitTemplate2;//订单取消返回订单微服务\r\n    @Autowired\r\n    private RabbitTemplate rabbitTemplate;\r\n    @Autowired\r\n    private PositionClient positionClient;\r\n    //@RabbitListener(queues = {\"dispatch\"})\r\n    @Transactional\r\n//    @RabbitListener(bindings = @QueueBinding(\r\n//            value = @Queue(value = \"dispatch\", durable = \"true\"),\r\n//            exchange = @Exchange(\r\n//                    value = \"dispatch\",\r\n//                    ignoreDeclarationExceptions = \"true\",\r\n//                    type = ExchangeTypes.FANOUT\r\n//            )\r\n//    ))\r\n    @RabbitListener(queues = {\"dispatch\"})\r\n    public void newDistributionListen(String msg){\r\n        System.out.println(msg);\r\n        //获取订单信息\r\n        JSONObject object = JSONObject.parseObject(msg);\r\n        System.out.println(object.toString());\r\n        String order_id=object.getString(\"order_id\");\r\n        String passenger_id=object.getString(\"passenger_id\");\r\n        String from_lng=object.getString(\"from_lng\");   //经度\r\n        String from_lat=object.getString(\"from_lat\");   //纬度\r\n        String to_lng=object.getString(\"to_lng\");\r\n        String to_lat=object.getString(\"to_lat\");\r\n        String[][] passenger ={{passenger_id,from_lat,from_lng}};\r\n        /*String[][] driver ={\r\n                {\"driver1\",\"31.286428\",\"121.212090\"},\r\n                {\"driver2\",\"31.194202\",\"121.320655\"}};*/\r\n\r\n        //获取周围司机\r\n//        List<Object> driverList = posClient.getNearDriverList();\r\n//        System.out.println(driverList.toString());\r\n        //{ts=2021-07-06 15:04:20.0, id=247, jing=30.73341, wei=104.04514}\r\n//        String[][] driver = new String[driverList.size()/5][3];\r\n//        for(int i=0;i<driverList.size();i=i+5){\r\n//            Object obj = driverList.get(i);\r\n//            Map map = JSONObject.parseObject(JSONObject.toJSONString(obj), Map.class);\r\n//            driver[i/5][0] = \"driver\"+map.get(\"id\");\r\n//            driver[i/5][1] = map.get(\"jing\").toString();//是纬度\r\n//            driver[i/5][2] = map.get(\"wei\").toString(); //是经度\r\n//        }\r\n        //System.out.println(driver);\r\n\r\n//        DistributionService distributionService = new DistributionService(1,driverList.size()/5,passenger,driver);\r\n//        int[] result = distributionService.distribute();\r\n//        System.out.println(\"派单结果\"+result[0]);\r\n\r\n        //通知订单微服务更新状态\r\n        Map<String,String> message=new HashMap<>();\r\n        message.put(\"order_id\",order_id);\r\n//        message.put(\"driver_id\",driver[result[0]][0]);\r\n        message.put(\"driver_id\",\"sxy\");       //测试直接返回247\r\n        message.put(\"is_distributed\",\"2\");//1表示未派单，2表示已派单\r\n        System.out.println(message);\r\n\r\n        rabbitTemplate.convertAndSend(\"DispatchResponse\",\"\",JSON.toJSONString(message));\r\n    }\r\n    @Transactional\r\n    @RabbitListener(queues={\"cancelDispatch\"})\r\n    public void cancelOrderListen(Message messagePar){\r\n        String msg=new String(messagePar.getBody());\r\n        System.out.println(\"Start\"+msg);\r\n\r\n        //获取订单信息'\r\n        JSONObject object=JSONObject.parseObject(msg);\r\n        System.out.println(object.toString());\r\n        String order_id=object.getString(\"order_id\");\r\n        String driver_id=object.getString(\"driver_id\");\r\n        //判断是否改变司机状态\r\n        if(driver_id.equals(\"\")){\r\n            System.out.println(driver_id + \"is null\");\r\n            return;\r\n        }\r\n        Map<String,String> drivermessage=new HashMap<>();\r\n        drivermessage.put(\"driver_id\",driver_id);\r\n        rabbitTemplate3.convertAndSend(\"ReleaseDriver\",\"\",JSON.toJSONString(drivermessage));\r\n        //通知订单微服务取消订单\r\n        Map<String,String> message=new HashMap<>();\r\n        message.put(\"order_id\",order_id);\r\n        message.put(\"driver_id\",driver_id);\r\n        message.put(\"is_distributed\",\"1\");//1表示未派单，2表示已派单\r\n        System.out.println(message);\r\n        rabbitTemplate2.convertAndSend(\"CancelFromDispatch\",\"\",JSON.toJSONString(message));\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/org/example/distributionservice/rabbitMQ/Listener.java b/src/main/java/org/example/distributionservice/rabbitMQ/Listener.java
+--- a/src/main/java/org/example/distributionservice/rabbitMQ/Listener.java	
++++ b/src/main/java/org/example/distributionservice/rabbitMQ/Listener.java	
+@@ -38,7 +38,7 @@
+ //            )
+ //    ))
+     @RabbitListener(queues = {"dispatch"})
+-    public void newDistributionListen(String msg){
++    public void newDistributionListen(String msg) throws InterruptedException {
+         System.out.println(msg);
+         //获取订单信息
+         JSONObject object = JSONObject.parseObject(msg);
+@@ -79,16 +79,16 @@
+         message.put("driver_id","sxy");       //测试直接返回247
+         message.put("is_distributed","2");//1表示未派单，2表示已派单
+         System.out.println(message);
+-
++        Thread.sleep(3000);
+         rabbitTemplate.convertAndSend("DispatchResponse","",JSON.toJSONString(message));
+     }
+     @Transactional
+     @RabbitListener(queues={"cancelDispatch"})
+-    public void cancelOrderListen(Message messagePar){
++    public void cancelOrderListen(Message messagePar) throws InterruptedException {
+         String msg=new String(messagePar.getBody());
+         System.out.println("Start"+msg);
+ 
+-        //获取订单信息'
++        //获取订单信息'g
+         JSONObject object=JSONObject.parseObject(msg);
+         System.out.println(object.toString());
+         String order_id=object.getString("order_id");
