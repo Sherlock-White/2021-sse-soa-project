@@ -1,0 +1,12 @@
+org\example\distributionservice\feignClient\PositionClient.class
+org\example\distributionservice\config\SwaggerConfig.class
+org\example\distributionservice\model\GraphMatch.class
+org\example\distributionservice\service\CreditService.class
+org\example\distributionservice\service\DistanceService.class
+org\example\distributionservice\service\DistributionService.class
+org\example\distributionservice\feignClient\CreditClientImpl.class
+org\example\distributionservice\DistributionServiceApplication.class
+org\example\distributionservice\model\OneMatch.class
+org\example\distributionservice\feignClient\PositionClientImpl.class
+org\example\distributionservice\rabbitMQ\Listener.class
+org\example\distributionservice\feignClient\CreditClient.class

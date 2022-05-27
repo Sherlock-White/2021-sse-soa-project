@@ -1,0 +1,40 @@
+server:
+  port: 9002 # 服务提供方
+
+# 指定当前eureka客户端的注册地址,
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8085/eureka/
+  instance:
+    hostname: 106.15.3.13
+    #hostname: localhost
+
+#当前服务名称
+spring:
+#  datasource:
+#    url: jdbc:mysql://mysql:3306/cloud_order?useSSL=false
+#    username: root
+#    password: Mysql123456+
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  datasource:
+#    url: jdbc:mysql://116.62.208.68:3306/didi?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+#    driverClassName: com.mysql.cj.jdbc.Driver
+#    username: root
+#    password: 123456
+  application:
+      name: distribution-service
+  rabbitmq:
+    host: 47.102.204.30
+    port: 5672
+    username: itcast
+    password: 123321
+    virtualHost: /
+    #消费端配置
+#    listener:
+#      simple:
+#        #自动签收auto  手动 manual
+#        acknowledge-mode: manual
+feign:
+  hystrix:
+    enabled=true
