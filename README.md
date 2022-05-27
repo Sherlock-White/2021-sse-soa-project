@@ -1,112 +1,5 @@
 # 2021-sse-soa-project
 
-关于司机state：
-
-0：账号不允许出车
-
-1：账号允许出车
-
-3：账号正在接客
-
-4：账号空车
-
-
-
-# 账户微服务问题
-
-### 注册服务：
-
-1.输入账号密码手机号后，点击获取验证码，调用/api/registercode
-
-2.输入验证码后，点击注册，调用/api/register
-
-
-
-### 登录服务
-
-输入账号密码，调用/api/login
-
-
-
-### 登出服务
-
-调用/api/logout
-
-
-
-### 重置密码服务
-
-1.输入账号手机号后，点击获取验证码，调用/api/resetcode
-
-2.输入新密码，验证码后，调用/api/reset
-
-
-
-### 解绑手机服务
-
-1.点击解绑按钮，获取验证码调用/api/resetphonecode
-
-2.输入验证码，点击验证调用/api/resetphone
-
-
-
-### 绑定手机服务
-
-1.输入新手机号点击绑定按钮，获取验证码调用/api/resetphonecode
-
-2.输入验证码，点击验证调用/api/resetphone1
-
-
-
-### 身份认证服务
-
-1.输入真实姓名，身份证号 点击验证，若"description\":\"一致，则认证成功，其他不成功 调用api/identity
-
-
-
-### 客户更改信息服务
-
-1.调用/api/returnclientchage，显示某一个客户信息
-
-2.调用/api/clientchage，更改客户状态信息，更改信息页面只可以更改truename，commonaddress1,commonaddress1
-
-![image-20211219145019666](/UserService/image/image-20211219145019666.png)
-
-
-
-### 车主更改信息服务
-
-1.调用/api/returndriverchage，显示某一个客户信息
-
-2.调用/api/driverchage，更改客户状态信息，更改信息页面只可以更改numberplate，car,personalprofile
-
-![image-20211219145148914](/UserService/image/image-20211219145148914.png)
-
-
-
-### 管理员服务
-
-输入账号密码，点击登录，调用/api/ad
-
-
-
-### 管理员更改车主认证服务信息
-
-1.调用/api/returndriverchage，显示某一个车主信息
-
-2.调用/api/driverchage，更改车主状态信息,包括state，creditworthiness
-
-关于司机state说明：
-
-0：账号不允许出车
-
-1：账号允许出车
-
-3：账号正在接客
-
-4：账号空车
-
-=======
 2021同济大学软件学院Web系统与SOA课程小组项目  
 指导老师：刘岩
 
@@ -239,3 +132,110 @@ JDK：1.8
                          order_id:"";
                          driver_id:"";
                        }
+                       
+======
+关于司机state：
+
+0：账号不允许出车
+
+1：账号允许出车
+
+3：账号正在接客
+
+4：账号空车
+
+
+
+# 账户微服务问题
+
+### 注册服务：
+
+1.输入账号密码手机号后，点击获取验证码，调用/api/registercode
+
+2.输入验证码后，点击注册，调用/api/register
+
+
+
+### 登录服务
+
+输入账号密码，调用/api/login
+
+
+
+### 登出服务
+
+调用/api/logout
+
+
+
+### 重置密码服务
+
+1.输入账号手机号后，点击获取验证码，调用/api/resetcode
+
+2.输入新密码，验证码后，调用/api/reset
+
+
+
+### 解绑手机服务
+
+1.点击解绑按钮，获取验证码调用/api/resetphonecode
+
+2.输入验证码，点击验证调用/api/resetphone
+
+
+
+### 绑定手机服务
+
+1.输入新手机号点击绑定按钮，获取验证码调用/api/resetphonecode
+
+2.输入验证码，点击验证调用/api/resetphone1
+
+
+
+### 身份认证服务
+
+1.输入真实姓名，身份证号 点击验证，若"description\":\"一致，则认证成功，其他不成功 调用api/identity
+
+
+
+### 客户更改信息服务
+
+1.调用/api/returnclientchage，显示某一个客户信息
+
+2.调用/api/clientchage，更改客户状态信息，更改信息页面只可以更改truename，commonaddress1,commonaddress1
+
+![image-20211219145019666](/UserService/image/image-20211219145019666.png)
+
+
+
+### 车主更改信息服务
+
+1.调用/api/returndriverchage，显示某一个客户信息
+
+2.调用/api/driverchage，更改客户状态信息，更改信息页面只可以更改numberplate，car,personalprofile
+
+![image-20211219145148914](/UserService/image/image-20211219145148914.png)
+
+
+
+### 管理员服务
+
+输入账号密码，点击登录，调用/api/ad
+
+
+
+### 管理员更改车主认证服务信息
+
+1.调用/api/returndriverchage，显示某一个车主信息
+
+2.调用/api/driverchage，更改车主状态信息,包括state，creditworthiness
+
+关于司机state说明：
+
+0：账号不允许出车
+
+1：账号允许出车
+
+3：账号正在接客
+
+4：账号空车
