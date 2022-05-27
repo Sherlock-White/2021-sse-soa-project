@@ -1,0 +1,25 @@
+server:
+  port: 9001
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://106.15.3.13:8085/eureka/
+
+spring:
+  application:
+    name: taxiservice
+  rabbitmq:
+    host: 47.102.204.30 # rabbitMQ的ip地址
+    port: 5672 # 端口
+    username: itcast
+    password: 123321
+    virtual-host: /
+
+feign:
+  httpclient:
+    enabled: true
+    max-connections-per-route: 10
+    max-connections: 100
+
+
