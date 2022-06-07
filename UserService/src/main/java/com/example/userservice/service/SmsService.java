@@ -39,6 +39,7 @@ public class SmsService {
             //redis存储验证码并设置180S的过期时间 过期redis自动删除
             redisService.set(mobile,verifyCode,180L);
             //短信发送验证码 异步发送
+//            String verifyCode = SendSms.zcCode();
             String content = null;
             switch(type){
 
